@@ -29,6 +29,12 @@ export const navItems: NavItem[] = [
     route: '/empresas',
   },
   {
+    displayName: 'Adoção',
+    iconName: 'chart-funnel',
+    bgcolor: 'primary',
+    route: '/adocao',
+  },
+  {
     displayName: 'Leads',
     iconName: 'mail',
     bgcolor: 'primary',
