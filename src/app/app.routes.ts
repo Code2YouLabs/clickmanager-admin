@@ -68,6 +68,18 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'adocao',
+        loadComponent: () =>
+          import('./pages/adocao/adocao-funil.component').then((m) => m.AdocaoFunilComponent),
+        data: {
+          title: 'Adoção',
+          urls: [
+            { title: 'Admin', url: '/dashboard' },
+            { title: 'Adoção' }
+          ]
+        }
+      },
+      {
         path: 'leads',
         loadComponent: () =>
           import('./pages/leads/leads-admin.component').then((m) => m.LeadsAdminComponent),
