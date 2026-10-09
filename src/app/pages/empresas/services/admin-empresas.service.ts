@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import {
+  AdminEmpresaAdocaoResponse,
   AdminEmpresaDetalheResponse,
   AdminEmpresaResumo,
   AdminEmpresasResumoResponse,
@@ -36,6 +37,10 @@ export class AdminEmpresasService {
 
   buscarPorId$(id: number): Observable<AdminEmpresaDetalheResponse> {
     return this.api.get<any>(`${this.endpoint}/${id}`).pipe(map((raw) => this.mapDetalhe(raw)));
+  }
+
+  buscarAdocao$(id: number): Observable<AdminEmpresaAdocaoResponse> {
+    return this.api.get<AdminEmpresaAdocaoResponse>(`${this.endpoint}/${id}/adocao`);
   }
 
   buscarResumo$(): Observable<AdminEmpresasResumoResponse> {

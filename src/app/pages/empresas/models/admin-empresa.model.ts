@@ -58,3 +58,74 @@ export interface AdminListaEmpresasFiltros {
   pagina?: number;
   tamanho?: number;
 }
+
+export interface AdminEmpresaAdocaoResponse {
+  empresaId: number;
+  segmento: string | null;
+  configuracao: AdminEmpresaAdocaoConfiguracao;
+  marcos: AdminEmpresaAdocaoMarcos;
+  ativacao: AdminEmpresaAdocaoAtivacao;
+  timeToValue: AdminEmpresaAdocaoTimeToValue;
+  usuarios: AdminEmpresaAdocaoUsuario[];
+}
+
+export interface AdminEmpresaAdocaoConfiguracao {
+  percentual: number | null;
+  concluida: boolean;
+  concluidaEm: string | null;
+  onboardingIgnorado: boolean;
+  criterios: AdminEmpresaAdocaoCriterioConfiguracao[];
+}
+
+export interface AdminEmpresaAdocaoCriterioConfiguracao {
+  codigo: string;
+  concluido: boolean;
+}
+
+export interface AdminEmpresaAdocaoMarcos {
+  empresaCriadaEm: string | null;
+  configuracaoConcluidaEm: string | null;
+  primeiroAcessoEm: string | null;
+  primeiroClienteEm: string | null;
+  primeiroPedidoEm: string | null;
+  primeiraMovimentacaoPedidoEm: string | null;
+}
+
+export interface AdminEmpresaAdocaoAtivacao {
+  suportada: boolean;
+  concluida: boolean;
+  ativadaEm: string | null;
+  criterios: AdminEmpresaAdocaoCriterioAtivacao[];
+}
+
+export interface AdminEmpresaAdocaoCriterioAtivacao {
+  codigo: string;
+  concluido: boolean;
+  concluidoEm: string | null;
+}
+
+export interface AdminEmpresaAdocaoTimeToValue {
+  desdeCriacaoSegundos: number | null;
+  desdeConfiguracaoSegundos: number | null;
+}
+
+export interface AdminEmpresaAdocaoUsuario {
+  usuarioId: number;
+  nome: string | null;
+  email: string | null;
+  jornadas: AdminEmpresaAdocaoJornada[];
+}
+
+export type AdminEmpresaJornadaStatus = 'NAO_INICIADO' | 'EM_ANDAMENTO' | 'CONCLUIDO' | 'IGNORADO' | 'ABANDONADO';
+
+export interface AdminEmpresaAdocaoJornada {
+  jornada: string;
+  versao: number;
+  status: AdminEmpresaJornadaStatus | string;
+  etapaAtual: string | null;
+  oferecidoEm: string | null;
+  iniciadoEm: string | null;
+  concluidoEm: string | null;
+  ignoradoEm: string | null;
+  abandonadoEm: string | null;
+}
