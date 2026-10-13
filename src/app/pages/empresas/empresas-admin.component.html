@@ -148,80 +148,313 @@
         </span>
       </div>
 
-      <div class="detail-grid">
-        <article class="detail-stat">
-          <span>Plano</span>
-          <strong>{{ empresaSelecionada.plano }}</strong>
-        </article>
-        <article class="detail-stat">
-          <span>Usuários</span>
-          <strong>{{ empresaSelecionada.usuarios }}</strong>
-        </article>
-        <article class="detail-stat">
-          <span>MRR</span>
-          <strong>{{ formatarMoeda(empresaSelecionada.mrr) }}</strong>
-        </article>
-        <article class="detail-stat">
-          <span>Onboarding</span>
-          <strong>{{ empresaSelecionada.onboardingPercentual }}%</strong>
-        </article>
-      </div>
+      <nav class="workspace-tabs" aria-label="Áreas da empresa">
+        @for (tab of detailTabs; track tab) {
+        <button
+          type="button"
+          [class.active]="abaDetalhe === tab"
+          (click)="abaDetalhe = tab"
+        >
+          {{ tabLabel(tab) }}
+        </button>
+        }
+      </nav>
 
-      <div class="detail-section">
-        <h3>Contato principal</h3>
-        <div class="detail-lines">
-          <span>{{ empresaSelecionada.responsavelNome || 'Não informado' }}</span>
-          <span>{{ empresaSelecionada.responsavelEmail || empresaSelecionada.email || 'Sem e-mail' }}</span>
-          <span>{{ empresaSelecionada.responsavelTelefone || empresaSelecionada.telefone || 'Sem telefone' }}</span>
-          <span>Última atividade: {{ dataRelativa(empresaSelecionada.ultimaAtividadeEm) }}</span>
+      @if (abaDetalhe === 'visao') {
+        <div class="detail-grid">
+          <article class="detail-stat">
+            <span>Plano</span>
+            <strong>{{ empresaSelecionada.plano }}</strong>
+          </article>
+          <article class="detail-stat">
+            <span>Usuários</span>
+            <strong>{{ empresaSelecionada.usuarios }}</strong>
+          </article>
+          <article class="detail-stat">
+            <span>MRR</span>
+            <strong>{{ formatarMoeda(empresaSelecionada.mrr) }}</strong>
+          </article>
+          <article class="detail-stat">
+            <span>Onboarding</span>
+            <strong>{{ empresaSelecionada.onboardingPercentual }}%</strong>
+          </article>
         </div>
-      </div>
 
-      <div class="detail-section">
-        <h3>Dados cadastrais</h3>
-        <div class="detail-lines">
-          <span>CNPJ: {{ empresaSelecionada.cnpj || 'Não informado' }}</span>
-          <span>E-mail geral: {{ empresaSelecionada.email || 'Não informado' }}</span>
-          <span>Telefone geral: {{ empresaSelecionada.telefone || 'Não informado' }}</span>
-          <span>Criada em: {{ empresaSelecionada.dataCriacao ? (empresaSelecionada.dataCriacao | date:'dd/MM/yyyy') : 'Não informado' }}</span>
+        <div class="adoption-mini-grid" aria-label="Resumo de adoção">
+          <article class="adoption-mini-card">
+            <span>Configuração</span>
+            <strong>{{ configuracaoPercentual(adocaoSelecionada) }}</strong>
+            <small>{{ configuracaoStatus(adocaoSelecionada) }}</small>
+          </article>
+          <article class="adoption-mini-card">
+            <span>Ativação</span>
+            <strong>{{ ativacaoLabel(adocaoSelecionada) }}</strong>
+            <small>Uso real do fluxo principal</small>
+          </article>
+          <article class="adoption-mini-card">
+            <span>Primeiro pedido</span>
+            <strong>{{ primeiroPedidoLabel(adocaoSelecionada) }}</strong>
+            <small>{{ adocaoSelecionada?.marcos?.primeiroPedidoEm ? formatarData(adocaoSelecionada?.marcos?.primeiroPedidoEm) : 'Aguardando marco' }}</small>
+          </article>
+          <article class="adoption-mini-card ttv">
+            <span>Time to Value</span>
+            <strong>{{ formatarDuracao(adocaoSelecionada?.timeToValue?.desdeCriacaoSegundos) }}</strong>
+            <small>Desde a criação da empresa</small>
+          </article>
         </div>
-      </div>
 
-      <div class="detail-section">
-        <h3>Endereço</h3>
-        <div class="detail-lines">
-          <span>{{ enderecoCompleto() }}</span>
-          @if (empresaSelecionada.endereco?.cep) {
-          <span>CEP: {{ empresaSelecionada.endereco?.cep }}</span>
-          }
+        @if (carregandoAdocao) {
+        <div class="inline-state">
+          <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+          <span>Carregando adoção...</span>
         </div>
-      </div>
+        } @else if (erroAdocao) {
+        <div class="inline-error">
+          <span>Resumo de adoção indisponível.</span>
+          <button mat-button color="primary" (click)="retryAdocao()">Tentar novamente</button>
+        </div>
+        }
 
-      <div class="detail-section">
-        <h3>Módulos em uso</h3>
-        <div class="chip-list">
-          @if (empresaSelecionada.modulos.length) {
-            @for (modulo of empresaSelecionada.modulos; track modulo) {
-            <span class="chip">{{ modulo }}</span>
+        <div class="detail-section">
+          <h3>Contato principal</h3>
+          <div class="detail-lines">
+            <span>{{ empresaSelecionada.responsavelNome || 'Não informado' }}</span>
+            <span>{{ empresaSelecionada.responsavelEmail || empresaSelecionada.email || 'Sem e-mail' }}</span>
+            <span>{{ empresaSelecionada.responsavelTelefone || empresaSelecionada.telefone || 'Sem telefone' }}</span>
+            <span>Última atividade: {{ dataRelativa(empresaSelecionada.ultimaAtividadeEm) }}</span>
+          </div>
+        </div>
+      } @else if (abaDetalhe === 'dados') {
+        <div class="detail-section">
+          <h3>Dados cadastrais</h3>
+          <div class="detail-lines">
+            <span>CNPJ: {{ empresaSelecionada.cnpj || 'Não informado' }}</span>
+            <span>E-mail geral: {{ empresaSelecionada.email || 'Não informado' }}</span>
+            <span>Telefone geral: {{ empresaSelecionada.telefone || 'Não informado' }}</span>
+            <span>Criada em: {{ empresaSelecionada.dataCriacao ? (empresaSelecionada.dataCriacao | date:'dd/MM/yyyy') : 'Não informado' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Endereço</h3>
+          <div class="detail-lines">
+            <span>{{ enderecoCompleto() }}</span>
+            @if (empresaSelecionada.endereco?.cep) {
+            <span>CEP: {{ empresaSelecionada.endereco?.cep }}</span>
             }
-          } @else {
-            <span class="chip chip-muted">Nenhum módulo informado</span>
-          }
+          </div>
         </div>
-      </div>
 
-      <div class="detail-section">
-        <h3>Observações</h3>
-        <div class="notes-list">
-          @if (empresaSelecionada.observacoes.length) {
-            @for (observacao of empresaSelecionada.observacoes; track observacao) {
-            <article class="note-item">{{ observacao }}</article>
+        <div class="detail-section">
+          <h3>Módulos em uso</h3>
+          <div class="chip-list">
+            @if (empresaSelecionada.modulos.length) {
+              @for (modulo of empresaSelecionada.modulos; track modulo) {
+              <span class="chip">{{ modulo }}</span>
+              }
+            } @else {
+              <span class="chip chip-muted">Nenhum módulo informado</span>
             }
-          } @else {
-            <article class="note-item">Nenhuma observação retornada pelo back para esta empresa.</article>
-          }
+          </div>
         </div>
-      </div>
+
+        <div class="detail-section">
+          <h3>Observações</h3>
+          <div class="notes-list">
+            @if (empresaSelecionada.observacoes.length) {
+              @for (observacao of empresaSelecionada.observacoes; track observacao) {
+              <article class="note-item">{{ observacao }}</article>
+              }
+            } @else {
+              <article class="note-item">Nenhuma observação retornada pelo back para esta empresa.</article>
+            }
+          </div>
+        </div>
+      } @else {
+        <section class="adoption-area" aria-labelledby="adoption-title">
+          <div class="adoption-heading">
+            <div>
+              <h3 id="adoption-title">Adoção</h3>
+              <p>Acompanhe a configuração, ativação e primeiros passos desta empresa.</p>
+            </div>
+          </div>
+
+          @if (carregandoAdocao) {
+          <div class="state-card detail-state">
+            <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+            <span>Carregando adoção da empresa...</span>
+          </div>
+          } @else if (erroAdocao) {
+          <div class="adoption-error">
+            <i-tabler name="alert-circle" class="icon-24"></i-tabler>
+            <div>
+              <strong>Não foi possível carregar adoção</strong>
+              <p>As outras áreas da empresa continuam disponíveis.</p>
+            </div>
+            <button mat-stroked-button color="primary" (click)="retryAdocao()">Tentar novamente</button>
+          </div>
+          } @else if (adocaoSelecionada) {
+          <div class="adoption-summary-grid">
+            <article class="adoption-summary-card">
+              <span>Configuração</span>
+              <strong>{{ configuracaoPercentual(adocaoSelecionada) }}</strong>
+              <small>{{ configuracaoStatus(adocaoSelecionada) }}</small>
+            </article>
+            <article class="adoption-summary-card">
+              <span>Ativação</span>
+              <strong>{{ ativacaoLabel(adocaoSelecionada) }}</strong>
+              <small>Data de ativação: {{ adocaoSelecionada.ativacao.ativadaEm ? formatarData(adocaoSelecionada.ativacao.ativadaEm) : 'Indisponível' }}</small>
+            </article>
+            <article class="adoption-summary-card ttv">
+              <span>Time to Value</span>
+              <strong>{{ formatarDuracao(adocaoSelecionada.timeToValue.desdeCriacaoSegundos) }}</strong>
+              <small>Desde criação</small>
+            </article>
+            <article class="adoption-summary-card">
+              <span>Primeiro pedido</span>
+              <strong>{{ adocaoSelecionada.marcos.primeiroPedidoEm ? formatarData(adocaoSelecionada.marcos.primeiroPedidoEm) : 'Pendente' }}</strong>
+              <small>Marco operacional</small>
+            </article>
+          </div>
+
+          <section class="adoption-section configuration-section">
+            <div class="section-title-row">
+              <div>
+                <h4>Configuração</h4>
+                <p>A empresa está pronta para operar.</p>
+              </div>
+              <span class="status-pill" [ngClass]="adocaoSelecionada.configuracao.concluida ? 'success' : 'pending'">
+                {{ configuracaoStatus(adocaoSelecionada) }}
+              </span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="adocaoSelecionada.configuracao.percentual || 0"
+              aria-label="Percentual de configuração da empresa"
+            ></mat-progress-bar>
+            <div class="configuration-meta">
+              <strong>{{ configuracaoPercentual(adocaoSelecionada) }}</strong>
+              <span>{{ adocaoSelecionada.configuracao.concluidaEm ? 'Concluída em ' + formatarData(adocaoSelecionada.configuracao.concluidaEm) : 'Data de conclusão indisponível' }}</span>
+            </div>
+          </section>
+
+          <section class="adoption-section">
+            <div class="section-title-row">
+              <div>
+                <h4>Ativação</h4>
+                <p>A empresa realmente começou a usar o fluxo principal.</p>
+              </div>
+              <span class="status-pill" [ngClass]="ativacaoClass(adocaoSelecionada)">
+                {{ ativacaoLabel(adocaoSelecionada) }}
+              </span>
+            </div>
+
+            @if (!adocaoSelecionada.ativacao.suportada) {
+            <div class="informative-state">
+              Ativação ainda não configurada para este segmento.
+            </div>
+            } @else {
+            <div class="criteria-list">
+              @for (criterio of adocaoSelecionada.ativacao.criterios; track criterio.codigo) {
+              <article class="criterion-item">
+                <span class="criterion-marker" [class.done]="criterio.concluido">
+                  {{ criterio.concluido ? '✓' : '○' }}
+                </span>
+                <div>
+                  <strong>{{ criterioAtivacaoLabel(criterio.codigo) }}</strong>
+                  <small>{{ criterio.concluido ? 'Concluído' : 'Pendente' }} · {{ criterio.concluidoEm ? formatarData(criterio.concluidoEm) : 'Sem timestamp' }}</small>
+                </div>
+              </article>
+              }
+            </div>
+            }
+          </section>
+
+          <section class="adoption-section">
+            <h4>Marcos</h4>
+            <div class="timeline-list">
+              <article>
+                <span></span>
+                <div><strong>Empresa criada</strong><small>{{ marcoStatus('empresaCriadaEm') }}</small></div>
+              </article>
+              <article>
+                <span></span>
+                <div><strong>Primeiro acesso</strong><small>{{ marcoStatus('primeiroAcessoEm') }}</small></div>
+              </article>
+              <article>
+                <span></span>
+                <div><strong>Primeiro cliente</strong><small>{{ marcoStatus('primeiroClienteEm') }}</small></div>
+              </article>
+              <article>
+                <span></span>
+                <div><strong>Primeiro pedido</strong><small>{{ marcoStatus('primeiroPedidoEm') }}</small></div>
+              </article>
+              <article>
+                <span></span>
+                <div><strong>Primeira movimentação</strong><small>{{ marcoStatus('primeiraMovimentacaoPedidoEm') }}</small></div>
+              </article>
+              <article>
+                <span></span>
+                <div><strong>Ativada em</strong><small>{{ marcoStatus('ativadaEm') }}</small></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="adoption-section ttv-section">
+            <h4>Time to Value</h4>
+            <div class="ttv-grid">
+              <article>
+                <span>Desde criação da empresa</span>
+                <strong>{{ formatarDuracao(adocaoSelecionada.timeToValue.desdeCriacaoSegundos) }}</strong>
+                <small>Tempo entre a criação da empresa e a ativação.</small>
+              </article>
+              <article>
+                <span>Desde conclusão da configuração</span>
+                <strong>{{ formatarDuracao(adocaoSelecionada.timeToValue.desdeConfiguracaoSegundos) }}</strong>
+                <small>Disponível quando a data de conclusão da configuração puder ser determinada.</small>
+              </article>
+            </div>
+          </section>
+
+          <section class="adoption-section">
+            <h4>Primeiros passos</h4>
+            <div class="journey-users">
+              @if (adocaoSelecionada.usuarios.length) {
+                @for (usuario of adocaoSelecionada.usuarios; track usuario.usuarioId) {
+                <article class="journey-user-card">
+                  <header>
+                    <div>
+                      <strong>{{ usuario.nome || 'Usuário sem nome' }}</strong>
+                      <small>{{ usuario.email || 'Sem e-mail' }}</small>
+                    </div>
+                  </header>
+                  <div class="journey-list">
+                    @for (jornada of usuario.jornadas; track jornada.jornada + '-' + jornada.versao) {
+                    <div class="journey-row">
+                      <div>
+                        <strong>{{ jornadaLabel(jornada.jornada) }}</strong>
+                        @if (jornada.status === 'EM_ANDAMENTO' && jornada.etapaAtual) {
+                        <small>Etapa atual: {{ etapaAtualLabel(jornada.etapaAtual) }}</small>
+                        } @else {
+                        <small>{{ dataJornada(jornada) }}</small>
+                        }
+                      </div>
+                      <span class="status-pill" [ngClass]="jornadaStatusClass(jornada.status)">
+                        {{ jornadaStatusLabel(jornada.status) }}
+                      </span>
+                    </div>
+                    }
+                  </div>
+                </article>
+                }
+              } @else {
+              <div class="informative-state">Nenhum usuário ativo retornado para acompanhar primeiros passos.</div>
+              }
+            </div>
+          </section>
+          }
+        </section>
+      }
       } @else {
       <div class="empty-state">
         <i-tabler name="building" class="icon-28"></i-tabler>

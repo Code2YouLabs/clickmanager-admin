@@ -74,6 +74,18 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'adocao',
+        loadComponent: () =>
+          import('./pages/adocao/adocao-funil.component').then((m) => m.AdocaoFunilComponent),
+        data: {
+          title: 'Adoção',
+          urls: [
+            { title: 'Admin', url: '/dashboard' },
+            { title: 'Adoção' }
+          ]
+        }
+      },
+      {
         path: 'configuracoes',
         loadComponent: () =>
           import('./pages/config/email-servidor/email-servidor.component').then((m) => m.EmailServidorComponent),

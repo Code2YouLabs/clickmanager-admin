@@ -1,0 +1,191 @@
+<div class="adocao-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Adoção</span>
+      <h1>Funil de ativação</h1>
+      <p>Acompanhe como novas empresas avançam da configuração até a ativação.</p>
+    </div>
+
+    <div class="hero-actions">
+      <button mat-flat-button color="primary" (click)="aplicarFiltros()" [disabled]="carregando || !!erroPeriodo">
+        Atualizar
+      </button>
+      <button mat-stroked-button color="primary" (click)="tentarNovamente()" [disabled]="carregando">
+        Recarregar dados
+      </button>
+    </div>
+  </section>
+
+  <section class="filters-card" aria-labelledby="filtros-adocao-title">
+    <div class="filters-heading">
+      <div>
+        <h2 id="filtros-adocao-title">Coorte analisada</h2>
+        <p>O período considera a data de criação da empresa. Os marcos podem ter ocorrido posteriormente.</p>
+      </div>
+      @if (funil) {
+      <span class="period-chip">{{ periodoTexto() }}</span>
+      }
+    </div>
+
+    <div class="filters-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Data inicial</mat-label>
+        <input matInput type="date" [(ngModel)]="inicio" (change)="aplicarFiltros()" aria-label="Data inicial da coorte" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data final</mat-label>
+        <input matInput type="date" [(ngModel)]="fim" (change)="aplicarFiltros()" aria-label="Data final da coorte" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Segmento</mat-label>
+        <mat-select [(ngModel)]="segmento" (selectionChange)="aplicarFiltros()" aria-label="Segmento da coorte">
+          @for (option of segmentoOptions; track option) {
+          <mat-option [value]="option">Gráfica</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (erroPeriodo) {
+    <div class="validation-message" role="alert">{{ erroPeriodo }}</div>
+    }
+  </section>
+
+  @if (carregando && !funil) {
+  <section class="feedback-card" aria-live="polite">
+    <mat-progress-spinner mode="indeterminate" diameter="42"></mat-progress-spinner>
+    <div>
+      <strong>Carregando funil de ativação</strong>
+      <p>Buscando a coorte e as métricas calculadas pelo backend.</p>
+    </div>
+  </section>
+  } @else if (erro && !funil) {
+  <section class="feedback-card error">
+    <i-tabler name="server-off" class="icon-24"></i-tabler>
+    <div>
+      <strong>Não foi possível carregar os dados de adoção</strong>
+      <p>{{ erro }}</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="tentarNovamente()">Tentar novamente</button>
+  </section>
+  } @else if (funil) {
+  <section class="summary-grid" aria-label="Resumo do funil de adoção">
+    @for (card of resumoCards; track card.label) {
+    <article class="summary-card" [ngClass]="card.tone">
+      <span>{{ card.label }}</span>
+      <strong>{{ card.valor }}</strong>
+      <small>{{ card.apoio }}</small>
+    </article>
+    }
+  </section>
+
+  @if (erro) {
+  <section class="inline-error" role="alert">
+    <span>{{ erro }}</span>
+    <button mat-button color="primary" (click)="tentarNovamente()">Tentar novamente</button>
+  </section>
+  }
+
+  @if (coorteVazia) {
+  <section class="empty-state">
+    <i-tabler name="building-off" class="icon-28"></i-tabler>
+    <div>
+      <strong>Nenhuma empresa foi criada neste período.</strong>
+      <p>Ajuste o período para analisar outra coorte.</p>
+    </div>
+  </section>
+  } @else {
+  <section class="funnel-card" aria-labelledby="funil-title">
+    <div class="section-header">
+      <div>
+        <h2 id="funil-title">Funil de ativação</h2>
+        <p>Barras em escala pelo percentual sobre o total da coorte.</p>
+      </div>
+      @if (carregando) {
+      <span class="loading-chip">Atualizando...</span>
+      }
+    </div>
+
+    <div class="funnel-list">
+      @for (etapa of funil.etapas; track etapa.codigo; let first = $first) {
+      <article class="funnel-step">
+        <div class="step-main">
+          <div class="step-head">
+            <div>
+              <h3>{{ etapaLabel(etapa.codigo) }}</h3>
+              <p>{{ etapaDescricao(etapa.codigo) }}</p>
+            </div>
+            <strong>{{ etapa.quantidade }}</strong>
+          </div>
+
+          <div
+            class="bar-track"
+            role="img"
+            [attr.aria-label]="etapaLabel(etapa.codigo) + ': ' + etapa.quantidade + ' empresas, ' + formatarPercentual(etapa.percentualDoTotal) + ' do total'"
+          >
+            <div class="bar-value" [style.width.%]="larguraEtapa(etapa)"></div>
+          </div>
+
+          <div class="step-footer">
+            <span>{{ formatarPercentual(etapa.percentualDoTotal) }} do total</span>
+            @if (!first) {
+            <span>{{ conversaoAnterior(etapa) }}</span>
+            } @else {
+            <span>Base da coorte</span>
+            }
+          </div>
+        </div>
+      </article>
+      }
+    </div>
+  </section>
+
+  <section class="ttv-card" aria-labelledby="ttv-title">
+    <div class="section-header">
+      <div>
+        <h2 id="ttv-title">Time to Value</h2>
+        <p>Mediana em destaque, com média e amostra retornadas pelo backend.</p>
+      </div>
+    </div>
+
+    <div class="ttv-grid">
+      <article class="ttv-metric">
+        <span>Desde a criação da empresa</span>
+        <strong>{{ formatarTtvValor(funil.timeToValue.desdeCriacao.medianaSegundos, funil.timeToValue.desdeCriacao.amostra) }}</strong>
+        <small>Mediana</small>
+        <dl>
+          <div>
+            <dt>Média</dt>
+            <dd>{{ formatarTtvValor(funil.timeToValue.desdeCriacao.mediaSegundos, funil.timeToValue.desdeCriacao.amostra) }}</dd>
+          </div>
+          <div>
+            <dt>Amostra</dt>
+            <dd>{{ funil.timeToValue.desdeCriacao.amostra }} empresa(s)</dd>
+          </div>
+        </dl>
+        <p>{{ ttvDescricao(funil.timeToValue.desdeCriacao) }}</p>
+      </article>
+
+      <article class="ttv-metric">
+        <span>Desde a conclusão da configuração</span>
+        <strong>{{ formatarTtvValor(funil.timeToValue.desdeConfiguracao.medianaSegundos, funil.timeToValue.desdeConfiguracao.amostra) }}</strong>
+        <small>Mediana</small>
+        <dl>
+          <div>
+            <dt>Média</dt>
+            <dd>{{ formatarTtvValor(funil.timeToValue.desdeConfiguracao.mediaSegundos, funil.timeToValue.desdeConfiguracao.amostra) }}</dd>
+          </div>
+          <div>
+            <dt>Amostra</dt>
+            <dd>{{ funil.timeToValue.desdeConfiguracao.amostra }} empresa(s)</dd>
+          </div>
+        </dl>
+        <p>{{ ttvDescricao(funil.timeToValue.desdeConfiguracao) }}</p>
+      </article>
+    </div>
+  </section>
+  }
+  }
+</div>
