@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -33,7 +33,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
   selector: 'app-form-vertical',
   imports: [
     MaterialModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,

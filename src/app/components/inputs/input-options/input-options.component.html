@@ -1,19 +1,27 @@
 <div class="w-100">
   <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-    {{ label }} <span *ngIf="isRequired" style="color: #ff110094">*</span>
-  </mat-label>
+    {{ label }} @if (isRequired) {
+    <span style="color: #ff110094">*</span>
+  }
+</mat-label>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-select [formControl]="control" [placeholder]="placeholder" [disabled]="disabled">
-      <mat-option *ngIf="showNull" [value]="null" disabled>{{ nullLabel }}</mat-option>
-      <mat-option *ngFor="let option of options" [value]="asValue(option)">
+<mat-form-field appearance="outline" class="w-100">
+  <mat-select [formControl]="control" [placeholder]="placeholder" [disabled]="disabled">
+    @if (showNull) {
+      <mat-option [value]="null" disabled>{{ nullLabel }}</mat-option>
+    }
+    @for (option of options; track option) {
+      <mat-option [value]="asValue(option)">
         {{ asLabel(option) }}
       </mat-option>
-    </mat-select>
+    }
+  </mat-select>
 
-    <mat-error *ngIf="control.invalid && control.touched">
+  @if (control.invalid && control.touched) {
+    <mat-error>
       {{ errorMessage() }}
     </mat-error>
-  </mat-form-field>
+  }
+</mat-form-field>
 </div>
-  
+

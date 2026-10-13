@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CurrencyPipe, NgIf } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico/input-numerico.component';
 import { FaixaDemanda } from 'src/app/models/preco/faixa-demanda.model';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-preco-demanda-config',
   standalone: true,
   templateUrl: './preco-demanda-config.component.html',
-  imports: [NgIf, InputNumericoComponent, CurrencyPipe, ReactiveFormsModule, MatButtonModule]
+  imports: [InputNumericoComponent, CurrencyPipe, ReactiveFormsModule, MatButtonModule]
 })
 export class PrecoDemandaConfigComponent {
   @Input() produto: any;

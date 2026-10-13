@@ -1,0 +1,267 @@
+<div class="notificacoes-admin-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Comunicação</span>
+      <h1>Enviar notificações</h1>
+      <p>
+        Crie comunicados para todas as empresas ou direcione uma notificação específica para uma conta selecionada.
+      </p>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <div class="editor-card">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <h3>Conteúdo</h3>
+            <p>Defina a mensagem principal e o contexto da comunicação.</p>
+          </div>
+        </div>
+
+        <form [formGroup]="form" class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="titulo" maxlength="180" />
+            <mat-hint align="end">{{ form.controls.titulo.value?.length || 0 }}/180</mat-hint>
+            <mat-error>Título é obrigatório.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Resumo</mat-label>
+            <textarea matInput rows="2" formControlName="resumo" maxlength="280"></textarea>
+            <mat-hint align="end">{{ form.controls.resumo.value?.length || 0 }}/280</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Conteúdo</mat-label>
+            <textarea matInput rows="6" formControlName="conteudo"></textarea>
+            <mat-error>Conteúdo é obrigatório.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nível</mat-label>
+            <mat-select formControlName="nivel">
+              @for (nivel of niveis; track nivel.value) {
+              <mat-option [value]="nivel.value">{{ nivel.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Expira em</mat-label>
+            <input matInput type="datetime-local" formControlName="expiraEm" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Link relacionado</mat-label>
+            <input matInput formControlName="link" maxlength="400" placeholder="/dashboard/avisos" />
+          </mat-form-field>
+        </form>
+      </div>
+
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <h3>Destino</h3>
+            <p>Escolha se a notificação será global ou direcionada para uma empresa.</p>
+          </div>
+        </div>
+
+        <mat-radio-group
+          class="destination-switch"
+          [value]="todasEmpresasSelecionadas"
+          (change)="form.controls.todasEmpresas.setValue($event.value); onModoDestinoChange()"
+        >
+          <mat-radio-button [value]="true">Todas as empresas</mat-radio-button>
+          <mat-radio-button [value]="false">Empresa específica</mat-radio-button>
+        </mat-radio-group>
+
+        @if (!todasEmpresasSelecionadas) {
+        <div class="company-search">
+          <mat-form-field appearance="outline">
+            <mat-label>Buscar empresa</mat-label>
+            <input matInput [(ngModel)]="buscaEmpresa" [ngModelOptions]="{ standalone: true }" (keyup.enter)="buscarEmpresas()" />
+          </mat-form-field>
+
+          <button mat-stroked-button color="primary" (click)="buscarEmpresas()" [disabled]="buscandoEmpresas">
+            Buscar
+          </button>
+        </div>
+
+        @if (buscandoEmpresas) {
+        <div class="embedded-state compact-state">
+          <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+          <span>Buscando empresas...</span>
+        </div>
+        } @else if (empresasEncontradas.length) {
+        <div class="company-results">
+          @for (empresa of empresasEncontradas; track empresa.id) {
+          <button type="button" class="company-item" (click)="selecionarEmpresa(empresa)">
+            <div>
+              <strong>{{ empresa.nome }}</strong>
+              <span>{{ empresa.plano }} · {{ empresa.cidade }}</span>
+            </div>
+            <small>#{{ empresa.id }}</small>
+          </button>
+          }
+        </div>
+        }
+        }
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="section-header">
+        <div>
+          <h3>Resumo do envio</h3>
+          <p>Revise o destino e a ação antes de disparar a notificação.</p>
+        </div>
+      </div>
+
+      <div class="selection-card">
+        <span class="selection-label">Destino</span>
+        <strong>{{ resumoDestino }}</strong>
+        @if (empresaSelecionada) {
+        <small>{{ empresaSelecionada.plano }} · {{ empresaSelecionada.cidade }}</small>
+        } @else if (todasEmpresasSelecionadas) {
+        <small>A notificação será replicada para toda a base.</small>
+        } @else {
+        <small>Nenhuma empresa selecionada.</small>
+        }
+      </div>
+
+      <div class="warning-banner">
+        <i-tabler name="alert-triangle" class="icon-18"></i-tabler>
+        <span>Use nível e data de expiração com cuidado para evitar ruído excessivo na base.</span>
+      </div>
+
+      <button mat-flat-button color="primary" class="send-cta" (click)="enviar()" [disabled]="!podeEnviar">
+        {{ enviando ? 'Enviando...' : 'Enviar notificação' }}
+      </button>
+
+      <div class="impact-card">
+        <span>Impacto do último envio</span>
+        <strong>{{ ultimoResultado?.destinatariosCriados || 0 }} destinatário(s)</strong>
+        <small>{{ resumoImpacto }}</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="history-shell">
+    <div class="history-card">
+      <div class="section-header">
+        <div>
+          <h3>Histórico de envios</h3>
+          <p>{{ resumoHistorico }}</p>
+        </div>
+      </div>
+
+      <div class="history-filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Buscar por título</mat-label>
+          <input matInput [(ngModel)]="filtroTitulo" [ngModelOptions]="{ standalone: true }" (keyup.enter)="aplicarFiltrosHistorico()" />
+        </mat-form-field>
+
+        <div class="company-search">
+          <mat-form-field appearance="outline">
+            <mat-label>Filtrar por empresa</mat-label>
+            <input matInput [(ngModel)]="buscaEmpresaHistorico" [ngModelOptions]="{ standalone: true }" (keyup.enter)="buscarEmpresasHistorico()" />
+          </mat-form-field>
+
+          <button mat-stroked-button color="primary" (click)="buscarEmpresasHistorico()" [disabled]="buscandoEmpresasHistorico">
+            Buscar
+          </button>
+        </div>
+
+        <div class="filter-actions">
+          <button mat-flat-button color="primary" (click)="aplicarFiltrosHistorico()">Aplicar filtros</button>
+          <button mat-stroked-button color="primary" (click)="limparFiltrosHistorico()">Limpar</button>
+        </div>
+      </div>
+
+      @if (buscandoEmpresasHistorico) {
+      <div class="embedded-state compact-state">
+        <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
+        <span>Buscando empresas...</span>
+      </div>
+      } @else if (empresasHistoricoEncontradas.length) {
+      <div class="company-results">
+        @for (empresa of empresasHistoricoEncontradas; track empresa.id) {
+        <button type="button" class="company-item" (click)="selecionarEmpresaHistorico(empresa)">
+          <div>
+            <strong>{{ empresa.nome }}</strong>
+            <span>{{ empresa.plano }} · {{ empresa.cidade }}</span>
+          </div>
+          <small>#{{ empresa.id }}</small>
+        </button>
+        }
+      </div>
+      }
+
+      @if (empresaHistoricoSelecionada) {
+      <div class="selection-card history-company-card">
+        <span class="selection-label">Filtro de empresa</span>
+        <strong>{{ empresaHistoricoSelecionada.nome }}</strong>
+        <small>{{ empresaHistoricoSelecionada.plano }} · {{ empresaHistoricoSelecionada.cidade }}</small>
+      </div>
+      }
+
+      @if (carregandoHistorico) {
+      <div class="embedded-state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Carregando histórico...</span>
+      </div>
+      } @else if (!historico.length) {
+      <div class="embedded-state">
+        <i-tabler name="bell-off" class="icon-24"></i-tabler>
+        <span>Nenhuma notificação encontrada para os filtros atuais.</span>
+      </div>
+      } @else {
+      <div class="table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Empresa</th>
+              <th>Nível</th>
+              <th>Destino</th>
+              <th>Destinatários</th>
+              <th>Criada em</th>
+              <th>Expira em</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of historico; track item.id) {
+            <tr>
+              <td>
+                <strong>{{ item.titulo }}</strong>
+                <small>{{ item.resumo || item.conteudo }}</small>
+              </td>
+              <td>{{ item.empresaNome || 'Todas as empresas' }}</td>
+              <td>
+                <span class="level-badge" [ngClass]="'level-' + item.nivel.toLowerCase()">
+                  {{ nivelLabel(item.nivel) }}
+                </span>
+              </td>
+              <td>{{ destinoLabel(item.tipoDestino) }}</td>
+              <td>{{ item.destinatariosCriados }}</td>
+              <td>{{ formatarDataHora(item.criadaEm) }}</td>
+              <td>{{ formatarDataHora(item.expiraEm) }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator
+        [length]="totalHistorico"
+        [pageIndex]="paginaHistorico"
+        [pageSize]="tamanhoHistorico"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="alterarPaginaHistorico($event)"
+      />
+      }
+    </div>
+  </section>
+</div>

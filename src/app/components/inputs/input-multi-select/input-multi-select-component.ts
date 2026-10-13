@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component, Input, OnChanges, OnInit, SimpleChanges
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
   standalone: true,
   templateUrl: './input-multi-select-component.html',
   styleUrls: ['./input-multi-select-component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatListModule],
+  imports: [ReactiveFormsModule, MatCardModule, MatListModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputMultiSelectComponent implements OnInit, OnChanges {

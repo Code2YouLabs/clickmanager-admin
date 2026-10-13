@@ -1,0 +1,31 @@
+{
+  "name": "ClickManager Admin",
+  "short_name": "CM Admin",
+  "description": "Painel administrativo do ClickManager para operação, suporte e acompanhamento da plataforma.",
+  "theme_color": "#0f172a",
+  "background_color": "#eef4fb",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "start_url": "/",
+  "lang": "pt-BR",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "assets/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

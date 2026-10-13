@@ -20,23 +20,25 @@
 
         <div class="m-x-12 overflow-auto">
           <mat-nav-list>
-            <mat-list-item *ngFor="let perfil of perfis">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <span class="perfil-nome" (click)="listarUsuariosDoPerfil(perfil)">
-                  {{ perfil.nome }}
-                </span>
-
-                <div class="acoes">
-                  <button mat-icon-button color="primary" class="icon-button" (click)="editar(perfil)">
-                    <i-tabler name="edit" class="icon-18"></i-tabler>
-                  </button>
-
-                  <button mat-icon-button color="warn" class="icon-button" *ngIf="perfil.id !== undefined" (click)="excluir(perfil.id!)">
-                    <i-tabler name="trash" class="icon-18"></i-tabler>
-                  </button>
+            @for (perfil of perfis; track perfil) {
+              <mat-list-item>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                  <span class="perfil-nome" (click)="listarUsuariosDoPerfil(perfil)">
+                    {{ perfil.nome }}
+                  </span>
+                  <div class="acoes">
+                    <button mat-icon-button color="primary" class="icon-button" (click)="editar(perfil)">
+                      <i-tabler name="edit" class="icon-18"></i-tabler>
+                    </button>
+                    @if (perfil.id !== undefined) {
+                      <button mat-icon-button color="warn" class="icon-button" (click)="excluir(perfil.id!)">
+                        <i-tabler name="trash" class="icon-18"></i-tabler>
+                      </button>
+                    }
+                  </div>
                 </div>
-              </div>
-            </mat-list-item>
+              </mat-list-item>
+            }
           </mat-nav-list>
         </div>
       </div>
@@ -45,21 +47,21 @@
       <div class="content">
         <mat-toolbar class="bg-white content-toolbar">
           <!--<button mat-icon-button (click)="sidebarCollapsed = !sidebarCollapsed">
-            <i-tabler name="align-left" class="icon-20"></i-tabler>
-          </button> -->
+          <i-tabler name="align-left" class="icon-20"></i-tabler>
+        </button> -->
 
-          <h4 class="m-l-16 m-b-0">
-            Usuários do Perfil: {{ perfilSelecionado?.nome || 'Nenhum Selecionado' }}
-          </h4>
-        </mat-toolbar>
+        <h4 class="m-l-16 m-b-0">
+          Usuários do Perfil: {{ perfilSelecionado?.nome || 'Nenhum Selecionado' }}
+        </h4>
+      </mat-toolbar>
 
-        <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
 
-        <div class="p-16">
-          <mat-card *ngIf="usuarios.length > 0; else nenhumUsuario">
+      <div class="p-16">
+        @if (usuarios.length > 0) {
+          <mat-card>
             <div class="table-responsive">
               <table mat-table [dataSource]="usuarios" class="mat-elevation-z1 w-100">
-
                 <!-- Avatar + Nome + Email -->
                 <ng-container matColumnDef="usuario">
                   <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
@@ -69,7 +71,6 @@
                     <div class="d-flex align-items-center">
                       <img [src]="imagemUtil.montarUrlImagemPerfil(usuario.fotoPerfil)"
                         (error)="usarImagemPadrao($event)" class="rounded-circle object-cover" width="40" />
-
                       <div class="m-l-16">
                         <h6 class="f-s-14 f-w-600 m-b-0">
                           {{ usuario.nome }}
@@ -81,7 +82,6 @@
                     </div>
                   </td>
                 </ng-container>
-
                 <!-- Perfil -->
                 <ng-container matColumnDef="perfil">
                   <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
@@ -93,7 +93,6 @@
                     </span>
                   </td>
                 </ng-container>
-
                 <!-- Ações -->
                 <ng-container matColumnDef="acoes">
                   <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 text-center">
@@ -108,21 +107,20 @@
                     </div>
                   </td>
                 </ng-container>
-
                 <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
               </table>
             </div>
           </mat-card>
+        } @else {
+          <p class="f-s-14 text-muted m-t-8">
+            Nenhum usuário vinculado a este perfil.
+          </p>
+        }
 
-          <ng-template #nenhumUsuario>
-            <p class="f-s-14 text-muted m-t-8">
-              Nenhum usuário vinculado a este perfil.
-            </p>
-          </ng-template>
-        </div>
       </div>
     </div>
+  </div>
 
-  </mat-card-content>
+</mat-card-content>
 </mat-card>

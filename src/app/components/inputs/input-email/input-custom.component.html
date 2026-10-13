@@ -1,18 +1,13 @@
 <div class="form-group">
-  <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-    {{ label }} <span *ngIf="isRequired" style="color: #ff110094">*</span>
-  </mat-label>
-  
-    <mat-form-field appearance="outline" class="w-100">
-      <input
-        matInput
-        [formControl]="control"
-        [placeholder]="placeholder"
-        [type]="type"
-        [attr.maxlength]="maxlength"
-        (blur)="updateErrorMessage()"
-      />
-  
-      <mat-error *ngIf="control.invalid && control.touched">{{ errorMessage() }}</mat-error>
-    </mat-form-field>
-  </div>  
+  <ds-field [label]="label" [htmlFor]="inputId" [required]="isRequired" [error]="errorTexto">
+    <input
+      [id]="inputId"
+      dsInput
+      [formControl]="control"
+      [placeholder]="placeholder"
+      [type]="type"
+      [attr.maxlength]="maxlength"
+      [invalid]="control.invalid && control.touched"
+      (blur)="updateErrorMessage()" />
+  </ds-field>
+</div>

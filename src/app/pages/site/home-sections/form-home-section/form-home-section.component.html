@@ -1,0 +1,118 @@
+<section class="home-section-form">
+  <div class="page-header">
+    <div>
+      <h1>{{ editando ? 'Editar seção da Home' : 'Nova seção da Home' }}</h1>
+      <p>Configure como este bloco aparece na página inicial do site.</p>
+    </div>
+
+    <button mat-stroked-button color="primary" (click)="voltar()">
+      <mat-icon>arrow_back</mat-icon>
+      Voltar
+    </button>
+  </div>
+
+  @if (carregando) {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      <span>Carregando seção...</span>
+    </div>
+  }
+
+  @if (!carregando) {
+    <div class="content-grid">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <form [formGroup]="form" class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo da seção</mat-label>
+              <mat-select formControlName="tipo">
+                @for (tipo of tipos; track tipo) {
+                  <mat-option [value]="tipo.id">{{ tipo.nome }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('tipo')?.hasError('required')) {
+                <mat-error>Tipo obrigatório</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Layout</mat-label>
+              <mat-select formControlName="layout">
+                @for (layout of layouts; track layout) {
+                  <mat-option [value]="layout.id">{{ layout.nome }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('layout')?.hasError('required')) {
+                <mat-error>Layout obrigatório</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="titulo" maxlength="120" />
+              @if (form.get('titulo')?.hasError('required')) {
+                <mat-error>Título obrigatório</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Subtítulo</mat-label>
+              <input matInput formControlName="subtitulo" maxlength="180" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Limite de itens</mat-label>
+              <input matInput type="number" min="1" formControlName="limiteItens" />
+              @if (tipoNaoUsaItens) {
+                <mat-hint>Este tipo não usa itens.</mat-hint>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Ordem</mat-label>
+              <input matInput type="number" min="1" formControlName="ordem" />
+              @if (form.get('ordem')?.hasError('required')) {
+                <mat-error>Ordem obrigatória</mat-error>
+              }
+            </mat-form-field>
+            <mat-slide-toggle formControlName="ativo" color="primary" class="full">
+              Ativo
+            </mat-slide-toggle>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Configuração avançada JSON</mat-label>
+              <textarea matInput rows="8" formControlName="configJson"></textarea>
+              @if (erroJson) {
+                <mat-error>{{ erroJson }}</mat-error>
+              }
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-stroked-button color="primary" (click)="voltar()" [disabled]="salvando">Cancelar</button>
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="salvar()"
+            [disabled]="salvando"
+            *temPermissao="editando ? ['SITE_HOME_SECTIONS_EDITAR'] : ['SITE_HOME_SECTIONS_CADASTRAR']">
+            <mat-icon>save</mat-icon>
+            Salvar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <aside class="preview-panel">
+        <h2>Preview</h2>
+        <div class="preview-box">
+          <span>{{ tipoPreview }}</span>
+          <h3>{{ tituloPreview }}</h3>
+          <p>{{ subtituloPreview }}</p>
+          <dl>
+            <div>
+              <dt>Layout</dt>
+              <dd>{{ layoutPreview }}</dd>
+            </div>
+            <div>
+              <dt>Quantidade</dt>
+              <dd>{{ quantidadePreview }}</dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  }
+</section>

@@ -10,9 +10,11 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Selecione o novo perfil</mat-label>
         <mat-select formControlName="perfilId">
-          <mat-option *ngFor="let perfil of perfis" [value]="perfil.id">
-            {{ perfil.nome }}
-          </mat-option>
+          @for (perfil of perfis; track perfil) {
+            <mat-option [value]="perfil.id">
+              {{ perfil.nome }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </form>

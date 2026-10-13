@@ -2,13 +2,13 @@ import { CommonModule, CurrencyPipe, NgIf, NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { PlanoPublico } from 'src/app/types/plano-publico.type';
 
 @Component({
   selector: 'app-pricing-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, TablerIconsModule, CurrencyPipe, NgIf, NgFor],
+  imports: [CommonModule, MatCardModule, MatButtonModule, DesignSystemIconsModule, CurrencyPipe, NgIf, NgFor],
   templateUrl: './pricing-card.component.html',
   styleUrls: ['./pricing-card.component.scss']
 })

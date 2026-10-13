@@ -3,13 +3,13 @@ import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { Router, NavigationEnd, ActivatedRoute, Data } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-breadcrumb',
-  imports: [RouterModule, TablerIconsModule],
+  imports: [RouterModule, DesignSystemIconsModule],
   templateUrl: './breadcrumb.component.html',
-  styleUrls: [],
+  styleUrl: './breadcrumb.component.scss',
 })
 export class AppBreadcrumbComponent {
   // @Input() layout;

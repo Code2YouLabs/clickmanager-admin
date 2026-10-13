@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { finalize } from 'rxjs/operators';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 import {
   AdminEmpresaAdocaoJornada,
@@ -20,7 +20,7 @@ import { AdminEmpresasService } from './services/admin-empresas.service';
 @Component({
   selector: 'app-empresas-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, TablerIconsModule, MaterialModule],
+  imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './empresas-admin.component.html',
   styleUrl: './empresas-admin.component.scss'
 })

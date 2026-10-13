@@ -68,7 +68,7 @@
 
 .radio-row .mat-mdc-radio-checked + .radio-label,
 .radio-row .mat-mdc-radio-button.mat-mdc-radio-checked ~ .radio-label {
-    color: var(--mdc-theme-primary, #1976d2);
+    color: var(--mat-theme-primary, #1976d2);
 }
 
 .radio-row:has(.mat-mdc-radio-button.mat-mdc-radio-checked) {

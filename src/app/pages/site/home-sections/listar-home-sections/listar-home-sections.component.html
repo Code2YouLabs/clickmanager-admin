@@ -1,0 +1,126 @@
+<section class="home-sections-page">
+  <div class="page-header">
+    <div>
+      <h1>Seções da Home</h1>
+      <p>Escolha quais blocos aparecem na página inicial do seu site.</p>
+    </div>
+
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="novaSecao()"
+      *temPermissao="['SITE_HOME_SECTIONS_CADASTRAR']">
+      <mat-icon>add</mat-icon>
+      Nova seção
+    </button>
+  </div>
+
+  <mat-card class="cardWithShadow">
+    <mat-card-content>
+      @if (carregando) {
+        <div class="state">
+          <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+          <span>Carregando seções...</span>
+        </div>
+      }
+
+      @if (!carregando && !secoes.length) {
+        <div class="state empty">
+          <mat-icon>view_agenda</mat-icon>
+          <span>Nenhuma seção configurada ainda.</span>
+        </div>
+      }
+
+      @if (!carregando && secoes.length) {
+        <div class="table-responsive">
+          <table mat-table [dataSource]="secoes" class="w-100">
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef>Tipo</th>
+              <td mat-cell *matCellDef="let secao">{{ tipoLabel(secao) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef>Título</th>
+              <td mat-cell *matCellDef="let secao">
+                <strong>{{ secao.titulo }}</strong>
+                @if (secao.subtitulo) {
+                  <small>{{ secao.subtitulo }}</small>
+                }
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="layout">
+              <th mat-header-cell *matHeaderCellDef>Layout</th>
+              <td mat-cell *matCellDef="let secao">{{ layoutLabel(secao) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="limite">
+              <th mat-header-cell *matHeaderCellDef>Limite</th>
+              <td mat-cell *matCellDef="let secao">{{ limiteLabel(secao) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="ordem">
+              <th mat-header-cell *matHeaderCellDef>Ordem</th>
+              <td mat-cell *matCellDef="let secao">{{ secao.ordem }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let secao">
+                <span class="status-badge" [class.ativo]="secao.ativo">
+                  {{ secao.ativo ? 'Ativo' : 'Inativo' }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef>Ações</th>
+              <td mat-cell *matCellDef="let secao; let i = index" class="actions-cell">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  matTooltip="Subir"
+                  [disabled]="i === 0 || atualizandoId === secao.id"
+                  (click)="mover(secao, -1)"
+                  *temPermissao="['SITE_HOME_SECTIONS_EDITAR']">
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  matTooltip="Descer"
+                  [disabled]="i === secoes.length - 1 || atualizandoId === secao.id"
+                  (click)="mover(secao, 1)"
+                  *temPermissao="['SITE_HOME_SECTIONS_EDITAR']">
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="accent"
+                  matTooltip="Editar"
+                  (click)="editar(secao)"
+                  *temPermissao="['SITE_HOME_SECTIONS_EDITAR']">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  [matTooltip]="secao.ativo ? 'Desativar' : 'Ativar'"
+                  [disabled]="atualizandoId === secao.id"
+                  (click)="alternarStatus(secao)"
+                  *temPermissao="['SITE_HOME_SECTIONS_EDITAR']">
+                  <mat-icon>{{ secao.ativo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  matTooltip="Excluir"
+                  [disabled]="atualizandoId === secao.id"
+                  (click)="excluir(secao)"
+                  *temPermissao="['SITE_HOME_SECTIONS_EXCLUIR']">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackById"></tr>
+          </table>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

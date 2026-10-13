@@ -47,9 +47,11 @@
           <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Perfil</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="perfilId">
-              <mat-option *ngFor="let perfil of perfis" [value]="perfil.id">
-                {{ perfil.nome }}
-              </mat-option>
+              @for (perfil of perfis; track perfil) {
+                <mat-option [value]="perfil.id">
+                  {{ perfil.nome }}
+                </mat-option>
+              }
             </mat-select>
             @if (form.get('perfilId')?.invalid && form.get('perfilId')?.touched) {
               <mat-error>{{ getErrorMessage('perfilId') }}</mat-error>

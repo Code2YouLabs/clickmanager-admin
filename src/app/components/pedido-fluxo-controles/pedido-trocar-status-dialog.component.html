@@ -3,10 +3,14 @@
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Novo status</mat-label>
     <mat-select [formControl]="control">
-      <mat-option *ngFor="let o of data.opcoes" [value]="o.status" [disabled]="o.bloqueado">
-        {{ o.label || (o.status | statusLabel) }}
-        <span *ngIf="o.bloqueado && o.motivo" class="muted"> — {{ o.motivo }}</span>
-      </mat-option>
+      @for (o of data.opcoes; track o) {
+        <mat-option [value]="o.status" [disabled]="o.bloqueado">
+          {{ o.label || (o.status | statusLabel) }}
+          @if (o.bloqueado && o.motivo) {
+            <span class="muted"> — {{ o.motivo }}</span>
+          }
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 </div>

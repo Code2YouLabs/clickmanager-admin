@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from 'src/app/material.module';
 import { InputMoedaComponent } from 'src/app/components/inputs/input-moeda/input-moeda.component';
 import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico/input-numerico.component';
@@ -12,13 +12,12 @@ import { InputTextoRestritoComponent } from 'src/app/components/inputs/input-tex
   standalone: true,
   selector: 'app-dialog-descrever-item',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MaterialModule,
     InputTextoRestritoComponent,
     InputNumericoComponent,
     InputMoedaComponent
-  ],
+],
   templateUrl: './dialog-descrever-item.component.html'
 })
 export class DialogDescreverItemComponent {

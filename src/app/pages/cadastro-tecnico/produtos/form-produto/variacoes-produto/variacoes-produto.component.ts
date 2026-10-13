@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+
+import { ToastrService } from 'src/app/services/toastr.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
@@ -34,25 +34,24 @@ import { VariacaoDetalheDialogComponent } from 'src/app/components/dialog/variac
     templateUrl: './variacoes-produto.component.html',
     styleUrls: ['./variacoes-produto.component.scss'],
     imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatIconModule,
-        MatDividerModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatCardModule,
-        MatTableModule,
-        MatRadioModule,
-        MatExpansionModule,
-        AutoCompleteComponent,
-        PrecoSelectorComponent,
-        InputMultiSelectComponent,
-        NomeDePipe
-    ],
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatCardModule,
+    MatTableModule,
+    MatRadioModule,
+    MatExpansionModule,
+    AutoCompleteComponent,
+    PrecoSelectorComponent,
+    InputMultiSelectComponent,
+    NomeDePipe
+],
 })
 export class VariacoesProdutoComponent {
 

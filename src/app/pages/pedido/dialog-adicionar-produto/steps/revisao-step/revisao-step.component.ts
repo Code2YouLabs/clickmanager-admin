@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { AcabamentoVariacaoResponse } from 'src/app/models/acabamento/acabamento
     selector: 'app-revisao-step',
     templateUrl: './revisao-step.component.html',
     styleUrls: ['./revisao-step.component.scss'],
-    imports: [CommonModule, MatDividerModule, MatIconModule],
+    imports: [MatDividerModule, MatIconModule],
 })
 export class RevisaoStepComponent {
     @Input() produtoBase: { id: number; nome: string; descricao: string | null } | null = null;

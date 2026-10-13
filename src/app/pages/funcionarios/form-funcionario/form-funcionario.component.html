@@ -9,7 +9,7 @@
   helpTexto=""
   helpIcone="help_outline"
   [mostrarDivisor]="true"
->
+  >
   <app-section-card titulo="Dados pessoais" [divider]="true">
     <form class="row g-3" [formGroup]="form">
       <div class="col-12">
@@ -22,14 +22,16 @@
           [minimoCaracteres]="2"
           (selecionado)="onUsuarioSelecionado($event)"
         ></app-auto-complete>
-        <div class="d-flex align-items-center gap-8 m-t-4" *ngIf="usuarioIdControl.value">
-          <small class="text-muted">
-            Usuário vinculado. Nome, e-mail e telefone foram preenchidos automaticamente.
-          </small>
-          <button mat-button type="button" color="warn" (click)="limparVinculoUsuario()">
-            Desvincular
-          </button>
-        </div>
+        @if (usuarioIdControl.value) {
+          <div class="d-flex align-items-center gap-8 m-t-4">
+            <small class="text-muted">
+              Usuário vinculado. Nome, e-mail e telefone foram preenchidos automaticamente.
+            </small>
+            <button mat-button type="button" color="warn" (click)="limparVinculoUsuario()">
+              Desvincular
+            </button>
+          </div>
+        }
       </div>
 
       <div class="col-12 col-md-6">

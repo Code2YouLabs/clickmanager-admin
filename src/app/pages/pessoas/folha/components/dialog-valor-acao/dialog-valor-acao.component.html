@@ -1,19 +1,23 @@
 <h2 mat-dialog-title>{{ data.titulo }}</h2>
 
 <mat-dialog-content [formGroup]="form" class="dialog-content">
-  <div class="hint-card" *ngIf="data.subtitulo">{{ data.subtitulo }}</div>
+  @if (data.subtitulo) {
+    <div class="hint-card">{{ data.subtitulo }}</div>
+  }
 
   <div class="row g-3">
-    <div class="col-12" *ngIf="hasTipo">
-      <app-input-options
-        [control]="tipoControl"
-        [label]="data.labelTipo || 'Tipo'"
-        [options]="data.tipoOptions || []"
-        labelKey="label"
-        valueKey="value"
-        [showNull]="false"
-      ></app-input-options>
-    </div>
+    @if (hasTipo) {
+      <div class="col-12">
+        <app-input-options
+          [control]="tipoControl"
+          [label]="data.labelTipo || 'Tipo'"
+          [options]="data.tipoOptions || []"
+          labelKey="label"
+          valueKey="value"
+          [showNull]="false"
+        ></app-input-options>
+      </div>
+    }
 
     <div class="col-12">
       <app-input-moeda

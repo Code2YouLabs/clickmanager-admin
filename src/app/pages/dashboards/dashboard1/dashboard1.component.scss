@@ -1,6 +1,44 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
 .dashboard-shell {
   display: grid;
   gap: 24px;
+  width: 100%;
+  min-width: 0;
+}
+
+.metric-grid-tv {
+  gap: 20px;
+}
+
+.content-grid-tv {
+  grid-template-columns: minmax(0, 1.55fr) minmax(380px, 0.95fr);
+  gap: 22px;
+}
+
+.growth-card-tv,
+.growth-focus-card-tv {
+  min-height: calc(100vh - 272px);
+}
+
+.growth-focus-list-tv {
+  display: grid;
+  gap: 18px;
+}
+
+.tv-panel-controls {
+  position: fixed;
+  top: clamp(10px, 1.2vw, 24px);
+  right: clamp(10px, 1.2vw, 24px);
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .dashboard-feedback {
@@ -57,6 +95,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
   gap: 24px;
+  min-width: 0;
   z-index: 1;
 }
 
@@ -97,9 +136,11 @@
 .hero-summary {
   display: grid;
   gap: 14px;
+  min-width: 0;
 }
 
 .signal-card {
+  min-width: 0;
   border-radius: 22px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.08);
@@ -148,9 +189,12 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+  min-width: 0;
 }
 
 .metric-card {
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 22px;
   padding: 20px;
@@ -231,9 +275,12 @@
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   gap: 16px;
+  min-width: 0;
 }
 
 .dashboard-card {
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 24px;
   padding: 22px;
@@ -247,6 +294,7 @@
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 18px;
+  min-width: 0;
 }
 
 .dashboard-card-header h3 {
@@ -264,6 +312,13 @@
 .header-action-button {
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.landing-period-label {
+  display: inline-block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 12px;
 }
 
 .growth-header {
@@ -453,7 +508,31 @@
   gap: 12px;
 }
 
+.landing-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.payment-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .lead-metric-card {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.landing-metric-card {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.payment-metric-card {
   padding: 16px;
   border-radius: 18px;
   border: 1px solid #e2e8f0;
@@ -465,12 +544,48 @@
   display: block;
 }
 
+.landing-metric-card span,
+.landing-metric-card strong,
+.landing-metric-card small {
+  display: block;
+}
+
+.payment-metric-card span,
+.payment-metric-card strong,
+.payment-metric-card small {
+  display: block;
+}
+
 .lead-metric-card span,
 .lead-metric-card small {
   color: #64748b;
 }
 
+.landing-metric-card span,
+.landing-metric-card small {
+  color: #64748b;
+}
+
+.payment-metric-card span,
+.payment-metric-card small {
+  color: #64748b;
+}
+
 .lead-metric-card strong {
+  margin: 10px 0 6px;
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.landing-metric-card strong {
+  margin: 10px 0 6px;
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.payment-metric-card strong {
   margin: 10px 0 6px;
   color: #0f172a;
   font-size: 28px;
@@ -493,9 +608,101 @@
   background: #ecfeff;
 }
 
+.landing-traffic {
+  background: #eef2ff;
+}
+
+.landing-interest {
+  background: #eff6ff;
+}
+
+.landing-lead {
+  background: #eefbf4;
+}
+
+.landing-conversion {
+  background: #fff8eb;
+}
+
+.payment-received {
+  background: #eefbf4;
+}
+
+.payment-pending {
+  background: #fff8eb;
+}
+
+.payment-approved {
+  background: #edf6ff;
+}
+
+.payment-refunded {
+  background: #fff1f1;
+}
+
 .lead-list-dashboard {
   display: grid;
   gap: 14px;
+}
+
+.landing-device-list,
+.landing-origin-list {
+  display: grid;
+  gap: 12px;
+}
+
+.landing-origin-list-spaced {
+  margin-bottom: 18px;
+}
+
+.landing-device-list {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.landing-device-item,
+.landing-origin-item {
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid #e5ebf3;
+  background: #fbfdff;
+}
+
+.landing-device-item span,
+.landing-device-item strong {
+  display: block;
+}
+
+.landing-device-item span {
+  color: #64748b;
+}
+
+.landing-device-item strong {
+  margin-top: 8px;
+  color: #0f172a;
+  font-size: 24px;
+}
+
+.landing-origin-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.landing-origin-top span {
+  color: #334155;
+  font-weight: 600;
+}
+
+.landing-origin-top strong {
+  color: #0f172a;
+}
+
+.landing-origin-item small {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
 }
 
 .lead-dashboard-item {
@@ -511,6 +718,7 @@
   align-items: start;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
 }
 
 .lead-dashboard-top h4 {
@@ -548,6 +756,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 10px;
+  min-width: 0;
 }
 
 .module-title,
@@ -647,6 +856,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 6px;
+  min-width: 0;
 }
 
 .activity-head strong {
@@ -757,6 +967,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .landing-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .payment-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .growth-chart {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -770,6 +988,10 @@
   .hero-grid,
   .quick-actions {
     grid-template-columns: 1fr;
+  }
+
+  .hero-grid {
+    gap: 16px;
   }
 
   .dashboard-feedback {
@@ -794,11 +1016,377 @@
     grid-template-columns: 1fr;
   }
 
+  .landing-metric-grid,
+  .landing-device-list {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
   .growth-chart {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-panel h1 {
     font-size: 28px;
+  }
+
+  .hero-panel,
+  .dashboard-card,
+  .metric-card {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .hero-actions .mat-mdc-button-base {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .signal-card-header,
+  .signal-metric,
+  .dashboard-card-header,
+  .growth-focus-top,
+  .lead-dashboard-top,
+  .module-top,
+  .watch-top,
+  .support-top,
+  .activity-head,
+  .module-footer,
+  .watch-footer,
+  .support-footer {
+    flex-wrap: wrap;
+  }
+
+  .signal-metric strong {
+    font-size: 24px;
+  }
+
+  .growth-chart {
+    gap: 10px;
+  }
+
+  .growth-bar-track {
+    max-width: 100%;
+    height: 150px;
+  }
+}
+
+:host-context(body.admin-panel-mode) .dashboard-shell {
+  gap: 20px;
+  width: 100%;
+  padding-top: clamp(56px, 4vw, 84px);
+}
+
+:host-context(body.admin-panel-mode) .metric-card,
+:host-context(body.admin-panel-mode) .dashboard-card {
+  border-radius: 28px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+:host-context(body.admin-panel-mode) .metric-card {
+  min-height: 220px;
+  padding: 26px 28px;
+}
+
+:host-context(body.admin-panel-mode) .metric-grid-tv {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+:host-context(body.admin-panel-mode) .metric-label {
+  font-size: 16px;
+}
+
+:host-context(body.admin-panel-mode) .metric-value {
+  font-size: 52px;
+}
+
+:host-context(body.admin-panel-mode) .metric-delta,
+:host-context(body.admin-panel-mode) .metric-helper,
+:host-context(body.admin-panel-mode) .dashboard-card-header p {
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+:host-context(body.admin-panel-mode) .dashboard-card-header h3 {
+  font-size: 30px;
+}
+
+:host-context(body.admin-panel-mode) .content-grid-tv {
+  grid-template-columns: minmax(0, 1.45fr) minmax(380px, 0.95fr);
+  align-items: stretch;
+}
+
+:host-context(body.admin-panel-mode) .growth-chip,
+:host-context(body.admin-panel-mode) .growth-focus-badge {
+  font-size: 16px;
+  padding: 10px 18px;
+}
+
+:host-context(body.admin-panel-mode) .growth-chart {
+  gap: 20px;
+}
+
+:host-context(body.admin-panel-mode) .growth-bar-track {
+  max-width: 108px;
+  height: 280px;
+}
+
+:host-context(body.admin-panel-mode) .growth-total,
+:host-context(body.admin-panel-mode) .growth-column span,
+:host-context(body.admin-panel-mode) .growth-column small {
+  font-size: 18px;
+}
+
+:host-context(body.admin-panel-mode) .growth-column strong {
+  font-size: 22px;
+}
+
+:host-context(body.admin-panel-mode) .growth-footer strong {
+  font-size: 22px;
+}
+
+:host-context(body.admin-panel-mode) .growth-footer span,
+:host-context(body.admin-panel-mode) .growth-focus-item p {
+  font-size: 16px;
+}
+
+:host-context(body.admin-panel-mode) .growth-focus-item {
+  padding: 26px;
+  border-radius: 24px;
+}
+
+:host-context(body.admin-panel-mode) .growth-focus-top h4 {
+  font-size: 18px;
+}
+
+:host-context(body.admin-panel-mode) .growth-focus-value {
+  font-size: 30px;
+}
+
+@media (max-width: 1500px) {
+  :host-context(body.admin-panel-mode) .metric-grid-tv {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  :host-context(body.admin-panel-mode) .content-grid-tv {
+    grid-template-columns: 1fr;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-card-tv,
+  :host-context(body.admin-panel-mode) .growth-focus-card-tv {
+    min-height: auto;
+  }
+}
+
+@media (max-height: 980px) {
+  :host-context(body.admin-panel-mode) .dashboard-shell {
+    gap: 14px;
+    padding-top: 60px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-card,
+  :host-context(body.admin-panel-mode) .dashboard-card {
+    padding: 18px 20px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-card {
+    min-height: 170px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-value {
+    font-size: 40px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-delta,
+  :host-context(body.admin-panel-mode) .metric-helper,
+  :host-context(body.admin-panel-mode) .dashboard-card-header p {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  :host-context(body.admin-panel-mode) .dashboard-card-header h3 {
+    font-size: 26px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-card-tv,
+  :host-context(body.admin-panel-mode) .growth-focus-card-tv {
+    min-height: auto;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-chart {
+    gap: 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-bar-track {
+    max-width: 86px;
+    height: 210px;
+    padding: 7px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-total,
+  :host-context(body.admin-panel-mode) .growth-column span,
+  :host-context(body.admin-panel-mode) .growth-column small {
+    font-size: 15px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-column strong {
+    font-size: 18px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer div {
+    padding: 12px 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer strong {
+    font-size: 18px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer span,
+  :host-context(body.admin-panel-mode) .growth-focus-item p {
+    font-size: 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-list-tv {
+    gap: 12px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-item {
+    padding: 18px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-value {
+    margin: 10px 0 6px;
+    font-size: 24px;
+  }
+}
+
+@media (max-height: 820px) {
+  :host-context(body.admin-panel-mode) .dashboard-shell {
+    gap: 12px;
+    padding-top: 54px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-grid-tv {
+    gap: 12px;
+  }
+
+  :host-context(body.admin-panel-mode) .content-grid-tv {
+    gap: 12px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-card,
+  :host-context(body.admin-panel-mode) .dashboard-card {
+    padding: 14px 16px;
+    border-radius: 22px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-card {
+    min-height: 142px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-label {
+    font-size: 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-value {
+    font-size: 32px;
+  }
+
+  :host-context(body.admin-panel-mode) .metric-delta,
+  :host-context(body.admin-panel-mode) .metric-helper,
+  :host-context(body.admin-panel-mode) .dashboard-card-header p {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  :host-context(body.admin-panel-mode) .dashboard-card-header {
+    margin-bottom: 12px;
+  }
+
+  :host-context(body.admin-panel-mode) .dashboard-card-header h3 {
+    font-size: 22px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-chip,
+  :host-context(body.admin-panel-mode) .growth-focus-badge {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-bar-track {
+    max-width: 72px;
+    height: 156px;
+    border-radius: 18px;
+    padding: 6px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-column {
+    gap: 4px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-total,
+  :host-context(body.admin-panel-mode) .growth-column span,
+  :host-context(body.admin-panel-mode) .growth-column small {
+    font-size: 12px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-column strong {
+    font-size: 16px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer {
+    margin-top: 10px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer strong {
+    font-size: 16px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-footer span {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-list-tv {
+    gap: 10px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-item {
+    padding: 14px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-top h4 {
+    font-size: 16px;
+  }
+
+  :host-context(body.admin-panel-mode) .growth-focus-value {
+    font-size: 20px;
+  }
+
+  :host-context(body.admin-panel-mode) .tv-panel-controls {
+    top: 8px;
+    right: 8px;
+    gap: 8px;
+  }
+
+  :host-context(body.admin-panel-mode) .tv-panel-controls .mdc-button {
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 900px) {
+  .tv-panel-controls {
+    left: 10px;
+    right: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 }

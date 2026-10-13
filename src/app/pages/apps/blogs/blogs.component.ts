@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { blogService } from 'src/app/services/apps/blog/blog.service';
 import { MatCardModule } from '@angular/material/card';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
     selector: 'app-blogs',
-    imports: [MatCardModule, TablerIconsModule, MatChipsModule],
+    imports: [MatCardModule, DesignSystemIconsModule, MatChipsModule],
     templateUrl: './blogs.component.html'
 }) 
 export class AppBlogsComponent implements OnInit {

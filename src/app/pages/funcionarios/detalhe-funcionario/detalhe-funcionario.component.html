@@ -1,226 +1,222 @@
-<app-page-card
-  *ngIf="funcionario as f"
-  titulo="Detalhes do funcionário"
-  [subtitulo]="f.nome"
-  botaoTexto="Voltar"
-  botaoIcone="arrow_back"
-  [botaoRota]="['/page/funcionarios']"
-  [helpRota]="['/page/ajuda']"
-  helpFragment="funcionarios"
-  helpTexto=""
-  helpIcone="help_outline"
-  [mostrarDivisor]="true"
->
-  <div class="row g-3 align-items-start">
-    <div class="col-12 col-lg-6">
-      <app-section-card titulo="Dados pessoais" [divider]="true">
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-label">Nome</span>
-            <strong class="detail-value">{{ f.nome }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">CPF</span>
-            <strong class="detail-value">{{ f.cpf || '—' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Telefone</span>
-            <strong class="detail-value">{{ f.telefone || '—' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">E-mail</span>
-            <strong class="detail-value">{{ f.email || '—' }}</strong>
-          </div>
-
-          <div class="detail-item detail-item--full">
-            <span class="detail-label">Endereço</span>
-            <strong class="detail-value">{{ f.endereco || 'Endereço não informado.' }}</strong>
-          </div>
-        </div>
-      </app-section-card>
-    </div>
-
-    <div class="col-12 col-lg-6">
-      <app-section-card titulo="Vínculo e remuneração" [divider]="true">
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-label">Status</span>
-            <strong class="detail-value"><app-status-badge [status]="f.status"></app-status-badge></strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Data de admissão</span>
-            <strong class="detail-value">{{ f.dataAdmissao | date:'dd/MM/yyyy' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Cargo</span>
-            <strong class="detail-value">{{ f.cargo || '—' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Setor</span>
-            <strong class="detail-value">{{ f.setor || '—' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Tipo de contrato</span>
-            <strong class="detail-value">{{ descricaoContrato(f.tipoContrato) }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Salário</span>
-            <strong class="detail-value">{{ f.salario != null ? (f.salario | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Valor da passagem</span>
-            <strong class="detail-value">{{ f.valorPassagem != null ? (f.valorPassagem | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
-          </div>
-        </div>
-      </app-section-card>
-    </div>
-  </div>
-
-  <app-section-card class="m-t-16" titulo="Movimentações" [divider]="true">
-    <div actions *ngIf="(f.movimentacoes?.length || 0) > 2">
-      <button mat-stroked-button color="primary" (click)="alternarHistoricoCompleto()">
-        {{ mostrarHistoricoCompleto ? 'Mostrar menos' : 'Ver histórico completo' }}
-      </button>
-    </div>
-
-    <div class="mov-timeline">
-      <div class="mov-item" *ngFor="let m of movimentacoesVisiveis(f)">
-        <div class="mov-marker" [ngClass]="'mov-marker--' + (m.tipo | lowercase)"></div>
-
-        <div class="mov-card">
-          <div class="mov-head">
-            <span class="mov-type" [ngClass]="'mov-type--' + (m.tipo | lowercase)">{{ m.tipo }}</span>
-            <span class="mov-date">{{ m.data | date:'dd/MM/yyyy' }}</span>
-          </div>
-
-          <p class="mov-description">{{ m.descricao }}</p>
-
-          <div class="mov-change-list" *ngIf="m.detalhes?.length">
-            <span class="mov-change-item" *ngFor="let detalhe of m.detalhes">{{ detalhe }}</span>
-          </div>
-
-          <div class="mov-snapshot" *ngIf="m.snapshot">
-            <div class="snapshot-item"><span>Cargo</span><strong>{{ m.snapshot.cargo }}</strong></div>
-            <div class="snapshot-item"><span>Setor</span><strong>{{ m.snapshot.setor }}</strong></div>
-            <div class="snapshot-item"><span>Status</span><strong>{{ m.snapshot.status }}</strong></div>
-            <div class="snapshot-item"><span>Contrato</span><strong>{{ descricaoContrato(m.snapshot.tipoContrato) }}</strong></div>
-            <div class="snapshot-item">
-              <span>Salário</span>
-              <strong>{{ m.snapshot.salario != null ? (m.snapshot.salario | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+@if (funcionario; as f) {
+  <app-page-card
+    titulo="Detalhes do funcionário"
+    [subtitulo]="f.nome"
+    botaoTexto="Voltar"
+    botaoIcone="arrow_back"
+    [botaoRota]="['/page/funcionarios']"
+    [helpRota]="['/page/ajuda']"
+    helpFragment="funcionarios"
+    helpTexto=""
+    helpIcone="help_outline"
+    [mostrarDivisor]="true"
+    >
+    <div class="row g-3 align-items-start">
+      <div class="col-12 col-lg-6">
+        <app-section-card titulo="Dados pessoais" [divider]="true">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Nome</span>
+              <strong class="detail-value">{{ f.nome }}</strong>
             </div>
-            <div class="snapshot-item">
-              <span>Passagem</span>
-              <strong>{{ m.snapshot.valorPassagem != null ? (m.snapshot.valorPassagem | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+            <div class="detail-item">
+              <span class="detail-label">CPF</span>
+              <strong class="detail-value">{{ f.cpf || '—' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Telefone</span>
+              <strong class="detail-value">{{ f.telefone || '—' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">E-mail</span>
+              <strong class="detail-value">{{ f.email || '—' }}</strong>
+            </div>
+            <div class="detail-item detail-item--full">
+              <span class="detail-label">Endereço</span>
+              <strong class="detail-value">{{ f.endereco || 'Endereço não informado.' }}</strong>
             </div>
           </div>
-        </div>
+        </app-section-card>
+      </div>
+      <div class="col-12 col-lg-6">
+        <app-section-card titulo="Vínculo e remuneração" [divider]="true">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Status</span>
+              <strong class="detail-value"><app-status-badge [status]="f.status"></app-status-badge></strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Data de admissão</span>
+              <strong class="detail-value">{{ f.dataAdmissao | date:'dd/MM/yyyy' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Cargo</span>
+              <strong class="detail-value">{{ f.cargo || '—' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Setor</span>
+              <strong class="detail-value">{{ f.setor || '—' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Tipo de contrato</span>
+              <strong class="detail-value">{{ descricaoContrato(f.tipoContrato) }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Salário</span>
+              <strong class="detail-value">{{ f.salario != null ? (f.salario | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Valor da passagem</span>
+              <strong class="detail-value">{{ f.valorPassagem != null ? (f.valorPassagem | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+            </div>
+          </div>
+        </app-section-card>
       </div>
     </div>
-  </app-section-card>
-
-  <div class="row g-3 m-t-8" *ngIf="mostrarHistoricoCompleto">
-    <div class="col-12 col-lg-6">
-      <app-section-card titulo="Histórico salarial" [divider]="true">
-        <div class="history-list">
-          <div class="history-card" *ngFor="let h of historicoOrdenado(f.historicoSalario)">
-            <div class="history-head">
-              <span class="history-badge">Vigência</span>
-              <span class="history-period">
-                {{ h.inicio | date:'dd/MM/yyyy' }} - {{ h.fim ? (h.fim | date:'dd/MM/yyyy') : 'Atual' }}
-              </span>
-            </div>
-
-            <div class="history-value">{{ h.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</div>
-            <div class="history-reason">{{ h.motivo || 'Sem motivo informado' }}</div>
-          </div>
+    <app-section-card class="m-t-16" titulo="Movimentações" [divider]="true">
+      @if ((f.movimentacoes?.length || 0) > 2) {
+        <div actions>
+          <button mat-stroked-button color="primary" (click)="alternarHistoricoCompleto()">
+            {{ mostrarHistoricoCompleto ? 'Mostrar menos' : 'Ver histórico completo' }}
+          </button>
         </div>
-        <p class="text-muted m-0" *ngIf="!f.historicoSalario?.length">Sem histórico salarial.</p>
-      </app-section-card>
-    </div>
-
-    <div class="col-12 col-lg-6">
-      <app-section-card titulo="Histórico de passagem" [divider]="true">
-        <div class="history-list">
-          <div class="history-card history-card--passagem" *ngFor="let h of historicoOrdenado(f.historicoPassagem)">
-            <div class="history-head">
-              <span class="history-badge history-badge--passagem">Vigência</span>
-              <span class="history-period">
-                {{ h.inicio | date:'dd/MM/yyyy' }} - {{ h.fim ? (h.fim | date:'dd/MM/yyyy') : 'Atual' }}
-              </span>
+      }
+      <div class="mov-timeline">
+        @for (m of movimentacoesVisiveis(f); track m) {
+          <div class="mov-item">
+            <div class="mov-marker" [ngClass]="'mov-marker--' + (m.tipo | lowercase)"></div>
+            <div class="mov-card">
+              <div class="mov-head">
+                <span class="mov-type" [ngClass]="'mov-type--' + (m.tipo | lowercase)">{{ m.tipo }}</span>
+                <span class="mov-date">{{ m.data | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <p class="mov-description">{{ m.descricao }}</p>
+              @if (m.detalhes?.length) {
+                <div class="mov-change-list">
+                  @for (detalhe of m.detalhes; track detalhe) {
+                    <span class="mov-change-item">{{ detalhe }}</span>
+                  }
+                </div>
+              }
+              @if (m.snapshot) {
+                <div class="mov-snapshot">
+                  <div class="snapshot-item"><span>Cargo</span><strong>{{ m.snapshot.cargo }}</strong></div>
+                  <div class="snapshot-item"><span>Setor</span><strong>{{ m.snapshot.setor }}</strong></div>
+                  <div class="snapshot-item"><span>Status</span><strong>{{ m.snapshot.status }}</strong></div>
+                  <div class="snapshot-item"><span>Contrato</span><strong>{{ descricaoContrato(m.snapshot.tipoContrato) }}</strong></div>
+                  <div class="snapshot-item">
+                    <span>Salário</span>
+                    <strong>{{ m.snapshot.salario != null ? (m.snapshot.salario | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+                  </div>
+                  <div class="snapshot-item">
+                    <span>Passagem</span>
+                    <strong>{{ m.snapshot.valorPassagem != null ? (m.snapshot.valorPassagem | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+                  </div>
+                </div>
+              }
             </div>
-
-            <div class="history-value">{{ h.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</div>
-            <div class="history-reason">{{ h.motivo || 'Sem motivo informado' }}</div>
           </div>
+        }
+      </div>
+    </app-section-card>
+    @if (mostrarHistoricoCompleto) {
+      <div class="row g-3 m-t-8">
+        <div class="col-12 col-lg-6">
+          <app-section-card titulo="Histórico salarial" [divider]="true">
+            <div class="history-list">
+              @for (h of historicoOrdenado(f.historicoSalario); track h) {
+                <div class="history-card">
+                  <div class="history-head">
+                    <span class="history-badge">Vigência</span>
+                    <span class="history-period">
+                      {{ h.inicio | date:'dd/MM/yyyy' }} - {{ h.fim ? (h.fim | date:'dd/MM/yyyy') : 'Atual' }}
+                    </span>
+                  </div>
+                  <div class="history-value">{{ h.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</div>
+                  <div class="history-reason">{{ h.motivo || 'Sem motivo informado' }}</div>
+                </div>
+              }
+            </div>
+            @if (!f.historicoSalario?.length) {
+              <p class="text-muted m-0">Sem histórico salarial.</p>
+            }
+          </app-section-card>
         </div>
-        <p class="text-muted m-0" *ngIf="!f.historicoPassagem?.length">Sem histórico de passagem.</p>
-      </app-section-card>
+        <div class="col-12 col-lg-6">
+          <app-section-card titulo="Histórico de passagem" [divider]="true">
+            <div class="history-list">
+              @for (h of historicoOrdenado(f.historicoPassagem); track h) {
+                <div class="history-card history-card--passagem">
+                  <div class="history-head">
+                    <span class="history-badge history-badge--passagem">Vigência</span>
+                    <span class="history-period">
+                      {{ h.inicio | date:'dd/MM/yyyy' }} - {{ h.fim ? (h.fim | date:'dd/MM/yyyy') : 'Atual' }}
+                    </span>
+                  </div>
+                  <div class="history-value">{{ h.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</div>
+                  <div class="history-reason">{{ h.motivo || 'Sem motivo informado' }}</div>
+                </div>
+              }
+            </div>
+            @if (!f.historicoPassagem?.length) {
+              <p class="text-muted m-0">Sem histórico de passagem.</p>
+            }
+          </app-section-card>
+        </div>
+      </div>
+    }
+    <div class="d-flex flex-wrap gap-8 m-t-16">
+      @if (f.status === 'AFASTADO') {
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="alterarStatus('ATIVO')"
+          *temPermissao="['FUNCIONARIO_AFASTAR']"
+          >
+          Retornar ao trabalho
+        </button>
+      }
+      @if (f.status === 'DESLIGADO') {
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="alterarStatus('ATIVO')"
+          *temPermissao="['FUNCIONARIO_CRIAR']"
+          >
+          Readmitir
+        </button>
+      }
+      @if (f.status === 'ATIVO') {
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="alterarStatus('AFASTADO')"
+          *temPermissao="['FUNCIONARIO_AFASTAR']"
+          >
+          Afastar
+        </button>
+      }
+      @if (f.status !== 'DESLIGADO') {
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="alterarStatus('DESLIGADO')"
+          *temPermissao="['FUNCIONARIO_DESLIGAR']"
+          >
+          Desligar
+        </button>
+      }
+      @if (f.status !== 'DESLIGADO') {
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="editar()"
+          *temPermissao="['FUNCIONARIO_EDITAR']"
+          >
+          Editar
+        </button>
+      }
+      <button mat-button (click)="voltar()">Voltar</button>
     </div>
-  </div>
-
-  <div class="d-flex flex-wrap gap-8 m-t-16">
-    <ng-container *ngIf="f.status === 'AFASTADO'">
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="alterarStatus('ATIVO')"
-        *temPermissao="['FUNCIONARIO_AFASTAR']"
-      >
-        Retornar ao trabalho
-      </button>
-    </ng-container>
-
-    <ng-container *ngIf="f.status === 'DESLIGADO'">
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="alterarStatus('ATIVO')"
-        *temPermissao="['FUNCIONARIO_CRIAR']"
-      >
-        Readmitir
-      </button>
-    </ng-container>
-
-    <ng-container *ngIf="f.status === 'ATIVO'">
-      <button
-        mat-stroked-button
-        color="warn"
-        (click)="alterarStatus('AFASTADO')"
-        *temPermissao="['FUNCIONARIO_AFASTAR']"
-      >
-        Afastar
-      </button>
-    </ng-container>
-
-    <ng-container *ngIf="f.status !== 'DESLIGADO'">
-      <button
-        mat-stroked-button
-        color="warn"
-        (click)="alterarStatus('DESLIGADO')"
-        *temPermissao="['FUNCIONARIO_DESLIGAR']"
-      >
-        Desligar
-      </button>
-    </ng-container>
-    <ng-container *ngIf="f.status !== 'DESLIGADO'">
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="editar()"
-        *temPermissao="['FUNCIONARIO_EDITAR']"
-      >
-        Editar
-      </button>
-    </ng-container>
-    <button mat-button (click)="voltar()">Voltar</button>
-  </div>
-</app-page-card>
+  </app-page-card>
+}

@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactFormDialogComponent } from '../contact-form-dialog/contact-form-dialog.component';
 import { MaterialModule } from 'src/app/material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ContactService } from 'src/app/services/apps/contact-list/contact-list.service';
@@ -33,7 +33,7 @@ import { MatDividerModule } from '@angular/material/divider';
     AppContactListDetailComponent,
     MaterialModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     NgScrollbarModule,
     CommonModule,
     MatDividerModule,

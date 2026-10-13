@@ -1,29 +1,27 @@
-<ng-container *ngIf="servicosDisponiveis?.length; else noSrv">
+@if (servicosDisponiveis?.length) {
   <div class="servicos-header">Serviços disponíveis</div>
   <div class="opt-grid">
-    <label class="opt-card" *ngFor="let s of servicosDisponiveis; trackBy: trackById"
-           (click)="toggle(s.id, !isSelected(s.id))">
-      <mat-checkbox class="opt-check"
-                    [checked]="isSelected(s.id)"
-                    (click)="$event.stopPropagation()"
-                    (change)="toggle(s.id, $event.checked)">
-      </mat-checkbox>
-
-      <div class="opt-info">
-        <div class="opt-name">{{ s.nome }}</div>
-        <div class="opt-desc">{{ s.descricao || '—' }}</div>
-      </div>
-
-      <div class="opt-price" [matTooltip]="precoResumoFn?.(s.preco)">
-        {{ precoResumoFn?.(s.preco) }}
-      </div>
-    </label>
+    @for (s of servicosDisponiveis; track trackById($index, s)) {
+      <label class="opt-card"
+        (click)="toggle(s.id, !isSelected(s.id))">
+        <mat-checkbox class="opt-check"
+          [checked]="isSelected(s.id)"
+          (click)="$event.stopPropagation()"
+          (change)="toggle(s.id, $event.checked)">
+        </mat-checkbox>
+        <div class="opt-info">
+          <div class="opt-name">{{ s.nome }}</div>
+          <div class="opt-desc">{{ s.descricao || '—' }}</div>
+        </div>
+        <div class="opt-price" [matTooltip]="precoResumoFn?.(s.preco)">
+          {{ precoResumoFn?.(s.preco) }}
+        </div>
+      </label>
+    }
   </div>
-</ng-container>
-
-<ng-template #noSrv>
+} @else {
   <div class="empty-card">
     <mat-icon>construction</mat-icon>
     <div>Nenhum serviço disponível para esta variação.</div>
   </div>
-</ng-template>
+}

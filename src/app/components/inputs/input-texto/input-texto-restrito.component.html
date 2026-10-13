@@ -1,19 +1,15 @@
 <div class="w-100">
-  <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-    {{ label }} <span *ngIf="isRequired" style="color: #ff110094">*</span>
-  </mat-label>
-
-  <mat-form-field appearance="outline" class="w-100">
-    <input matInput type="text"
+  <ds-field [label]="label" [htmlFor]="inputId" [required]="isRequired" [error]="errorTexto">
+    <input
+      [id]="inputId"
+      dsInput
+      type="text"
       [placeholder]="placeholder"
       [maxlength]="maxlength"
       [formControl]="control"
+      [invalid]="control.invalid && control.touched"
       (keydown)="onKeydown($event)"
       (input)="onInput($event)"
       (blur)="updateErrorMessage()" />
-
-    @if (control.invalid && control.touched) {
-    <mat-error>{{ errorMessage() }}</mat-error>
-    }
-  </mat-form-field>
+  </ds-field>
 </div>

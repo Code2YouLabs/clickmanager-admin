@@ -3,15 +3,15 @@ import { Formato } from 'src/app/models/formato.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
+
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/dialog/confirm-dialog/confirm-dialog.component';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { MatButtonModule } from '@angular/material/button';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { FormatoService } from '../../services/formato.service';
 import { TemPermissaoDirective } from 'src/app/diretivas/tem-permissao.directive';
 import { CardHeaderComponent } from "src/app/components/card-header/card-header.component";
@@ -21,14 +21,13 @@ import { InputPesquisaComponent } from 'src/app/components/inputs/input-pesquisa
   selector: 'app-listar-formato',
   standalone: true,
   imports: [
-    CommonModule,
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     RouterModule,
     TemPermissaoDirective,
     CardHeaderComponent,

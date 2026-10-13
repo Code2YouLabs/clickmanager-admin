@@ -6,7 +6,7 @@ import {
   PLATFORM_ID,
   AfterViewInit,
 } from '@angular/core';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -19,7 +19,7 @@ import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow';
 @Component({
   selector: 'app-visit-usa',
   standalone: true,
-  imports: [TablerIconsModule, MaterialModule],
+  imports: [DesignSystemIconsModule, MaterialModule],
   templateUrl: './visit-usa.component.html',
 })
 export class AppVisitUsaComponent implements AfterViewInit {

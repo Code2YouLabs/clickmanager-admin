@@ -1,14 +1,18 @@
 <div class="w-100">
-    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-        {{ label }} <span *ngIf="isRequired" style="color: #ff110094">*</span>
-    </mat-label>
+  <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
+    {{ label }} @if (isRequired) {
+    <span style="color: #ff110094">*</span>
+  }
+</mat-label>
 
-    <mat-form-field appearance="outline" class="w-100">
-        <textarea matInput [formControl]="control" [rows]="rows" [placeholder]="placeholder" maxlength="255">
-      </textarea>
+<mat-form-field appearance="outline" class="w-100">
+  <textarea matInput [formControl]="control" [rows]="rows" [placeholder]="placeholder" maxlength="255">
+  </textarea>
 
-        <mat-error *ngIf="control.invalid && control.touched">
-            {{ errorMessage() }}
-        </mat-error>
-    </mat-form-field>
+  @if (control.invalid && control.touched) {
+    <mat-error>
+      {{ errorMessage() }}
+    </mat-error>
+  }
+</mat-form-field>
 </div>

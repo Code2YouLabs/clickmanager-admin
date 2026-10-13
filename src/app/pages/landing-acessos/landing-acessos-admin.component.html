@@ -1,0 +1,286 @@
+<div class="landing-access-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Analytics da landing</span>
+      <h1>Acessos da landing page</h1>
+      <p>
+        Acompanhe o funil entre landing, abertura do formulário e cadastros concluídos,
+        além da distribuição da audiência por dispositivo, navegador, sistema operacional e origem.
+      </p>
+      <small class="period-label">Período consultado: {{ periodoSelecionadoLabel }}</small>
+    </div>
+
+    <div class="hero-actions">
+      <button mat-flat-button color="primary" (click)="aplicarFiltros()" [disabled]="carregandoLista">
+        Atualizar visão
+      </button>
+      <button mat-stroked-button color="primary" (click)="limparFiltros()">
+        Limpar filtros
+      </button>
+    </div>
+  </section>
+
+  <section class="summary-grid">
+    @for (card of resumoCards; track card.label) {
+    <article class="summary-card" [ngClass]="'tone-' + card.tone">
+      <span>{{ card.label }}</span>
+      <strong>{{ card.value }}</strong>
+      <small>{{ card.helper }}</small>
+    </article>
+    }
+  </section>
+
+  <section class="rate-strip">
+    @for (item of taxasResumo; track item.label) {
+    <article class="rate-card">
+      <span>{{ item.label }}</span>
+      <strong>{{ item.value }}</strong>
+      <small>{{ item.helper }}</small>
+    </article>
+    }
+  </section>
+
+  <section class="insights-grid">
+    <article class="insight-card">
+      <div class="section-header">
+        <div>
+          <h3>Funil consolidado</h3>
+          <p>Leitura por visitantes únicos da progressão entre visita, intenção e cadastro concluído.</p>
+        </div>
+      </div>
+
+      <div class="funnel-visual-grid">
+        @for (item of etapasFunil; track item.label) {
+        <div class="funnel-step-card">
+          <span>{{ item.label }}</span>
+          <strong>{{ item.value }}</strong>
+          <small>{{ item.helper }}</small>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="insight-card">
+      <div class="section-header">
+        <div>
+          <h3>Dispositivos por visitantes únicos</h3>
+          <p>Base do bloco: {{ baseDispositivosLabel }}. Não comparar com visualizações brutas da landing.</p>
+        </div>
+      </div>
+
+      <div class="device-grid">
+        @for (item of dispositivos; track item.label) {
+        <div class="device-card" [ngClass]="'tone-' + item.tone">
+          <span>{{ item.label }}</span>
+          <strong>{{ item.quantidade }}</strong>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="insight-card">
+      <div class="section-header">
+        <div>
+          <h3>Navegadores</h3>
+          <p>Top navegadores do tráfego capturado.</p>
+        </div>
+      </div>
+
+      <div class="ranking-list">
+        @for (item of navegadoresTop; track item.nome) {
+        <div class="ranking-item">
+          <div class="ranking-top">
+            <span>{{ item.nome }}</span>
+            <strong>{{ item.quantidade }}</strong>
+          </div>
+          <div class="ranking-track">
+            <div class="ranking-bar" [style.width.%]="itemPercentual(navegadoresTop, item.quantidade)"></div>
+          </div>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="insight-card">
+      <div class="section-header">
+        <div>
+          <h3>Sistemas operacionais</h3>
+          <p>Distribuição dos acessos por plataforma.</p>
+        </div>
+      </div>
+
+      <div class="ranking-list">
+        @for (item of sistemasTop; track item.nome) {
+        <div class="ranking-item">
+          <div class="ranking-top">
+            <span>{{ item.nome }}</span>
+            <strong>{{ item.quantidade }}</strong>
+          </div>
+          <div class="ranking-track">
+            <div class="ranking-bar" [style.width.%]="itemPercentual(sistemasTop, item.quantidade)"></div>
+          </div>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="insight-card">
+      <div class="section-header">
+        <div>
+          <h3>Origens</h3>
+          <p>Fontes que mais trouxeram tráfego para a landing.</p>
+        </div>
+      </div>
+
+      <div class="ranking-list">
+        @for (item of origensTop; track item.nome) {
+        <div class="ranking-item">
+          <div class="ranking-top">
+            <span>{{ item.nome }}</span>
+            <strong>{{ item.quantidade }}</strong>
+          </div>
+          <div class="ranking-track">
+            <div class="ranking-bar" [style.width.%]="itemPercentual(origensTop, item.quantidade)"></div>
+          </div>
+        </div>
+        }
+      </div>
+    </article>
+  </section>
+
+  <section class="filters-card">
+    <div class="filters-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar acesso</mat-label>
+        <input
+          matInput
+          [(ngModel)]="busca"
+          placeholder="Página, path, referrer, UTM, navegador ou SO"
+          (keyup.enter)="aplicarFiltros()"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Etapa do funil</mat-label>
+        <mat-select [(ngModel)]="etapaFunilFiltro">
+          @for (option of etapaOptions; track option) {
+          <mat-option [value]="option">
+            {{ option === 'TODAS' ? 'Todas' : etapaFunilLabel(option) }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data inicial</mat-label>
+        <input matInput type="date" [(ngModel)]="dataInicio" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data final</mat-label>
+        <input matInput type="date" [(ngModel)]="dataFim" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Dispositivo</mat-label>
+        <mat-select [(ngModel)]="deviceTypeFiltro">
+          @for (option of deviceOptions; track option) {
+          <mat-option [value]="option">
+            {{ option === 'TODOS' ? 'Todos' : deviceLabel(option) }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <section class="table-card">
+    <div class="section-header">
+      <div>
+        <h3>Histórico de acessos</h3>
+        <p>{{ resumoResultados }}</p>
+      </div>
+    </div>
+
+    @if (carregandoLista) {
+    <div class="state-card">
+      <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+      <span>Carregando acessos da landing...</span>
+    </div>
+    } @else if (!acessos.length) {
+    <div class="state-card">
+      <i-tabler name="world-search" class="icon-24"></i-tabler>
+      <span>Nenhum acesso encontrado para os filtros atuais.</span>
+    </div>
+    } @else {
+    <div class="table-wrap">
+      <table class="access-table">
+        <thead>
+          <tr>
+            <th>Página</th>
+            <th>Etapa</th>
+            <th>Origem</th>
+            <th>UTM</th>
+            <th>Dispositivo</th>
+            <th>Ambiente</th>
+            <th>Sessão</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of acessos; track item.id) {
+          <tr>
+            <td>
+              <div class="table-title">{{ item.pagina }}</div>
+              <small>{{ item.path }}</small>
+            </td>
+            <td>
+              <span class="funnel-badge" [ngClass]="etapaFunilClass(item.etapaFunil)">
+                {{ etapaFunilLabel(item.etapaFunil) }}
+              </span>
+            </td>
+            <td>
+              <div class="table-title">{{ origemLabel(item) }}</div>
+              <small>{{ item.referrer || 'Sem referrer externo' }}</small>
+            </td>
+            <td>
+              <div class="table-title">{{ utmLabel(item) }}</div>
+              <small>{{ item.utmCampaign || 'Campanha não informada' }}</small>
+            </td>
+            <td>
+              <span class="device-badge" [ngClass]="deviceClass(item.deviceType)">
+                {{ deviceLabel(item.deviceType) }}
+              </span>
+              @if (item.bot) {
+              <span class="bot-badge bot">Bot</span>
+              }
+            </td>
+            <td>
+              <div class="table-title">{{ item.sistemaOperacional || 'SO não informado' }}</div>
+              <small>{{ item.navegador || 'Navegador não informado' }}</small>
+            </td>
+            <td>
+              <div class="table-title">{{ item.sessionId || 'Sem sessão' }}</div>
+            </td>
+            <td>
+              <div class="table-title">{{ formatarData(item.criadoEm) }}</div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="paginator-wrap">
+      <mat-paginator
+        [length]="totalItens"
+        [pageIndex]="pagina"
+        [pageSize]="tamanho"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="alterarPagina($event)"
+        showFirstLastButtons
+      />
+    </div>
+    }
+  </section>
+</div>

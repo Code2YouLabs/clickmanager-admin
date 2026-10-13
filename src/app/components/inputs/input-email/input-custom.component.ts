@@ -1,19 +1,17 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
+import { DsFieldComponent } from 'src/app/ui/field';
+import { DsInputDirective } from 'src/app/ui/input';
 
 @Component({
   selector: 'app-input-email',
   standalone: true,
   templateUrl: './input-custom.component.html',
   imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-  ],
+    DsFieldComponent,
+    DsInputDirective,
+    ReactiveFormsModule
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputEmailComponent implements OnInit {
@@ -23,6 +21,8 @@ export class InputEmailComponent implements OnInit {
   @Input() maxlength: number = 200;
   readonly type: string = 'email'; // fixo
 
+  readonly inputId: string = `input-email-${Math.random().toString(36).slice(2, 9)}`;
+
   ngOnInit(): void {
     if (!this.control) {
       throw new Error('O FormControl é obrigatório para <app-input-email>');
@@ -31,6 +31,10 @@ export class InputEmailComponent implements OnInit {
 
   updateErrorMessage(): void {
     this.control.markAsTouched();
+  }
+
+  get errorTexto(): string {
+    return this.control.invalid && this.control.touched ? this.errorMessage() : '';
   }
 
   errorMessage(): string {

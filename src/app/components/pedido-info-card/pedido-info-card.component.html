@@ -1,17 +1,62 @@
-<ng-container *ngIf="renderCard; else content">
+@if (renderCard) {
   <app-section-card [titulo]="titulo" [divider]="true">
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </app-section-card>
-</ng-container>
+} @else {
+  <div class="pedido-block" [class.border]="!renderCard" [class.inativo]="inativo">
+    <div class="info-grid">
+      <div class="info-column">
+        @if (numeroPedido) {
+          <div class="info-row">
+            <span class="label">Número</span>
+            <span class="value">{{ numeroPedido }}</span>
+          </div>
+        }
+        <div class="info-row">
+          <span class="label">Criado por</span>
+          <span class="value">{{ pedido?.responsavel?.nome || '-' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Data de criação</span>
+          <span class="value">
+            {{ pedido?.dataCriacao | date:'dd/MM/yyyy' }} às {{ pedido?.dataCriacao | date:'HH:mm' }}
+          </span>
+        </div>
+      </div>
+      <div class="info-column">
+        <div class="info-row">
+          <span class="label">Status</span>
+          <span class="value">
+            <app-status-badge [status]="statusBadge"></app-status-badge>
+          </span>
+        </div>
+        @if (isOrcamento) {
+          <div class="info-row">
+            <span class="label">Nome</span>
+            <span class="value">{{ orcamento?.nome || '-' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Vencimento</span>
+            <span class="value">
+              {{ orcamento?.vencimento | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
 
 <ng-template #content>
   <div class="pedido-block" [class.border]="!renderCard" [class.inativo]="inativo">
     <div class="info-grid">
       <div class="info-column">
-        <div class="info-row" *ngIf="numeroPedido">
-          <span class="label">Número</span>
-          <span class="value">{{ numeroPedido }}</span>
-        </div>
+        @if (numeroPedido) {
+          <div class="info-row">
+            <span class="label">Número</span>
+            <span class="value">{{ numeroPedido }}</span>
+          </div>
+        }
         <div class="info-row">
           <span class="label">Criado por</span>
           <span class="value">{{ pedido?.responsavel?.nome || '-' }}</span>
@@ -31,7 +76,7 @@
             <app-status-badge [status]="statusBadge"></app-status-badge>
           </span>
         </div>
-        <ng-container *ngIf="isOrcamento">
+        @if (isOrcamento) {
           <div class="info-row">
             <span class="label">Nome</span>
             <span class="value">{{ orcamento?.nome || '-' }}</span>
@@ -42,7 +87,7 @@
               {{ orcamento?.vencimento | date:'dd/MM/yyyy' }}
             </span>
           </div>
-        </ng-container>
+        }
       </div>
     </div>
 

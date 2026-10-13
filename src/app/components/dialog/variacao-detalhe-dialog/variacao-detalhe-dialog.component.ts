@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -54,10 +54,14 @@ export interface VariacaoDetalheDialogData {
     selector: 'app-variacao-detalhe-dialog',
     standalone: true,
     imports: [
-        CommonModule,
-        MatDialogModule, MatIconModule, MatButtonModule,
-        MatDividerModule, MatChipsModule, MatListModule, MatTableModule
-    ],
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatListModule,
+    MatTableModule
+],
     templateUrl: './variacao-detalhe-dialog.component.html',
     styleUrls: ['./variacao-detalhe-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush

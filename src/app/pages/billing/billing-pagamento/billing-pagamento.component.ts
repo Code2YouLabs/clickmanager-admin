@@ -5,13 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { BillingStateService } from 'src/app/pages/billing/services/billing-state.service';
 import { BillingService } from 'src/app/pages/billing/services/billing.service';
 import { PlanoPublico } from 'src/app/types/plano-publico.type';
 import { CardHeaderComponent } from 'src/app/components/card-header/card-header.component';
 import { BillingAccessResponse } from 'src/app/models/billing-access.model';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { PricingCardComponent } from 'src/app/components/pricing-card/pricing-card.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from 'src/app/models/usuario/usuario.model';
@@ -20,7 +20,7 @@ import { CheckoutResponse } from 'src/app/models/billing-access.model';
 @Component({
   selector: 'app-billing-pagamento',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule, MatCardModule, CardHeaderComponent, TablerIconsModule, PricingCardComponent],
+  imports: [CommonModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule, MatCardModule, CardHeaderComponent, DesignSystemIconsModule, PricingCardComponent],
   templateUrl: './billing-pagamento.component.html',
   styleUrls: ['./billing-pagamento.component.scss']
 })

@@ -36,9 +36,11 @@
             <div class="variacoes-cell" [matTooltip]="(p?.variacoes?.length ?? 0) > 5 ? p.variacoes!.join('\n') : ''"
               [matTooltipDisabled]="!((p?.variacoes?.length ?? 0) > 5)" matTooltipShowDelay="300">
 
-              <div *ngFor="let linha of variacoesPreview(p)" class="variacao-linha">
-                {{ linha }}
-              </div>
+              @for (linha of variacoesPreview(p); track linha) {
+                <div class="variacao-linha">
+                  {{ linha }}
+                </div>
+              }
 
             </div>
 

@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { BrandingComponent } from '../../../layouts/full/vertical/sidebar/branding.component';
 import { AuthService } from '../../../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 @Component({
   selector: 'app-boxed-login',
@@ -37,7 +37,7 @@ export class AppBoxedLoginComponent {
   form = new FormGroup({
     uname: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
-    lembrar: new FormControl(false)
+    lembrar: new FormControl(true)
   });
 
   get f() {

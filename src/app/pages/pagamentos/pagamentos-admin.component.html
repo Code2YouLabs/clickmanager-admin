@@ -1,0 +1,208 @@
+<div class="pagamentos-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Financeiro admin</span>
+      <h1>Pagamentos da plataforma</h1>
+      <p>
+        Acompanhe recebimentos, pendências, estornos e chargebacks por empresa,
+        plano, gateway e referência externa.
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <button mat-flat-button color="primary" (click)="aplicarFiltros()" [disabled]="carregandoLista">
+        Atualizar visão
+      </button>
+      <button mat-stroked-button color="primary" (click)="limparFiltros()">
+        Limpar filtros
+      </button>
+    </div>
+  </section>
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span>Total recebido</span>
+      <strong>{{ formatarMoeda(resumo.totalRecebido) }}</strong>
+      <small>{{ resumo.aprovados }} pagamento(s) aprovado(s)</small>
+    </article>
+
+    <article class="summary-card pending">
+      <span>Pendentes</span>
+      <strong>{{ resumo.pendentes }}</strong>
+      <small>aguardando confirmação</small>
+    </article>
+
+    <article class="summary-card approved">
+      <span>Aprovados</span>
+      <strong>{{ resumo.aprovados }}</strong>
+      <small>último recebimento {{ dataRelativa(resumo.ultimoRecebimentoEm) }}</small>
+    </article>
+
+    <article class="summary-card refunded">
+      <span>Estornados</span>
+      <strong>{{ resumo.estornados }}</strong>
+      <small>{{ formatarMoeda(resumo.totalEstornado) }} em devoluções</small>
+    </article>
+  </section>
+
+  <section class="filters-card">
+    <div class="filters-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar pagamento</mat-label>
+        <input
+          matInput
+          [(ngModel)]="busca"
+          placeholder="Empresa, plano, gateway, referência ou ID"
+          (keyup.enter)="aplicarFiltros()"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="statusFiltro">
+          @for (option of statusOptions; track option) {
+          <mat-option [value]="option">
+            {{ option === 'TODOS' ? 'Todos' : statusLabel(option) }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <div class="list-card">
+      <div class="section-header">
+        <div>
+          <h3>Recebimentos</h3>
+          <p>{{ resumoResultados }}</p>
+        </div>
+      </div>
+
+      @if (carregandoLista) {
+      <div class="state-card">
+        <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+        <span>Carregando pagamentos...</span>
+      </div>
+      } @else if (!pagamentos.length) {
+      <div class="state-card">
+        <i-tabler name="receipt-off" class="icon-24"></i-tabler>
+        <span>Nenhum pagamento encontrado para os filtros atuais.</span>
+      </div>
+      } @else {
+      <div class="pagamento-list">
+        @for (item of pagamentos; track item.id) {
+        <button
+          type="button"
+          class="pagamento-item"
+          [class.selected]="pagamentoSelecionado?.id === item.id"
+          (click)="selecionarPagamento(item)"
+        >
+          <div class="pagamento-item-top">
+            <div>
+              <strong>{{ item.empresaNome || 'Empresa não vinculada' }}</strong>
+              <span>{{ item.planoNome || 'Plano não informado' }}</span>
+            </div>
+            <span class="status-badge" [ngClass]="statusClass(item.status)">
+              {{ statusLabel(item.status) }}
+            </span>
+          </div>
+
+          <div class="pagamento-meta">
+            <span>{{ formatarMoeda(item.valor) }}</span>
+            <span>{{ item.gateway || 'Gateway não informado' }}</span>
+            <span>#{{ item.id }}</span>
+          </div>
+
+          <div class="pagamento-footer">
+            <small>{{ dataRelativa(item.criadoEm) }}</small>
+            <small>{{ item.referenciaExterna || 'Sem referência externa' }}</small>
+          </div>
+        </button>
+        }
+      </div>
+
+      <div class="paginator-wrap">
+        <mat-paginator
+          [length]="totalItens"
+          [pageIndex]="pagina"
+          [pageSize]="tamanho"
+          [pageSizeOptions]="[10, 20, 50]"
+          (page)="alterarPagina($event)"
+          showFirstLastButtons
+        />
+      </div>
+      }
+    </div>
+
+    <div class="detail-card">
+      @if (carregandoDetalhe) {
+      <div class="state-card detail-state">
+        <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+        <span>Carregando detalhe do pagamento...</span>
+      </div>
+      } @else if (pagamentoSelecionado) {
+      <div class="detail-header">
+        <div>
+          <span class="detail-id">Pagamento #{{ pagamentoSelecionado.id }}</span>
+          <h2>{{ pagamentoSelecionado.empresaNome || 'Empresa não vinculada' }}</h2>
+          <p>{{ pagamentoSelecionado.planoNome || 'Plano não informado' }}</p>
+        </div>
+        <span class="status-badge" [ngClass]="statusClass(pagamentoSelecionado.status)">
+          {{ statusLabel(pagamentoSelecionado.status) }}
+        </span>
+      </div>
+
+      <div class="detail-grid">
+        <article class="detail-stat">
+          <span>Valor</span>
+          <strong>{{ formatarMoeda(pagamentoSelecionado.valor) }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Gateway</span>
+          <strong>{{ pagamentoSelecionado.gateway || 'Não informado' }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Criado em</span>
+          <strong>{{ dataRelativa(pagamentoSelecionado.criadoEm) }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Confirmado em</span>
+          <strong>{{ dataRelativa(pagamentoSelecionado.confirmadoEm) }}</strong>
+        </article>
+      </div>
+
+      <div class="detail-section">
+        <h3>Referências</h3>
+        <div class="detail-lines">
+          <span>Pagamento: #{{ pagamentoSelecionado.id }}</span>
+          <span>Assinatura: {{ pagamentoSelecionado.assinaturaId || 'Sem vínculo' }}</span>
+          <span>Referência externa: {{ pagamentoSelecionado.referenciaExterna || 'Sem referência' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Ciclo da assinatura</h3>
+        <div class="detail-lines">
+          <span>Início: {{ pagamentoSelecionado.assinaturaInicio || 'Não informado' }}</span>
+          <span>Fim: {{ pagamentoSelecionado.assinaturaFim || 'Não informado' }}</span>
+          <span>Próxima cobrança: {{ pagamentoSelecionado.proximoCobrancaEm || 'Não informado' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Payload do gateway</h3>
+        <pre class="payload-box">{{ payloadFormatado() }}</pre>
+      </div>
+      } @else {
+      <div class="empty-state">
+        <i-tabler name="receipt-2" class="icon-28"></i-tabler>
+        <div>
+          <strong>Selecione um pagamento</strong>
+          <p>Escolha um item da lista para visualizar o detalhe completo.</p>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+</div>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextoRestritoComponent } from '../inputs/input-texto/input-texto-restrito.component';
@@ -11,12 +11,11 @@ import { EnderecoViaCep } from 'src/app/models/endereco/endereco.viacep.model';
   standalone: true,
   templateUrl: './endereco-form.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     InputTextoRestritoComponent,
     SectionCardComponent,
     InputCepComponent
-  ]
+]
 })
 export class EnderecoFormComponent implements OnInit {
     @Output() formReady = new EventEmitter<FormGroup>();

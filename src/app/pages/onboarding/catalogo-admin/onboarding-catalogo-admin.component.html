@@ -1,0 +1,329 @@
+<div class="catalogo-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Onboarding admin</span>
+      <h1>Catálogo base do onboarding</h1>
+      <p>
+        Gerencie a base de serviços, acabamentos e produtos do onboarding novo
+        com listagem operacional e páginas próprias de edição.
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <button mat-stroked-button color="primary" (click)="carregarCatalogo()" [disabled]="carregandoCatalogo">
+        Atualizar lista
+      </button>
+    </div>
+  </section>
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span>Serviços</span>
+      <strong>{{ totalServicos }}</strong>
+      <small>{{ servicosAtivos }} ativo(s)</small>
+    </article>
+
+    <article class="summary-card">
+      <span>Acabamentos</span>
+      <strong>{{ totalAcabamentos }}</strong>
+      <small>{{ acabamentosAtivos }} ativo(s)</small>
+    </article>
+
+    <article class="summary-card featured">
+      <span>Produtos</span>
+      <strong>{{ totalProdutos }}</strong>
+      <small>{{ produtosAtivos }} ativo(s)</small>
+    </article>
+
+    <article class="summary-card accent">
+      <span>Pré-selecionados</span>
+      <strong>{{ produtosPreSelecionados }}</strong>
+      <small>sugeridos no fluxo</small>
+    </article>
+  </section>
+
+  <mat-card class="tabs-card">
+    <mat-tab-group [selectedIndex]="abaSelecionada" (selectedIndexChange)="onTabChange($event)" animationDuration="0ms">
+      <mat-tab label="Resumo">
+        <div class="overview-grid">
+          <section class="overview-card">
+            <h3>Fluxo operacional</h3>
+            <ol class="steps">
+              <li>Cadastre os serviços modelo.</li>
+              <li>Cadastre os acabamentos modelo.</li>
+              <li>Monte os produtos vinculando serviços e acabamentos.</li>
+              <li>Marque os produtos mais importantes como pré-selecionados.</li>
+              <li>Use ativo/inativo para controlar a vitrine sem apagar histórico.</li>
+            </ol>
+          </section>
+
+          <section class="overview-card">
+            <h3>Atalhos</h3>
+            <div class="shortcut-list">
+              <button mat-flat-button color="primary" (click)="navegarNovoServico()">Novo serviço</button>
+              <button mat-flat-button color="primary" (click)="navegarNovoAcabamento()">Novo acabamento</button>
+              <button mat-flat-button color="primary" (click)="navegarNovoProduto()">Novo produto</button>
+            </div>
+          </section>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Serviços">
+        <section class="table-card">
+          <div class="table-header">
+            <div>
+              <h3>Serviços modelo</h3>
+              <p>{{ servicosFiltrados.length }} item(ns) na visão atual</p>
+            </div>
+
+            <button mat-flat-button color="primary" (click)="navegarNovoServico()">
+              <i-tabler name="plus" class="icon-18 m-r-6"></i-tabler>
+              Novo serviço
+            </button>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput [(ngModel)]="buscaServico" placeholder="Ex: arte, ARTE_NORMAL" />
+          </mat-form-field>
+
+          @if (carregandoCatalogo) {
+            <div class="state-card">
+              <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+              <span>Carregando serviços...</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && !servicosFiltrados.length) {
+            <div class="state-card">
+              <i-tabler name="box-off" class="icon-24"></i-tabler>
+              <span>Nenhum serviço encontrado.</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && servicosFiltrados.length) {
+            <div class="table-responsive">
+              <table mat-table [dataSource]="servicosFiltrados" class="mat-elevation-z0 admin-table">
+                <ng-container matColumnDef="codigo">
+                  <th mat-header-cell *matHeaderCellDef>Código</th>
+                  <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
+                </ng-container>
+                <ng-container matColumnDef="nome">
+                  <th mat-header-cell *matHeaderCellDef>Nome</th>
+                  <td mat-cell *matCellDef="let item">{{ item.nome }}</td>
+                </ng-container>
+                <ng-container matColumnDef="descricao">
+                  <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                  <td mat-cell *matCellDef="let item">{{ item.descricao || '-' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="valor">
+                  <th mat-header-cell *matHeaderCellDef>Valor base</th>
+                  <td mat-cell *matCellDef="let item">{{ formatarMoedaCentavos(item.valorBaseCentavos) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="ordem">
+                  <th mat-header-cell *matHeaderCellDef>Ordem</th>
+                  <td mat-cell *matCellDef="let item">{{ formatarOrdem(item.ordemExibicao) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let item">
+                    <span class="status-badge" [ngClass]="statusClass(item.ativo)">
+                      {{ item.ativo ? 'Ativo' : 'Inativo' }}
+                    </span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="acoes">
+                  <th mat-header-cell *matHeaderCellDef>Ações</th>
+                  <td mat-cell *matCellDef="let item" class="actions-cell">
+                    <button mat-icon-button color="primary" (click)="editarServico(item)" matTooltip="Editar serviço">
+                      <i-tabler name="edit" class="icon-18"></i-tabler>
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="alternarAtivoServico(item)">
+                      {{ item.ativo ? 'Desativar' : 'Ativar' }}
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="colunasServico"></tr>
+                <tr mat-row *matRowDef="let row; columns: colunasServico; trackBy: trackById"></tr>
+              </table>
+            </div>
+          }
+        </section>
+      </mat-tab>
+
+      <mat-tab label="Acabamentos">
+        <section class="table-card">
+          <div class="table-header">
+            <div>
+              <h3>Acabamentos modelo</h3>
+              <p>{{ acabamentosFiltrados.length }} item(ns) na visão atual</p>
+            </div>
+
+            <button mat-flat-button color="primary" (click)="navegarNovoAcabamento()">
+              <i-tabler name="plus" class="icon-18 m-r-6"></i-tabler>
+              Novo acabamento
+            </button>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput [(ngModel)]="buscaAcabamento" placeholder="Ex: laminação, LAMINACAO" />
+          </mat-form-field>
+
+          @if (carregandoCatalogo) {
+            <div class="state-card">
+              <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+              <span>Carregando acabamentos...</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && !acabamentosFiltrados.length) {
+            <div class="state-card">
+              <i-tabler name="box-off" class="icon-24"></i-tabler>
+              <span>Nenhum acabamento encontrado.</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && acabamentosFiltrados.length) {
+            <div class="table-responsive">
+              <table mat-table [dataSource]="acabamentosFiltrados" class="mat-elevation-z0 admin-table">
+                <ng-container matColumnDef="codigo">
+                  <th mat-header-cell *matHeaderCellDef>Código</th>
+                  <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
+                </ng-container>
+                <ng-container matColumnDef="nome">
+                  <th mat-header-cell *matHeaderCellDef>Nome</th>
+                  <td mat-cell *matCellDef="let item">{{ item.nome }}</td>
+                </ng-container>
+                <ng-container matColumnDef="descricao">
+                  <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                  <td mat-cell *matCellDef="let item">{{ item.descricao || '-' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="valor">
+                  <th mat-header-cell *matHeaderCellDef>Valor base</th>
+                  <td mat-cell *matCellDef="let item">{{ formatarMoedaCentavos(item.valorBaseCentavos) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="ordem">
+                  <th mat-header-cell *matHeaderCellDef>Ordem</th>
+                  <td mat-cell *matCellDef="let item">{{ formatarOrdem(item.ordemExibicao) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let item">
+                    <span class="status-badge" [ngClass]="statusClass(item.ativo)">
+                      {{ item.ativo ? 'Ativo' : 'Inativo' }}
+                    </span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="acoes">
+                  <th mat-header-cell *matHeaderCellDef>Ações</th>
+                  <td mat-cell *matCellDef="let item" class="actions-cell">
+                    <button mat-icon-button color="primary" (click)="editarAcabamento(item)" matTooltip="Editar acabamento">
+                      <i-tabler name="edit" class="icon-18"></i-tabler>
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="alternarAtivoAcabamento(item)">
+                      {{ item.ativo ? 'Desativar' : 'Ativar' }}
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="colunasAcabamento"></tr>
+                <tr mat-row *matRowDef="let row; columns: colunasAcabamento; trackBy: trackById"></tr>
+              </table>
+            </div>
+          }
+        </section>
+      </mat-tab>
+
+      <mat-tab label="Produtos">
+        <section class="table-card">
+          <div class="table-header">
+            <div>
+              <h3>Produtos modelo</h3>
+              <p>{{ produtosFiltrados.length }} item(ns) na visão atual</p>
+            </div>
+
+            <button mat-flat-button color="primary" (click)="navegarNovoProduto()">
+              <i-tabler name="plus" class="icon-18 m-r-6"></i-tabler>
+              Novo produto
+            </button>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput [(ngModel)]="buscaProduto" placeholder="Ex: cartão, CARTAO_VISITA" />
+          </mat-form-field>
+
+          @if (carregandoCatalogo) {
+            <div class="state-card">
+              <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+              <span>Carregando produtos...</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && !produtosFiltrados.length) {
+            <div class="state-card">
+              <i-tabler name="box-off" class="icon-24"></i-tabler>
+              <span>Nenhum produto encontrado.</span>
+            </div>
+          }
+
+          @if (!carregandoCatalogo && produtosFiltrados.length) {
+            <div class="table-responsive">
+              <table mat-table [dataSource]="produtosFiltrados" class="mat-elevation-z0 admin-table">
+                <ng-container matColumnDef="codigo">
+                  <th mat-header-cell *matHeaderCellDef>Código</th>
+                  <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
+                </ng-container>
+                <ng-container matColumnDef="nome">
+                  <th mat-header-cell *matHeaderCellDef>Nome</th>
+                  <td mat-cell *matCellDef="let item">
+                    <div class="name-cell">
+                      <strong>{{ item.nome }}</strong>
+                      <div class="inline-badges">
+                        @if (item.preSelecionado) {
+                          <span class="pill-badge preselected">Pré-selecionado</span>
+                        }
+                        <span class="status-badge" [ngClass]="statusClass(item.ativo)">
+                          {{ item.ativo ? 'Ativo' : 'Inativo' }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="categoria">
+                  <th mat-header-cell *matHeaderCellDef>Categoria</th>
+                  <td mat-cell *matCellDef="let item">{{ item.categoria || '-' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="descricao">
+                  <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                  <td mat-cell *matCellDef="let item">{{ item.descricao || '-' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="vinculos">
+                  <th mat-header-cell *matHeaderCellDef>Vínculos</th>
+                  <td mat-cell *matCellDef="let item">{{ resumoVinculosProduto(item) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Ordem</th>
+                  <td mat-cell *matCellDef="let item">{{ formatarOrdem(item.ordemExibicao) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="acoes">
+                  <th mat-header-cell *matHeaderCellDef>Ações</th>
+                  <td mat-cell *matCellDef="let item" class="actions-cell">
+                    <button mat-icon-button color="primary" (click)="editarProduto(item)" matTooltip="Editar produto">
+                      <i-tabler name="edit" class="icon-18"></i-tabler>
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="alternarAtivoProduto(item)">
+                      {{ item.ativo ? 'Desativar' : 'Ativar' }}
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="colunasProduto"></tr>
+                <tr mat-row *matRowDef="let row; columns: colunasProduto; trackBy: trackById"></tr>
+              </table>
+            </div>
+          }
+        </section>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</div>

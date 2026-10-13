@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputEmailComponent } from 'src/app/components/inputs/input-email/input-custom.component';
@@ -18,14 +18,13 @@ export interface EmailTesteDialogData {
   templateUrl: './email-servidor-teste-dialog.component.html',
   styleUrls: ['./email-servidor-teste-dialog.component.scss'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     InputEmailComponent,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule
-  ]
+]
 })
 export class EmailServidorTesteDialogComponent {
   form: FormGroup;

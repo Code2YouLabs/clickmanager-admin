@@ -6,101 +6,102 @@
       <!-- Coluna esquerda: fluxo principal -->
       <div class="main-column">
 
-          <!-- Cliente -->
-          <app-cliente-selector-card
-            [cliente]="clienteConfirmado"
-            [editando]="trocandoCliente || !clienteConfirmado"
-            [showEmptyAlert]="true"
-            [control]="clienteControl"
-            [displayWith]="mostrarCliente"
-            [buscarFn]="buscarClientes"
-            [minimoCaracteres]="3"
-            (salvarCliente)="confirmarClienteSelecionado()"
-            (editarCliente)="iniciarTrocaCliente()"
-            (cancelarEdicao)="cancelarTrocaCliente()"
-            (criarCliente)="onCriarCliente()">
-          </app-cliente-selector-card>
+        <!-- Cliente -->
+        <app-cliente-selector-card
+          [cliente]="clienteConfirmado"
+          [editando]="trocandoCliente || !clienteConfirmado"
+          [showEmptyAlert]="true"
+          [control]="clienteControl"
+          [displayWith]="mostrarCliente"
+          [buscarFn]="buscarClientes"
+          [minimoCaracteres]="3"
+          (salvarCliente)="confirmarClienteSelecionado()"
+          (editarCliente)="iniciarTrocaCliente()"
+          (cancelarEdicao)="cancelarTrocaCliente()"
+          (criarCliente)="onCriarCliente()">
+        </app-cliente-selector-card>
 
-          <!-- Itens do pedido -->
-          <app-itens-pedido-section
-            [itens]="pedidoItens"
-            [subtotal]="subTotal"
-            (buscarProdutos)="onBuscarProdutos()"
-            (descreverItens)="onDescreverItens()"
-            (removerItem)="removerItem($event)"
-            (alterarQuantidade)="alterarQuantidade($event.index, $event.quantidade)"
-          ></app-itens-pedido-section>
+        <!-- Itens do pedido -->
+        <app-itens-pedido-section
+          [itens]="pedidoItens"
+          [subtotal]="subTotal"
+          (buscarProdutos)="onBuscarProdutos()"
+          (descreverItens)="onDescreverItens()"
+          (removerItem)="removerItem($event)"
+          (alterarQuantidade)="alterarQuantidade($event.index, $event.quantidade)"
+        ></app-itens-pedido-section>
 
-          <!-- Observações -->
-          <app-observacoes-card
-            class="observacoes-compact"
-            [control]="observacoesControl"
-            [textoSalvo]="observacaoSalva"
-            [salvando]="false"
-            [salvo]="obsSalvo"
-            placeholder="Insira observações relevantes sobre este pedido..."
-            (salvar)="confirmarObservacaoLocal()">
-          </app-observacoes-card>
-        </div>
+        <!-- Observações -->
+        <app-observacoes-card
+          class="observacoes-compact"
+          [control]="observacoesControl"
+          [textoSalvo]="observacaoSalva"
+          [salvando]="false"
+          [salvo]="obsSalvo"
+          placeholder="Insira observações relevantes sobre este pedido..."
+          (salvar)="confirmarObservacaoLocal()">
+        </app-observacoes-card>
+      </div>
 
-        <!-- Coluna direita: ajustes, resumo, pagamentos, orçamento, ações -->
-        <div class="summary-column">
-          <div class="summary-sticky">
-            <!-- Ajustes -->
-            <app-section-card titulo="Ajustes" [divider]="true">
-              <div class="step-body ajustes-grid">
-                <app-input-moeda [control]="acrescimoControl" label="Acréscimo"></app-input-moeda>
-                <app-input-moeda [control]="freteControl" label="Frete"></app-input-moeda>
-                <app-input-moeda [control]="descontoControl" label="Desconto"></app-input-moeda>
-              </div>
-            </app-section-card>
+      <!-- Coluna direita: ajustes, resumo, pagamentos, orçamento, ações -->
+      <div class="summary-column">
+        <div class="summary-sticky">
+          <!-- Ajustes -->
+          <app-section-card titulo="Ajustes" [divider]="true">
+            <div class="step-body ajustes-grid">
+              <app-input-moeda [control]="acrescimoControl" label="Acréscimo"></app-input-moeda>
+              <app-input-moeda [control]="freteControl" label="Frete"></app-input-moeda>
+              <app-input-moeda [control]="descontoControl" label="Desconto"></app-input-moeda>
+            </div>
+          </app-section-card>
 
-            <!-- Resumo financeiro -->
-            <app-section-card titulo="Resumo financeiro" [divider]="true" class="summary-card">
-              <div class="summary-row">
-                <span>Subtotal</span>
-                <strong class="value align-right">{{ subTotal | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <div class="summary-row">
-                <span>Acréscimos</span>
-                <strong class="value align-right">{{ acrescimoControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <div class="summary-row">
-                <span>Frete</span>
-                <strong class="value align-right">{{ freteControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <div class="summary-row">
-                <span>Descontos</span>
-                <strong class="value align-right">{{ descontoControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <mat-divider class="m-t-8 m-b-8"></mat-divider>
-              <div class="summary-row total">
-                <span>Total</span>
-                <strong class="value highlight">{{ grandTotal | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <div class="summary-row resta">
-                <span>Resta pagar</span>
-                <strong class="value highlight" [class.attention]="restaPagar > 0">{{ restaPagar | currency:'BRL':'symbol':'1.2-2' }}</strong>
-              </div>
-              <div class="microcopy">O total considera ajustes e descontos.</div>
-            </app-section-card>
+          <!-- Resumo financeiro -->
+          <app-section-card titulo="Resumo financeiro" [divider]="true" class="summary-card">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong class="value align-right">{{ subTotal | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Acréscimos</span>
+              <strong class="value align-right">{{ acrescimoControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Frete</span>
+              <strong class="value align-right">{{ freteControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Descontos</span>
+              <strong class="value align-right">{{ descontoControl.value || 0 | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <mat-divider class="m-t-8 m-b-8"></mat-divider>
+            <div class="summary-row total">
+              <span>Total</span>
+              <strong class="value highlight">{{ grandTotal | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <div class="summary-row resta">
+              <span>Resta pagar</span>
+              <strong class="value highlight" [class.attention]="restaPagar > 0">{{ restaPagar | currency:'BRL':'symbol':'1.2-2' }}</strong>
+            </div>
+            <div class="microcopy">O total considera ajustes e descontos.</div>
+          </app-section-card>
 
-            <!-- Pagamentos -->
-            <app-pagamentos-section
-              [pagamentoNovo]="pagamentoNovo"
-              [pagamentosControls]="pagamentosControls"
-              [formasPagamento]="formasPagamento"
-              [pago]="totalPago"
-              [restante]="restaPagar"
-              [mostrarConfirmado]="false"
-              [mostrarData]="false"
-              [expanded]="pagamentosControls.length > 0"
-              (addPagamento)="addPagamento()"
-              (removerPagamento)="removerPagamento($event)">
-            </app-pagamentos-section>
+          <!-- Pagamentos -->
+          <app-pagamentos-section
+            [pagamentoNovo]="pagamentoNovo"
+            [pagamentosControls]="pagamentosControls"
+            [formasPagamento]="formasPagamento"
+            [pago]="totalPago"
+            [restante]="restaPagar"
+            [mostrarConfirmado]="false"
+            [mostrarData]="false"
+            [expanded]="pagamentosControls.length > 0"
+            (addPagamento)="addPagamento()"
+            (removerPagamento)="removerPagamento($event)">
+          </app-pagamentos-section>
 
-            <!-- Orçamento (condicional) -->
-            <app-section-card titulo="Orçamento" [divider]="true" *ngIf="orcamentoControl.value">
+          <!-- Orçamento (condicional) -->
+          @if (orcamentoControl.value) {
+            <app-section-card titulo="Orçamento" [divider]="true">
               <div class="step-body" [@expandCollapse]>
                 <div class="alert-soft">
                   O pedido só será registrado após a aprovação do orçamento.
@@ -114,11 +115,13 @@
                 </div>
               </div>
             </app-section-card>
+          }
 
-            <!-- Ações finais -->
-            <app-section-card>
-              <div class="actions-final">
-                <div class="checklist" *ngIf="addForm.invalid || !pedidoItens.length || !addForm.get('clienteId')?.value || (orcamentoControl.value && (!nomeOrcamentoControl.value || !vencimentoOrcamentoControl.value))">
+          <!-- Ações finais -->
+          <app-section-card>
+            <div class="actions-final">
+              @if (addForm.invalid || !pedidoItens.length || !addForm.get('clienteId')?.value || (orcamentoControl.value && (!nomeOrcamentoControl.value || !vencimentoOrcamentoControl.value))) {
+                <div class="checklist">
                   <div class="check-item" [class.done]="addForm.get('clienteId')?.value">
                     <span class="icon">{{ addForm.get('clienteId')?.value ? '✓' : '•' }}</span>
                     <span>Selecione um cliente</span>
@@ -127,31 +130,34 @@
                     <span class="icon">{{ pedidoItens.length ? '✓' : '•' }}</span>
                     <span>Adicione ao menos 1 item</span>
                   </div>
-                  <div class="check-item" *ngIf="orcamentoControl.value" [class.done]="nomeOrcamentoControl.value && vencimentoOrcamentoControl.value">
-                    <span class="icon">{{ nomeOrcamentoControl.value && vencimentoOrcamentoControl.value ? '✓' : '•' }}</span>
-                    <span>Informe nome e vencimento do orçamento</span>
-                  </div>
+                  @if (orcamentoControl.value) {
+                    <div class="check-item" [class.done]="nomeOrcamentoControl.value && vencimentoOrcamentoControl.value">
+                      <span class="icon">{{ nomeOrcamentoControl.value && vencimentoOrcamentoControl.value ? '✓' : '•' }}</span>
+                      <span>Informe nome e vencimento do orçamento</span>
+                    </div>
+                  }
                 </div>
+              }
 
-                <div class="orcamento-opt">
-                  <mat-checkbox [formControl]="orcamentoControl" class="f-w-600 f-s-13">
-                    Salvar como orçamento
-                  </mat-checkbox>
-                  <div class="microcopy">Se marcado, o pedido vira orçamento e precisa ser aprovado.</div>
-                </div>
-
-                <div class="d-flex gap-8 flex-wrap action-buttons">
-                  <a routerLink="/page/pedido" mat-stroked-button color="warn">
-                    Cancelar
-                  </a>
-                  <button mat-flat-button color="primary" (click)="saveDetail($event)"
-                    [disabled]="addForm.invalid || !pedidoItens.length || !addForm.get('clienteId')?.value || (orcamentoControl.value && (!nomeOrcamentoControl.value || !vencimentoOrcamentoControl.value))">
-                    Salvar pedido
-                  </button>
-                </div>
+              <div class="orcamento-opt">
+                <mat-checkbox [formControl]="orcamentoControl" class="f-w-600 f-s-13">
+                  Salvar como orçamento
+                </mat-checkbox>
+                <div class="microcopy">Se marcado, o pedido vira orçamento e precisa ser aprovado.</div>
               </div>
-            </app-section-card>
-          </div>
+
+              <div class="d-flex gap-8 flex-wrap action-buttons">
+                <a routerLink="/page/pedido" mat-stroked-button color="warn">
+                  Cancelar
+                </a>
+                <button mat-flat-button color="primary" (click)="saveDetail($event)"
+                  [disabled]="addForm.invalid || !pedidoItens.length || !addForm.get('clienteId')?.value || (orcamentoControl.value && (!nomeOrcamentoControl.value || !vencimentoOrcamentoControl.value))">
+                  Salvar pedido
+                </button>
+              </div>
+            </div>
+          </app-section-card>
+        </div>
       </div>
     </div>
   </form>

@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CourseService } from 'src/app/services/apps/course/course.service';
 import { course } from './course';
 import { MatCardModule } from '@angular/material/card';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
     templateUrl: './courses.component.html',
     imports: [
         MatCardModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         MatFormFieldModule,
         MatSelectModule,
         FormsModule,

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,13 +10,12 @@ import { InputPesquisaComponent } from '../inputs/input-pesquisa/input-pesquisa.
   selector: 'app-filtro-pesquisa-card',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
     SectionCardComponent,
     InputPesquisaComponent
-  ],
+],
   templateUrl: './filtro-pesquisa-card.component.html',
   styleUrls: ['./filtro-pesquisa-card.component.scss']
 })

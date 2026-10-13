@@ -14,4 +14,5 @@ export interface NavItem {
     ddType?: string;
     bgcolor?:string;
     requiredPermission?: string[];
+    featureKey?: string;
 }

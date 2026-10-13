@@ -8,7 +8,7 @@ import { Subscription, timer } from 'rxjs';
 import { switchMap, takeWhile } from 'rxjs/operators';
 import { BillingService } from '../services/billing.service';
 import { BillingStateService } from '../services/billing-state.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 @Component({
   selector: 'app-billing-return',

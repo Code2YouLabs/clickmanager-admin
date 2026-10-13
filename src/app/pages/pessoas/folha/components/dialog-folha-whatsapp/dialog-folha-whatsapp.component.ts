@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { InputTelefoneComponent } from 'src/app/components/inputs/input-telefone/input-telefone.component';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 export interface DialogFolhaWhatsappData {
   funcionarioNome: string;
@@ -17,7 +17,7 @@ export interface DialogFolhaWhatsappData {
 @Component({
   selector: 'app-dialog-folha-whatsapp',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule, InputTelefoneComponent],
+  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule, InputTelefoneComponent],
   templateUrl: './dialog-folha-whatsapp.component.html',
   styleUrl: './dialog-folha-whatsapp.component.scss'
 })

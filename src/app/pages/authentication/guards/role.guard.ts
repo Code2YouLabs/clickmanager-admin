@@ -16,7 +16,7 @@ export class RoleGuard implements CanActivate {
       return of(this.hasRequiredRole(token, allowedRoles));
     }
 
-    return of(this.router.createUrlTree(['/authentication/login']));
+    return of(this.router.createUrlTree(['/login']));
   }
 
   private getUserRoles(token: string): string[] {

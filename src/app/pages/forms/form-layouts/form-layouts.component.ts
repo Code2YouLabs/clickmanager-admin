@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { MaterialModule } from '../../../material.module';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -50,7 +50,7 @@ interface Food {
   selector: 'app-form-layouts',
   imports: [
     MaterialModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,

@@ -1,39 +1,44 @@
-<div *ngIf="produto?.preco?.tipo === 'DEMANDA'" [formGroup]="form">
-
-  <h2 class="f-s-20 f-w-600 m-b-8">{{ produto.nome }}</h2>
-  <p class="f-s-14 m-b-16 text-muted">{{ produto.descricao }}</p>
-
-  <div class="row m-b-16">
-    <div class="col-md-3" *ngIf="produto.formato">
-      <div class="f-w-600">Formato</div>
-      <div>{{ produto.formato }}</div>
+@if (produto?.preco?.tipo === 'DEMANDA') {
+  <div [formGroup]="form">
+    <h2 class="f-s-20 f-w-600 m-b-8">{{ produto.nome }}</h2>
+    <p class="f-s-14 m-b-16 text-muted">{{ produto.descricao }}</p>
+    <div class="row m-b-16">
+      @if (produto.formato) {
+        <div class="col-md-3">
+          <div class="f-w-600">Formato</div>
+          <div>{{ produto.formato }}</div>
+        </div>
+      }
+      @if (produto.material) {
+        <div class="col-md-3">
+          <div class="f-w-600">Material</div>
+          <div>{{ produto.material }}</div>
+        </div>
+      }
+      @if (produto.cor) {
+        <div class="col-md-3">
+          <div class="f-w-600">Cor</div>
+          <div>{{ produto.cor }}</div>
+        </div>
+      }
+      @if (produto.acabamento) {
+        <div class="col-md-3">
+          <div class="f-w-600">Acabamento</div>
+          <div>{{ produto.acabamento }}</div>
+        </div>
+      }
     </div>
-    <div class="col-md-3" *ngIf="produto.material">
-      <div class="f-w-600">Material</div>
-      <div>{{ produto.material }}</div>
+    <!-- Input de Quantidade -->
+    <app-input-numerico [control]="quantidadeControl" label="Quantidade" placeholder="Digite a quantidade" />
+    <div class="f-s-18 f-w-600 m-t-24">
+      Valor total: {{ subTotal | currency: 'BRL' }}
     </div>
-    <div class="col-md-3" *ngIf="produto.cor">
-      <div class="f-w-600">Cor</div>
-      <div>{{ produto.cor }}</div>
+    <div class="f-s-14 text-muted m-t-4">
+      Valor unitário: {{ valorUnitario | currency: 'BRL' }}
     </div>
-    <div class="col-md-3" *ngIf="produto.acabamento">
-      <div class="f-w-600">Acabamento</div>
-      <div>{{ produto.acabamento }}</div>
-    </div>
+    <button class="m-t-24" type="button" mat-flat-button color="primary" (click)="onAdicionar()"
+      [disabled]="form.invalid">
+      Adicionar
+    </button>
   </div>
-
-  <!-- Input de Quantidade -->
-  <app-input-numerico [control]="quantidadeControl" label="Quantidade" placeholder="Digite a quantidade" />
-
-  <div class="f-s-18 f-w-600 m-t-24">
-    Valor total: {{ subTotal | currency: 'BRL' }}
-  </div>
-  <div class="f-s-14 text-muted m-t-4">
-    Valor unitário: {{ valorUnitario | currency: 'BRL' }}
-  </div>
-
-  <button class="m-t-24" type="button" mat-flat-button color="primary" (click)="onAdicionar()"
-    [disabled]="form.invalid">
-    Adicionar
-  </button>
-</div>
+}

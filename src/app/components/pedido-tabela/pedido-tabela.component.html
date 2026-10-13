@@ -99,12 +99,14 @@
                 <div class="label">Responsável</div>
                 <div class="value">{{ pedido.nomeResponsavel || '-' }}</div>
               </div>
-              <div class="detail-item" *ngIf="pedido.status">
-                <div class="label">Status</div>
-                <div class="value">
-                  <app-status-badge [status]="pedido.status"></app-status-badge>
+              @if (pedido.status) {
+                <div class="detail-item">
+                  <div class="label">Status</div>
+                  <div class="value">
+                    <app-status-badge [status]="pedido.status"></app-status-badge>
+                  </div>
                 </div>
-              </div>
+              }
               <div class="detail-item">
                 <div class="label">Total Pago</div>
                 <div class="value">R$ {{ pedido.valorTotalPago | number:'1.2-2' }}</div>
@@ -142,5 +144,5 @@
   </table>
 
   <mat-paginator [length]="total" [pageSize]="pageSize" (page)="onPage($event)"
-    showFirstLastButtons></mat-paginator>
+  showFirstLastButtons></mat-paginator>
 </div>

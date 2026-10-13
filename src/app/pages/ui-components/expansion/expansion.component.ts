@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { AppCodeViewComponent } from 'src/app/components/code-view/code-view.component';
 
 // snippets
@@ -29,7 +29,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
         MatFormFieldModule,
         MatInputModule,
         MatDatepickerModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         MatCardModule,
         MatTabsModule,
         Highlight,

@@ -12,7 +12,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/material.module';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { BrandingComponent } from 'src/app/layouts/full/vertical/sidebar/branding.component';
 import { OnboardingService } from './onboarding.service';
 import { CommonModule } from '@angular/common';

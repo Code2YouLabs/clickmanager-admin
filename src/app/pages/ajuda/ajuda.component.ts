@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +21,7 @@ type AjudaSecao = {
 @Component({
   selector: 'app-ajuda',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatExpansionModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule],
+  imports: [MatCardModule, MatExpansionModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule],
   templateUrl: './ajuda.component.html',
   styleUrls: ['./ajuda.component.scss'],
 })

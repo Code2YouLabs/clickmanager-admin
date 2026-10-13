@@ -18,7 +18,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { DashboardComparativoResponse, DashboardService } from '../dashboard.service';
 
 
@@ -53,7 +53,7 @@ export interface GraficoReceita {
 @Component({
   selector: 'app-congratulate-card',
   standalone: true,
-  imports: [NgApexchartsModule, MaterialModule, TablerIconsModule],
+  imports: [NgApexchartsModule, MaterialModule, DesignSystemIconsModule],
   templateUrl: './congratulate-card.component.html',
 })
 export class AppCongratulateCardComponent implements OnInit {

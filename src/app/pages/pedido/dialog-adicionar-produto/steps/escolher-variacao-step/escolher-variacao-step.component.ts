@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -29,15 +29,14 @@ type Variacao = {
     templateUrl: './escolher-variacao-step.component.html',
     styleUrls: ['./escolher-variacao-step.component.scss'],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatRadioModule,
-        MatDividerModule,
-        MatCheckboxModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatProgressSpinnerModule,
-    ],
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatProgressSpinnerModule
+],
 })
 export class EscolherVariacaoStepComponent implements OnChanges {
     @Input() form!: FormGroup;

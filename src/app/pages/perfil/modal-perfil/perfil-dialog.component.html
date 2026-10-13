@@ -33,19 +33,22 @@
       </div>
 
       <div formGroupName="permissoes" class="permissoes-grid">
-        <div *ngFor="let grupo of grupos | keyvalue" class="permissao-card">
-          <div class="permissao-title">
-            <span class="f-w-600">{{ grupo.key }}</span>
+        @for (grupo of grupos | keyvalue; track grupo) {
+          <div class="permissao-card">
+            <div class="permissao-title">
+              <span class="f-w-600">{{ grupo.key }}</span>
+            </div>
+            <div class="permissao-list">
+              @for (permissao of grupo.value; track permissao) {
+                <mat-slide-toggle
+                  [formControlName]="permissao.chave"
+                  color="primary">
+                  {{ permissao.titulo }}
+                </mat-slide-toggle>
+              }
+            </div>
           </div>
-          <div class="permissao-list">
-            <mat-slide-toggle
-              *ngFor="let permissao of grupo.value"
-              [formControlName]="permissao.chave"
-              color="primary">
-              {{ permissao.titulo }}
-            </mat-slide-toggle>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </form>

@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { PedidoService } from '../pedido.service';
 import { PedidoResponse } from 'src/app/models/pedido/pedido-response.model';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({

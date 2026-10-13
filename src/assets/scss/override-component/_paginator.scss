@@ -3,6 +3,6 @@
 
 @include mat.paginator-overrides(
   (
-    container-background-color: var(--mdc-elevated-card-container-color),
+    container-background-color: var(--mat-card-elevated-container-color),
   )
 );

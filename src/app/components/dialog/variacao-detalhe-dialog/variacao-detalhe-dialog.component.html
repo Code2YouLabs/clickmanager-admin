@@ -1,101 +1,116 @@
 <h2 mat-dialog-title class="head">
-    <mat-icon>info</mat-icon>
-    Detalhes da Variação
+  <mat-icon>info</mat-icon>
+  Detalhes da Variação
 </h2>
 
 <mat-dialog-content class="mat-typography content">
-    <!-- Resumo -->
-    <div class="summary three">
+  <!-- Resumo -->
+  <div class="summary three">
+    <div class="kv">
+      <div class="k">Material</div>
+      <div class="v">
+        {{ resolveLabel(data.variacao.materialId, data.lookups.materiais) || '—' }}
+      </div>
+    </div>
+
+    <div class="kv">
+      <div class="k">Formato</div>
+      <div class="v">
+        {{ resolveLabel(data.variacao.formatoId, data.lookups.formatos) || '—' }}
+      </div>
+    </div>
+
+    <div class="kv">
+      <div class="k">Cor</div>
+      <div class="v">
+        {{ resolveCorLabel() }}
+      </div>
+    </div>
+  </div>
+
+  <mat-divider class="sep"></mat-divider>
+
+  <!-- Composição -->
+  <div class="section-title">
+    <mat-icon>construction</mat-icon>
+    Acabamentos
+  </div>
+  @if (acabData.length) {
+    <div class="list">
+      @for (a of acabData; track a) {
+        <div class="row-line">
+          <div class="left">
+            <div class="title">{{ a?.nome || '—' }}</div>
+            <div class="desc">{{ a?.descricao || '—' }}</div>
+          </div>
+          <div class="right">
+            <span class="chip">{{ precoShort(a?.preco) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    —
+  }
+
+  <div class="section-title m-t-16">
+    <mat-icon>build</mat-icon>
+    Serviços
+  </div>
+  @if (srvData.length) {
+    <div class="list">
+      @for (s of srvData; track s) {
+        <div class="row-line">
+          <div class="left">
+            <div class="title">{{ s?.nome || '—' }}</div>
+            <div class="desc">{{ s?.descricao || '—' }}</div>
+          </div>
+          <div class="right">
+            <span class="chip">{{ precoShort(s?.preco) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    —
+  }
+
+  <mat-divider class="sep"></mat-divider>
+
+  <!-- Preço da variação -->
+  <div class="section-title">
+    <mat-icon>sell</mat-icon>
+    Preço da variação
+  </div>
+
+  @if (precoPairs.length) {
+    <div class="kv-table">
+      @for (p of precoPairs; track p) {
         <div class="kv">
-            <div class="k">Material</div>
-            <div class="v">
-                {{ resolveLabel(data.variacao.materialId, data.lookups.materiais) || '—' }}
-            </div>
+          <span class="k">{{ p[0] }}</span>
+          <span class="v">{{ p[1] }}</span>
         </div>
-
-        <div class="kv">
-            <div class="k">Formato</div>
-            <div class="v">
-                {{ resolveLabel(data.variacao.formatoId, data.lookups.formatos) || '—' }}
-            </div>
-        </div>
-
-        <div class="kv">
-            <div class="k">Cor</div>
-            <div class="v">
-                {{ resolveCorLabel() }}
-            </div>
-        </div>
+      }
     </div>
+  } @else {
+    —
+  }
 
-    <mat-divider class="sep"></mat-divider>
+  <mat-divider class="sep"></mat-divider>
 
-    <!-- Composição -->
-    <div class="section-title">
-        <mat-icon>construction</mat-icon>
-        Acabamentos
-    </div>
-    <div *ngIf="acabData.length; else noAcab" class="list">
-        <div class="row-line" *ngFor="let a of acabData">
-            <div class="left">
-                <div class="title">{{ a?.nome || '—' }}</div>
-                <div class="desc">{{ a?.descricao || '—' }}</div>
-            </div>
-            <div class="right">
-                <span class="chip">{{ precoShort(a?.preco) }}</span>
-            </div>
-        </div>
-    </div>
-    <ng-template #noAcab>—</ng-template>
-
-    <div class="section-title m-t-16">
-        <mat-icon>build</mat-icon>
-        Serviços
-    </div>
-    <div *ngIf="srvData.length; else noSrv" class="list">
-        <div class="row-line" *ngFor="let s of srvData">
-            <div class="left">
-                <div class="title">{{ s?.nome || '—' }}</div>
-                <div class="desc">{{ s?.descricao || '—' }}</div>
-            </div>
-            <div class="right">
-                <span class="chip">{{ precoShort(s?.preco) }}</span>
-            </div>
-        </div>
-    </div>
-    <ng-template #noSrv>—</ng-template>
-
-    <mat-divider class="sep"></mat-divider>
-
-    <!-- Preço da variação -->
-    <div class="section-title">
-        <mat-icon>sell</mat-icon>
-        Preço da variação
-    </div>
-
-    <div class="kv-table" *ngIf="precoPairs.length; else noPreco">
-        <div class="kv" *ngFor="let p of precoPairs">
-            <span class="k">{{ p[0] }}</span>
-            <span class="v">{{ p[1] }}</span>
-        </div>
-    </div>
-    <ng-template #noPreco>—</ng-template>
-
-    <mat-divider class="sep"></mat-divider>
-
-    <!-- Política de Revenda -->
-    <div class="section-title">
-        <mat-icon>percent</mat-icon>
-        Política de Revenda
-    </div>
-    <div class="policy">
-        {{ politicaResumo(data.variacao.politicaRevenda ?? (data.politicaProduto ?? null)) }}
-    </div>
+  <!-- Política de Revenda -->
+  <div class="section-title">
+    <mat-icon>percent</mat-icon>
+    Política de Revenda
+  </div>
+  <div class="policy">
+    {{ politicaResumo(data.variacao.politicaRevenda ?? (data.politicaProduto ?? null)) }}
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-stroked-button (click)="close()">
-        <mat-icon>close</mat-icon>
-        Fechar
-    </button>
+  <button mat-stroked-button (click)="close()">
+    <mat-icon>close</mat-icon>
+    Fechar
+  </button>
 </mat-dialog-actions>

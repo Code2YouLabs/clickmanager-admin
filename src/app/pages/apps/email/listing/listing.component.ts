@@ -31,7 +31,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DetailComponent } from '../detail/detail.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -48,7 +48,7 @@ type MailboxType = 'Inbox' | 'Sent' | 'Draft' | 'Spam' | 'Trash';
     AngularEditorModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
   ],
 })
 export class ListingDialogDataExampleDialogComponent {
@@ -114,7 +114,7 @@ export class ListingDialogDataExampleDialogComponent {
     MaterialModule,
     CommonModule,
     NgScrollbarModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     NgxPaginationModule,
     DetailComponent,
     MatCheckboxModule,

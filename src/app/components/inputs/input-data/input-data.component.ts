@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,14 +12,13 @@ import { MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker
   selector: 'app-input-data',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule
-  ],
+],
   templateUrl: './input-data.component.html'
 })
 export class InputDataComponent {

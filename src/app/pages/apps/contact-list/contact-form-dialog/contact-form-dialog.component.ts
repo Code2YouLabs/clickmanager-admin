@@ -4,12 +4,12 @@ import { MaterialModule } from 'src/app/material.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-contact-form-dialog',
   templateUrl: './contact-form-dialog.component.html',
-  imports: [MaterialModule, CommonModule, FormsModule, TablerIconsModule],
+  imports: [MaterialModule, CommonModule, FormsModule, DesignSystemIconsModule],
 })
 export class ContactFormDialogComponent {
   contact = {

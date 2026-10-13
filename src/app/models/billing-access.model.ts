@@ -12,6 +12,11 @@ export interface BillingAccessResponse {
   empresaId?: number | null;
   planoId?: number | null;
   proprietario?: boolean | null;
+  modulos?: unknown;
+  modulosHabilitados?: unknown;
+  modules?: unknown;
+  enabledModules?: unknown;
+  features?: unknown;
   returnUrl?: string;
 }
 

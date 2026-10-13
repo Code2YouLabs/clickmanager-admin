@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -50,7 +50,7 @@ interface month {
     imports: [
         MatCardModule,
         NgApexchartsModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         FormsModule,
         MatInputModule,
         MatSelectModule,

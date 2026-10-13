@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/services/apps/course/course.service';
 import { MatCardModule } from '@angular/material/card';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
     templateUrl: './course-detail.component.html',
     imports: [
         MatCardModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         MatStepperModule,
         MatInputModule,
         MatButtonModule,

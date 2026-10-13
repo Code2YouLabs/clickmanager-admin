@@ -4,20 +4,19 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+
+import { DsFieldComponent } from 'src/app/ui/field';
+import { DsInputDirective } from 'src/app/ui/input';
 
 @Component({
   selector: 'app-input-numerico',
   standalone: true,
   templateUrl: './input-numerico.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    DsFieldComponent,
+    DsInputDirective
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputNumericoComponent implements OnInit {
@@ -26,6 +25,8 @@ export class InputNumericoComponent implements OnInit {
   @Input() label: string = 'Número';
   @Input() placeholder: string = '';
   @Input() valor = '';
+
+  readonly inputId: string = `input-numerico-${Math.random().toString(36).slice(2, 9)}`;
 
   private onChange = (value: any) => {};
   private onTouched = () => {};
@@ -37,6 +38,10 @@ export class InputNumericoComponent implements OnInit {
 
     // Nada de min/max aqui — o pai define!
     this.control.updateValueAndValidity();
+  }
+
+  get errorTexto(): string {
+    return this.control.invalid && this.control.touched ? this.errorMessage() : '';
   }
 
   errorMessage(): string {

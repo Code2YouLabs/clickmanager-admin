@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
 import { AppAddEmployeeComponent } from './add/add.component';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { Employee } from 'src/app/pages/apps/employee/employee';
 import { EmployeeService } from 'src/app/services/apps/employee/employee.service';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     CommonModule,
   ],
 })
@@ -102,7 +102,7 @@ interface DialogData {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
   ],
   templateUrl: 'employee-dialog-content.html',
 })

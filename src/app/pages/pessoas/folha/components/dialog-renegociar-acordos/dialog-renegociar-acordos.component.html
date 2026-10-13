@@ -14,19 +14,23 @@
   </div>
 
   <div class="agreements-list">
-    <div class="agreement-item" *ngFor="let a of data.acordos">
-      <mat-checkbox [checked]="isSelecionado(a.id)" (change)="toggleAcordo(a.id, $event.checked)">
-        <span class="agreement-title">{{ a.tipo }} #{{ a.id }}</span>
-      </mat-checkbox>
-      <div class="agreement-desc">{{ a.descricao || 'Sem descrição' }}</div>
-      <div class="agreement-meta">
-        Em aberto: {{ a.saldoEmAberto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }} • Parcelas em aberto: {{ a.parcelasEmAberto }}
+    @for (a of data.acordos; track a) {
+      <div class="agreement-item">
+        <mat-checkbox [checked]="isSelecionado(a.id)" (change)="toggleAcordo(a.id, $event.checked)">
+          <span class="agreement-title">{{ a.tipo }} #{{ a.id }}</span>
+        </mat-checkbox>
+        <div class="agreement-desc">{{ a.descricao || 'Sem descrição' }}</div>
+        <div class="agreement-meta">
+          Em aberto: {{ a.saldoEmAberto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }} • Parcelas em aberto: {{ a.parcelasEmAberto }}
+        </div>
       </div>
+    }
+  </div>
+  @if (acordoIdsControl.touched && acordoIdsControl.invalid) {
+    <div class="field-error">
+      Selecione ao menos um acordo.
     </div>
-  </div>
-  <div class="field-error" *ngIf="acordoIdsControl.touched && acordoIdsControl.invalid">
-    Selecione ao menos um acordo.
-  </div>
+  }
 
   <div class="row g-3">
     <div class="col-12 col-md-6">

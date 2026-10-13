@@ -1,14 +1,14 @@
 export const BUTTONS_TS_SNIPPET = `  import {Component} from '@angular/core';
     import {MatButtonModule} from '@angular/material/button';
     import {MatIconModule} from '@angular/material/icon';
-    import { TablerIconsModule } from 'angular-tabler-icons';
+    import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
     /**
      * @title Basic buttons
      */
     @Component({
         selector: 'app-button',
-        imports: [MatButtonModule, MatIconModule, TablerIconsModule],
+        imports: [MatButtonModule, MatIconModule, DesignSystemIconsModule],
         templateUrl: './button.component.html'
     })
     export class AppButtonComponent {

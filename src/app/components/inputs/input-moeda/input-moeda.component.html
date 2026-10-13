@@ -1,22 +1,24 @@
 <div class="w-100">
   <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-    {{ label }} <span *ngIf="isRequired" style="color: #ff110094">*</span>
-  </mat-label>
+    {{ label }} @if (isRequired) {
+    <span style="color: #ff110094">*</span>
+  }
+</mat-label>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <input
-      matInput
-      type="text"
-      #inputRef
-      [value]="valorFormatado"
-      (input)="onInput($event)"
-      (paste)="onPaste($event)"
-      (keydown)="bloquearNaoNumericos($event)"
+<mat-form-field appearance="outline" class="w-100">
+  <input
+    matInput
+    type="text"
+    #inputRef
+    [value]="valorFormatado"
+    (input)="onInput($event)"
+    (paste)="onPaste($event)"
+    (keydown)="bloquearNaoNumericos($event)"
     />
-  
-    @if (control.invalid && control.touched) {
-      <mat-error>{{ errorMessage() }}</mat-error>
-    }
-  </mat-form-field>
-  
+
+  @if (control.invalid && control.touched) {
+    <mat-error>{{ errorMessage() }}</mat-error>
+  }
+</mat-form-field>
+
 </div>

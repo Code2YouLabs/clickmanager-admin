@@ -1,36 +1,40 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { CardHeaderComponent } from 'src/app/components/card-header/card-header.component';
-import { InputTextoRestritoComponent } from 'src/app/components/inputs/input-texto/input-texto-restrito.component';
-import { InputEmailComponent } from 'src/app/components/inputs/input-email/input-custom.component';
-import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico/input-numerico.component';
 import { EmailServidorConfig, EmailServidorService, EmailServidorTesteRequest } from './email-servidor.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EmailServidorTesteDialogComponent } from './email-servidor-teste-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { DsButtonComponent } from 'src/app/ui/button';
+import { DsFieldComponent } from 'src/app/ui/field';
+import { DsInputDirective } from 'src/app/ui/input';
+import { DsCheckboxComponent } from 'src/app/ui/checkbox';
+
+type CampoEmail = 'host' | 'porta' | 'usuario' | 'senha' | 'remetente';
 
 @Component({
   selector: 'app-email-servidor',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MaterialModule,
     CardHeaderComponent,
-    InputTextoRestritoComponent,
-    InputEmailComponent,
-    InputNumericoComponent
-  ],
+    DsButtonComponent,
+    DsFieldComponent,
+    DsInputDirective,
+    DsCheckboxComponent
+],
   templateUrl: './email-servidor.component.html',
   styleUrls: ['./email-servidor.component.scss']
 })
 export class EmailServidorComponent {
   form: FormGroup;
   private emailUsuario?: string;
+  submitted = false;
   private mensagemPadraoTeste = 'E-mail de teste do servidor de e-mail do ClickManager. Se você recebeu esta mensagem, sua configuração está funcionando.';
 
   constructor(
@@ -56,6 +60,7 @@ export class EmailServidorComponent {
   }
 
   salvar(): void {
+    this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -72,6 +77,7 @@ export class EmailServidorComponent {
   }
 
   testar(): void {
+    this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.toastr.warning('Preencha a configuração antes de testar.');
@@ -112,6 +118,26 @@ export class EmailServidorComponent {
       },
       error: (err) => this.exibirErro(err, 'Não foi possível enviar o e-mail de teste.')
     });
+  }
+
+  invalid(campo: CampoEmail): boolean {
+    const control = this.form.get(campo) as FormControl;
+    return control.invalid && (control.touched || this.submitted);
+  }
+
+  error(campo: CampoEmail): string {
+    if (!this.invalid(campo)) return '';
+    const control = this.form.get(campo) as FormControl;
+    if (control.hasError('required')) return 'Campo obrigatório';
+    if (control.hasError('email')) return 'E-mail inválido';
+    if (control.hasError('min')) {
+      const requiredMin = control.getError('min')?.min;
+      return `Valor mínimo permitido é ${requiredMin}`;
+    }
+    if (control.hasError('maxlength')) {
+      return `Máximo de ${control.getError('maxlength')?.requiredLength} caracteres`;
+    }
+    return 'Valor inválido';
   }
 
   get hostControl() {

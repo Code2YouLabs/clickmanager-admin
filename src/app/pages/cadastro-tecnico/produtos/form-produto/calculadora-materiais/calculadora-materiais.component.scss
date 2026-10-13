@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.calculadora-materiais-panel {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 2px 0 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

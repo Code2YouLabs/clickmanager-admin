@@ -24,7 +24,7 @@ export const BASIC_WITH_ICONS_TS_SNIPPET = `  import { Component } from '@angula
 import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-form-vertical',
@@ -32,7 +32,7 @@ import { TablerIconsModule } from 'angular-tabler-icons';
     MaterialModule,
     MatFormFieldModule,
     MatInputModule,
-    TablerIconsModule
+    DesignSystemIconsModule
   ],
   templateUrl: './form-vertical.component.html',
 })
@@ -47,7 +47,7 @@ export const FORM_SEPARATOR_TS_SNIPPET = ` import { Component } from '@angular/c
 import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -57,7 +57,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MaterialModule,
     MatFormFieldModule,
     MatInputModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatDatepickerModule
   ],
   templateUrl: './form-vertical.component.html',
@@ -74,7 +74,7 @@ export const FORM_LABEL_ALIGN_TS_SNIPPET = ` import { Component } from '@angular
 import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -84,7 +84,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MaterialModule,
     MatFormFieldModule,
     MatInputModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatDatepickerModule
   ],
   templateUrl: './form-vertical.component.html',
@@ -102,7 +102,7 @@ import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -113,7 +113,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatDatepickerModule
   ],
   templateUrl: './form-horizontal.component.html',

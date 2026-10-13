@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
+
 import { debounceTime } from 'rxjs/operators';
 
 @Component({
@@ -10,11 +10,10 @@ import { debounceTime } from 'rxjs/operators';
   standalone: true,
   templateUrl: './input-pesquisa.component.html',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputPesquisaComponent {

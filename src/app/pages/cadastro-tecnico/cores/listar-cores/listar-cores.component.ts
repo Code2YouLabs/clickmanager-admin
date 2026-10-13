@@ -3,17 +3,17 @@ import { Cor } from 'src/app/models/cor.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
+
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/dialog/confirm-dialog/confirm-dialog.component';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { TemPermissaoDirective } from 'src/app/diretivas/tem-permissao.directive';
 import { InputPesquisaComponent } from 'src/app/components/inputs/input-pesquisa/input-pesquisa.component';
 import { MatButtonModule } from '@angular/material/button';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { CorService } from '../../services/cor.service';
 import { CardHeaderComponent } from "src/app/components/card-header/card-header.component";
 
@@ -21,7 +21,6 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
   selector: 'app-listar-cores',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     MatCardModule,
     MatPaginatorModule,
@@ -29,7 +28,7 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     RouterModule,
     TemPermissaoDirective,
     InputPesquisaComponent,

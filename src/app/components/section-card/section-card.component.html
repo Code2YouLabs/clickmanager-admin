@@ -1,17 +1,21 @@
 <mat-card class="section-card cardWithShadow">
   <div class="section-card__header">
     <div class="section-card__title">
-      <div class="title" *ngIf="titulo">{{ titulo }}</div>
-      <div class="subtitle" *ngIf="subtitulo">{{ subtitulo }}</div>
+      @if (titulo) {
+        <div class="title">{{ titulo }}</div>
+      }
+      @if (subtitulo) {
+        <div class="subtitle">{{ subtitulo }}</div>
+      }
     </div>
     <div class="section-card__actions">
       <ng-content select="[actions]"></ng-content>
     </div>
   </div>
 
-  <ng-container *ngIf="showDivider">
+  @if (showDivider) {
     <mat-divider class="m-b-12"></mat-divider>
-  </ng-container>
+  }
 
   <div class="section-card__body">
     <ng-content></ng-content>

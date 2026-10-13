@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ThemePalette } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTabsModule} from '@angular/material/tabs';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import {DatePipe} from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { AppCodeViewComponent } from 'src/app/components/code-view/code-view.component';
@@ -17,7 +17,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 
 @Component({
     selector: 'app-tabs',
-    imports: [MatTabsModule, MatCardModule, MatIconModule, TablerIconsModule, DatePipe, MatButtonModule,
+    imports: [MatTabsModule, MatCardModule, MatIconModule, DesignSystemIconsModule, DatePipe, MatButtonModule,
       Highlight,
       HighlightAuto,
       HighlightLineNumbers,

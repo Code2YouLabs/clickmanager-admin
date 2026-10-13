@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
@@ -8,8 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { ToastrService } from 'src/app/services/toastr.service';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { TemPermissaoDirective } from 'src/app/diretivas/tem-permissao.directive';
 import { InputPesquisaComponent } from 'src/app/components/inputs/input-pesquisa/input-pesquisa.component';
 import { ServicoService } from '../../services/servico.service';
@@ -22,14 +22,13 @@ import { Preco } from 'src/app/models/preco/preco-response.model';
   selector: 'app-listar-servicos',
   standalone: true,
   imports: [
-    CommonModule,
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     RouterModule,
     TemPermissaoDirective,
     InputPesquisaComponent,

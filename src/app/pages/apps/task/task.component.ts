@@ -5,13 +5,14 @@ import { TaskSection } from './tasks';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { FormsModule } from '@angular/forms';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
     selector: 'app-task',
     templateUrl: './task.component.html',
     styleUrls: ['./task.component.scss'],
-    imports: [MaterialModule, CommonModule, TablerIconsModule]
+    imports: [MaterialModule, CommonModule, FormsModule, DesignSystemIconsModule]
 })
 export class AppTaskComponent {
   sectionTask: TaskSection[] | null = null;

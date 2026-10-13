@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,17 +20,16 @@ import { ProdutoListagem } from 'src/app/models/produto/produto-listagem.model';
     templateUrl: './selecionar-produto-step.component.html',
     styleUrls: ['./selecionar-produto-step.component.scss'],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-        MatCardModule,
-        MatDividerModule,
-    ],
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatDividerModule
+],
 })
 export class SelecionarProdutoStepComponent implements OnInit, OnDestroy {
     @Input() selectedId: number | null = null;

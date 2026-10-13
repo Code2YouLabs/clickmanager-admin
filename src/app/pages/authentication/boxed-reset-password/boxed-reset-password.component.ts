@@ -10,7 +10,7 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { BrandingComponent } from '../../../layouts/full/vertical/sidebar/branding.component';
 import { AuthService } from '../../../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -45,7 +45,7 @@ export class AppBoxedResetPasswordComponent implements OnInit {
       this.token = params['token'];
       if (!this.token) {
         this.toastr.error('Token de redefinição de senha não encontrado na URL.');
-        this.router.navigate(['/authentication/login']);
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -61,7 +61,7 @@ export class AppBoxedResetPasswordComponent implements OnInit {
     this.authService.resetarSenha(this.token, senha).subscribe({
       next: () => {
         this.toastr.success('Senha redefinida com sucesso!');
-        this.router.navigate(['/authentication/login']);
+        this.router.navigate(['/login']);
       },
       error: () => {
         this.toastr.error('Erro ao redefinir a senha. O link pode ter expirado.');

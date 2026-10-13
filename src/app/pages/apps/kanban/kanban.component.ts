@@ -11,7 +11,7 @@ import { AppOkDialogComponent } from './ok-dialog/ok-dialog.component';
 import { AppDeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { KanbanService } from 'src/app/services/apps/kanban/kanban.service';
 import { Todos } from './kanban';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,7 +24,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     imports: [
         MaterialModule,
         CommonModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         DragDropModule,
         NgScrollbarModule,
     ]

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ServicoService } from '../../services/servico.service';
-import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { ToastrService } from 'src/app/services/toastr.service';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -20,7 +20,6 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
   standalone: true,
   templateUrl: './form-servico.component.html',
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     MatCardModule,

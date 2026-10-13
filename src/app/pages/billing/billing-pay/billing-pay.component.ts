@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { BillingService } from 'src/app/pages/billing/services/billing.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { BillingStateService } from 'src/app/pages/billing/services/billing-state.service';
 import { CardHeaderComponent } from 'src/app/components/card-header/card-header.component';
 

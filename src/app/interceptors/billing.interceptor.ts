@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { BillingStateService } from '../pages/billing/services/billing-state.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 @Injectable()
 export class BillingInterceptor implements HttpInterceptor {

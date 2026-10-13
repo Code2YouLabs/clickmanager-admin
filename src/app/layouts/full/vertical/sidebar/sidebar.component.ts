@@ -7,13 +7,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BrandingComponent } from './branding.component';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [BrandingComponent, TablerIconsModule, MaterialModule],
+  imports: [BrandingComponent, DesignSystemIconsModule, MaterialModule],
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {

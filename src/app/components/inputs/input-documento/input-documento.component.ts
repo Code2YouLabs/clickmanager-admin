@@ -5,7 +5,7 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,11 +16,10 @@ import { debounceTime } from 'rxjs/operators';
   standalone: true,
   templateUrl: './input-documento.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule
-  ],
+],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputDocumentoComponent implements OnInit, AfterViewInit {

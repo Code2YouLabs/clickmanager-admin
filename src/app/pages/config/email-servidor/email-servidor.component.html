@@ -4,49 +4,58 @@
   </app-card-header>
 
   <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="salvar()" class="email-form">
+    <form [formGroup]="form" (ngSubmit)="salvar()" class="email-form" novalidate>
       <div class="row g-3 email-row">
         <div class="col-md-6">
-          <app-input-texto-restrito [control]="hostControl" label="Host" placeholder="smtp.seudominio.com"
-            [maxlength]="200">
-          </app-input-texto-restrito>
+          <ds-field label="Host" htmlFor="host" [required]="true" [error]="error('host')">
+            <input id="host" dsInput formControlName="host" placeholder="smtp.seudominio.com"
+              maxlength="200" [invalid]="invalid('host')">
+          </ds-field>
         </div>
         <div class="col-md-3">
-          <app-input-numerico [control]="portaControl" label="Porta"></app-input-numerico>
+          <ds-field label="Porta" htmlFor="porta" [required]="true" [error]="error('porta')">
+            <input id="porta" dsInput formControlName="porta" inputmode="numeric" placeholder="587"
+              [invalid]="invalid('porta')">
+          </ds-field>
         </div>
         <div class="col-md-3 ssl-col">
-          <mat-checkbox formControlName="usarSsl">Usar SSL/TLS</mat-checkbox>
+          <ds-checkbox formControlName="usarSsl">Usar SSL/TLS</ds-checkbox>
         </div>
 
         <div class="col-md-6">
-          <app-input-email [control]="usuarioControl" label="Usuário (e-mail)" placeholder="email@seudominio.com">
-          </app-input-email>
+          <ds-field label="Usuário (e-mail)" htmlFor="usuario" [required]="true" [error]="error('usuario')">
+            <input id="usuario" dsInput formControlName="usuario" type="email" placeholder="email@seudominio.com"
+              maxlength="200" [invalid]="invalid('usuario')">
+          </ds-field>
         </div>
         <div class="col-md-6">
-          <app-input-texto-restrito [control]="senhaControl" label="Senha" [maxlength]="200">
-          </app-input-texto-restrito>
+          <ds-field label="Senha" htmlFor="senha" [required]="true" [error]="error('senha')">
+            <input id="senha" dsInput formControlName="senha" placeholder="••••••••" type="password"
+              maxlength="200" autocomplete="new-password" [invalid]="invalid('senha')">
+          </ds-field>
         </div>
 
         <div class="col-md-6">
-          <app-input-email [control]="remetenteControl" label="Remetente padrão"
-            placeholder="nome@seudominio.com">
-          </app-input-email>
+          <ds-field label="Remetente padrão" htmlFor="remetente" [required]="true" [error]="error('remetente')">
+            <input id="remetente" dsInput formControlName="remetente" type="email"
+              placeholder="nome@seudominio.com" maxlength="200" [invalid]="invalid('remetente')">
+          </ds-field>
         </div>
 
         <div class="col-md-6 d-flex align-items-end">
-          <button mat-stroked-button color="primary" type="button" (click)="testar()" [disabled]="form.invalid">
+          <ds-button variant="outline" [disabled]="form.invalid" (pressed)="testar()">
             Testar configuração
-          </button>
+          </ds-button>
         </div>
       </div>
 
       <div class="actions-row m-t-16">
-        <button mat-flat-button class="bg-error text-white" type="button" (click)="cancelar()">
+        <ds-button variant="destructive" (pressed)="cancelar()">
           Cancelar
-        </button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+        </ds-button>
+        <ds-button type="submit" [disabled]="form.invalid">
           Salvar
-        </button>
+        </ds-button>
       </div>
     </form>
   </mat-card-content>

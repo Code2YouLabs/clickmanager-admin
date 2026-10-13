@@ -1,25 +1,47 @@
-<mat-toolbar class="topbar gap-8">
+<mat-toolbar class="topbar admin-topbar">
   @if(showToggle) {
-  <button mat-icon-button (click)="toggleCollapsed.emit()" class="d-flex justify-content-center">
+  <button
+    mat-icon-button
+    (click)="toggleCollapsed.emit()"
+    class="d-flex justify-content-center admin-topbar__toggle"
+  >
     <i-tabler name="align-left" class="icon-20 d-flex"></i-tabler>
   </button>
   } @else {
-  <button mat-icon-button (click)="toggleMobileNav.emit()" class="d-flex justify-content-center">
+  <button
+    mat-icon-button
+    (click)="toggleMobileNav.emit()"
+    class="d-flex justify-content-center admin-topbar__toggle"
+  >
     <i-tabler name="align-left" class="icon-20 d-flex"></i-tabler>
   </button>
   }
 
-  <div class="d-flex flex-column">
-    <strong class="f-s-16">ClickManager Admin</strong>
-    <span class="text-muted f-s-12">Painel administrativo de suporte</span>
+  <div class="admin-topbar__brand">
+    <strong class="admin-topbar__title">ClickManager Admin</strong>
+    <span class="admin-topbar__subtitle">Painel administrativo de suporte</span>
   </div>
 
-  <span class="flex-1-auto"></span>
+  <div class="admin-topbar__actions">
+    <button
+      mat-icon-button
+      matTooltip="Atualizar painel"
+      aria-label="Atualizar painel"
+      (click)="recarregarPagina()"
+    >
+      <i-tabler name="refresh" class="icon-20 d-flex"></i-tabler>
+    </button>
 
-  <button mat-stroked-button color="primary" [matMenuTriggerFor]="profileMenu">
-    <i-tabler name="user-circle" class="icon-18 m-r-8"></i-tabler>
-    {{ usuarioNome }}
-  </button>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="profileMenu"
+      class="admin-topbar__menu-trigger"
+      matTooltip="Mais opções"
+      aria-label="Mais opções"
+    >
+      <i-tabler name="dots-vertical" class="icon-20 d-flex"></i-tabler>
+    </button>
+  </div>
 
   <mat-menu #profileMenu="matMenu" xPosition="before" class="topbar-dd cardWithShadow">
     <div class="p-x-24 p-y-16">
@@ -27,9 +49,18 @@
       <span class="d-block text-body m-t-8">{{ usuarioNome }}</span>
     </div>
 
-    <div class="p-y-12 p-x-24">
-      <button (click)="logout()" mat-flat-button color="primary" class="w-100">
-        Sair
+    <div class="admin-topbar__menu-actions">
+      <button mat-menu-item (click)="alternarTelaCheia()">
+        <i-tabler
+          [name]="emTelaCheia ? 'arrows-minimize' : 'arrows-maximize'"
+          class="icon-18 d-flex"
+        ></i-tabler>
+        <span>{{ emTelaCheia ? 'Sair da tela cheia' : 'Abrir em tela cheia' }}</span>
+      </button>
+
+      <button mat-menu-item (click)="logout()">
+        <i-tabler name="logout" class="icon-18 d-flex"></i-tabler>
+        <span>Sair</span>
       </button>
     </div>
   </mat-menu>

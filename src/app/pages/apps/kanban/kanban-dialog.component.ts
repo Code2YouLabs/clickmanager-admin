@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, Optional } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
     imports: [
         MaterialModule,
         CommonModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         FormsModule,
         ReactiveFormsModule,
     ],

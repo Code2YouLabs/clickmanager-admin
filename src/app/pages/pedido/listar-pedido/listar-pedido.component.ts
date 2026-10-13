@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -25,7 +25,6 @@ import { PedidoTabelaComponent } from "src/app/components/pedido-tabela/pedido-t
   templateUrl: './listar-pedido.component.html',
   styleUrls: ['./listar-pedido.component.scss'],
   imports: [
-    CommonModule,
     RouterModule,
     MatIconModule,
     MatButtonModule,

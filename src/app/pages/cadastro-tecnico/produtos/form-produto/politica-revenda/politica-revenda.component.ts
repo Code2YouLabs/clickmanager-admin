@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges
 } from '@angular/core';
@@ -26,15 +26,13 @@ export interface PoliticaRevenda {
   selector: 'app-politica-revenda',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatSlideToggleModule,
     MatRadioModule,
     MatFormFieldModule,
-    MatInputModule,
-    // InputMoedaComponent,
-  ],
+    MatInputModule
+],
   templateUrl: './politica-revenda.component.html'
 })
 export class PoliticaRevendaComponent implements OnInit, OnChanges, OnDestroy {

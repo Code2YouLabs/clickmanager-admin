@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angu
 import { CoreService } from 'src/app/services/core.service';
 import { ViewportScroller } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { RouterLink } from '@angular/router';
 import { BrandingComponent } from '../../../layouts/full/vertical/sidebar/branding.component';
 
@@ -58,7 +58,7 @@ interface CaseStudy {
 @Component({
   selector: 'app-landingpage',
   standalone: true,
-  imports: [MaterialModule, TablerIconsModule, RouterLink, BrandingComponent],
+  imports: [MaterialModule, DesignSystemIconsModule, RouterLink, BrandingComponent],
   templateUrl: './landingpage.component.html',
   styleUrls: ['./landingpage.component.scss'],
 })

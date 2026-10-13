@@ -22,7 +22,7 @@ import { AppAddKichenSinkComponent } from './add/add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -146,7 +146,7 @@ const employees = [
     templateUrl: './kichen-sink.component.html',
     imports: [
         MaterialModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         MatNativeDateModule,
         NgScrollbarModule,
         CommonModule,

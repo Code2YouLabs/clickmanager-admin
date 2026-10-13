@@ -1,0 +1,31 @@
+.mainWrapper.tv-mode {
+  background: linear-gradient(180deg, #f4f8ff 0%, #eef4fb 100%);
+}
+
+.contentWrapper.tv-mode-content {
+  width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+}
+
+.pageWrapper.tv-mode-page {
+  width: 100%;
+  max-width: none !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.tv-dashboard-container {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: clamp(10px, 1.2vw, 24px);
+}
+
+@media (max-width: 900px) {
+  .tv-dashboard-container {
+    padding: 14px;
+  }
+}

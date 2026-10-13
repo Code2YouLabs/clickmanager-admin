@@ -19,6 +19,95 @@
 </section>
 } @else {
 <div class="dashboard-shell">
+  @if (modoPainelAtivo) {
+  <div class="tv-panel-controls">
+    <button mat-flat-button color="primary" (click)="carregarDashboard()">
+      Atualizar painel
+    </button>
+    <button mat-stroked-button color="primary" (click)="sairModoPainel()">
+      Voltar ao admin
+    </button>
+  </div>
+
+  <section class="metric-grid metric-grid-tv">
+    @for (metrica of metricas; track metrica.label) {
+    <article class="metric-card">
+      <div class="metric-head">
+        <div class="metric-label">{{ metrica.label }}</div>
+        <span class="metric-icon" [ngClass]="'tone-' + metrica.tone">
+          <i-tabler [name]="metrica.icon" class="icon-22"></i-tabler>
+        </span>
+      </div>
+      <h2 class="metric-value">{{ metrica.value }}</h2>
+      <span class="metric-delta">{{ metrica.delta }}</span>
+      <p class="metric-helper">{{ metrica.helper }}</p>
+    </article>
+    }
+  </section>
+
+  <section class="content-grid growth-grid content-grid-tv">
+    <div class="dashboard-card growth-card growth-card-tv">
+      <div class="dashboard-card-header growth-header">
+        <div>
+          <h3>Crescimento de clientes</h3>
+          <p>Curva cronológica da base ativa com receita recorrente no mesmo eixo de leitura.</p>
+        </div>
+        <span class="growth-chip">{{ variacaoCrescimentoLabel }}</span>
+      </div>
+
+      <div class="growth-chart">
+        @for (item of crescimentoClientes; track item.mes + item.total) {
+        <article class="growth-column">
+          <small class="growth-total">{{ item.total }} ativos</small>
+          <div class="growth-bar-track">
+            <div class="growth-bar" [style.height.%]="item.altura"></div>
+          </div>
+          <strong>{{ item.mes }}</strong>
+          <span>+{{ item.novos }} novos</span>
+          <small>{{ item.receita }}</small>
+        </article>
+        }
+      </div>
+
+      <div class="growth-footer">
+        <div>
+          <strong>{{ dashboard.visaoGeral.totalClientes }} clientes</strong>
+          <span>base total monitorada pelo admin</span>
+        </div>
+        <div>
+          <strong>{{ dashboard.crescimentoInsights.clientesEmOnboarding }} onboarding</strong>
+          <span>contas em ativação que sustentam a próxima curva</span>
+        </div>
+        <div>
+          <strong>{{ dashboard.crescimentoInsights.clientesEmRisco }} em risco</strong>
+          <span>clientes que pedem ação para não afetar retenção</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-card growth-focus-card-tv">
+      <div class="dashboard-card-header">
+        <div>
+          <h3>Leituras do crescimento</h3>
+          <p>Resumo executivo para separar aquisição, ativação e risco de churn.</p>
+        </div>
+      </div>
+
+      <div class="growth-focus-list growth-focus-list-tv">
+        @for (item of focosCrescimento; track item.titulo) {
+        <article class="growth-focus-item">
+          <div class="growth-focus-top">
+            <h4>{{ item.titulo }}</h4>
+            <span class="growth-focus-badge" [ngClass]="crescimentoClass(item.tone)">{{ item.tendencia }}</span>
+          </div>
+          <strong class="growth-focus-value">{{ item.valor }}</strong>
+          <p>{{ item.resumo }}</p>
+        </article>
+        }
+      </div>
+    </div>
+  </section>
+  } @else {
   <section class="hero-panel">
     <div class="hero-grid">
       <div>
@@ -223,6 +312,35 @@
     <div class="dashboard-card">
       <div class="dashboard-card-header">
         <div>
+          <h3>Pagamentos da plataforma</h3>
+          <p>Resumo financeiro dos recebimentos, pendências e devoluções do período.</p>
+        </div>
+        <a mat-stroked-button color="primary" class="header-action-button" [routerLink]="['/pagamentos']">
+          Ver mais
+        </a>
+      </div>
+
+      @if (carregandoPagamentos) {
+      <div class="embedded-state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Carregando pagamentos...</span>
+      </div>
+      } @else {
+      <div class="payment-metric-grid">
+        @for (metrica of metricasPagamentos; track metrica.label) {
+        <article class="payment-metric-card" [ngClass]="paymentMetricClass(metrica.tone)">
+          <span>{{ metrica.label }}</span>
+          <strong>{{ metrica.value }}</strong>
+          <small>{{ metrica.helper }}</small>
+        </article>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="dashboard-card">
+      <div class="dashboard-card-header">
+        <div>
           <h3>Leads da landing</h3>
           <p>Resumo comercial das mensagens recebidas pela landing e newsletter.</p>
         </div>
@@ -285,6 +403,87 @@
             <span>{{ dataRelativa(lead.atualizadoEm) }}</span>
           </div>
         </article>
+        }
+      </div>
+      }
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <div class="dashboard-card">
+      <div class="dashboard-card-header">
+        <div>
+          <h3>Funil da landing</h3>
+          <p>Leitura do caminho entre visita, abertura do formulário e cadastro concluído.</p>
+          <small class="landing-period-label">Período: {{ landingPeriodoLabel }}</small>
+        </div>
+        <a mat-stroked-button color="primary" class="header-action-button" [routerLink]="['/landing-acessos']">
+          Ver mais
+        </a>
+      </div>
+
+      @if (carregandoLandingAcessos) {
+      <div class="embedded-state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Carregando acessos da landing...</span>
+      </div>
+      } @else {
+      <div class="landing-metric-grid">
+        @for (metrica of metricasLanding; track metrica.label) {
+        <article class="landing-metric-card" [ngClass]="landingMetricClass(metrica.tone)">
+          <span>{{ metrica.label }}</span>
+          <strong>{{ metrica.value }}</strong>
+          <small>{{ metrica.helper }}</small>
+        </article>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="dashboard-card">
+      <div class="dashboard-card-header">
+        <div>
+          <h3>Leituras do funil</h3>
+          <p>Taxas de avanço e leitura separada entre visualizações brutas e visitantes únicos.</p>
+        </div>
+      </div>
+
+      @if (carregandoLandingAcessos) {
+      <div class="embedded-state">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Consolidando audiência...</span>
+      </div>
+      } @else {
+      <div class="landing-origin-list landing-origin-list-spaced">
+        @for (item of leiturasFunilLanding; track item.label) {
+        <div class="landing-origin-item">
+          <div class="landing-origin-top">
+            <span>{{ item.label }}</span>
+            <strong>{{ item.value }}</strong>
+          </div>
+          <small>{{ item.helper }}</small>
+        </div>
+        }
+      </div>
+
+      <div class="landing-device-list">
+        <p class="section-note">Dispositivos por {{ landingBaseDispositivosLabel }}.</p>
+        @for (item of landingDispositivos; track item.label) {
+        <article class="landing-device-item">
+          <span>{{ item.label }}</span>
+          <strong>{{ item.quantidade }}</strong>
+        </article>
+        }
+      </div>
+
+      <div class="landing-origin-list">
+        @for (item of landingOrigensTop; track item.nome) {
+        <div class="landing-origin-item">
+          <div class="landing-origin-top">
+            <span>{{ item.nome }}</span>
+            <strong>{{ item.quantidade }}</strong>
+          </div>
+        </div>
         }
       </div>
       }
@@ -399,7 +598,16 @@
           <span>Abrir a fila comercial para qualificar mensagens recebidas pela landing page.</span>
         </div>
       </a>
+
+      <a class="quick-action" [routerLink]="['/landing-acessos']">
+        <i-tabler name="world-www" class="icon-22"></i-tabler>
+        <div>
+          <strong>Tráfego da landing</strong>
+          <span>Acompanhar acessos, origens e conversão do topo do funil comercial.</span>
+        </div>
+      </a>
     </div>
   </section>
+  }
 </div>
 }

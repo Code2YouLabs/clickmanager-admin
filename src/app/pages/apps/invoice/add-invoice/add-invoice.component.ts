@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddedDialogComponent } from './added-dialog/added-dialog.component';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -26,7 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
     ]
 })
 export class AppAddInvoiceComponent {

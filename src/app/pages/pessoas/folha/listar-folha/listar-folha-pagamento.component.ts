@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PageCardComponent } from 'src/app/components/page-card/page-card.component';
 import { SectionCardComponent } from 'src/app/components/section-card/section-card.component';

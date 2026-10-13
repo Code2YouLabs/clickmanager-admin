@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
@@ -8,8 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { ToastrService } from 'src/app/services/toastr.service';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { ConfirmDialogComponent } from 'src/app/components/dialog/confirm-dialog/confirm-dialog.component';
 import { ClienteListagem } from 'src/app/models/cliente/cliente-listagem.model';
 import { TemPermissaoDirective } from 'src/app/diretivas/tem-permissao.directive';
@@ -22,14 +22,13 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
   selector: 'app-listar-clientes',
   standalone: true,
   imports: [
-    CommonModule,
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     RouterModule,
     TemPermissaoDirective,
     InputPesquisaComponent,

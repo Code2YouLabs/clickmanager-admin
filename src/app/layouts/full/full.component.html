@@ -4,10 +4,12 @@
   autoFocus
   [ngClass]="{
     'sidebarNav-mini': options.sidenavCollapsed && options.navPos !== 'top' && !options.horizontal && !resView,
-    cardBorder: options.cardBorder
+    cardBorder: options.cardBorder,
+    'tv-mode': modoPainelAtivo
   }"
   [dir]="options.dir!"
 >
+  @if (!modoPainelAtivo) {
   <mat-sidenav
     #leftsidenav
     position="start"
@@ -28,9 +30,18 @@
       </ng-scrollbar>
     </div>
   </mat-sidenav>
+  }
 
-  <mat-sidenav-content class="contentWrapper" [ngClass]="{ 'p-l-24 p-r-24': !options.horizontal }" #content>
-    <main class="pageWrapper" [ngClass]="{ maxWidth: options.boxed }">
+  <mat-sidenav-content
+    class="contentWrapper"
+    [ngClass]="{
+      'p-l-24 p-r-24': !options.horizontal && !modoPainelAtivo,
+      'tv-mode-content': modoPainelAtivo
+    }"
+    #content
+  >
+    <main class="pageWrapper" [ngClass]="{ maxWidth: options.boxed && !modoPainelAtivo, 'tv-mode-page': modoPainelAtivo }">
+      @if (!modoPainelAtivo) {
       <app-header
         [showToggle]="!isOver"
         (toggleCollapsed)="toggleCollapsed()"
@@ -41,6 +52,11 @@
         <app-breadcrumb></app-breadcrumb>
         <router-outlet></router-outlet>
       </div>
+      } @else {
+      <div class="tv-dashboard-container">
+        <router-outlet></router-outlet>
+      </div>
+      }
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
     selector: 'app-invoice-view',
@@ -16,7 +16,7 @@ import { TablerIconsModule } from 'angular-tabler-icons';
         RouterLink,
         FormsModule,
         ReactiveFormsModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
     ]
 })
 export class AppInvoiceViewComponent {

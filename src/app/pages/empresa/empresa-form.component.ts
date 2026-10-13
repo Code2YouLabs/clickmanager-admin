@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,10 +9,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { ImagemUtil } from 'src/app/utils/imagem-util';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { ValidadorUtil } from 'src/app/utils/validador-util';
 import { EnderecoViaCep } from 'src/app/models/endereco/endereco.viacep.model';
 import { CepUtilService } from 'src/app/utils/cep-util.service';
@@ -33,7 +33,6 @@ import { InputCepComponent } from 'src/app/components/inputs/input-cep/input-cep
   standalone: true,
   templateUrl: './empresa-form.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -43,7 +42,7 @@ import { InputCepComponent } from 'src/app/components/inputs/input-cep/input-cep
     MatCardModule,
     MatSelectModule,
     MatRadioModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     NgxMaskDirective,
     CardHeaderComponent,
     InputTextoRestritoComponent,
@@ -51,7 +50,7 @@ import { InputCepComponent } from 'src/app/components/inputs/input-cep/input-cep
     InputTelefoneComponent,
     InputDocumentoComponent,
     InputCepComponent
-  ],
+],
   providers: [provideNgxMask()]
 })
 export class EmpresaFormComponent implements OnInit {

@@ -13,12 +13,14 @@
   ></app-card-header>
 
   <mat-card-content class="config-content">
-    <div class="loading-state" *ngIf="carregando">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      <p>Carregando configuração da folha...</p>
-    </div>
+    @if (carregando) {
+      <div class="loading-state">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <p>Carregando configuração da folha...</p>
+      </div>
+    }
 
-    <ng-container *ngIf="!carregando">
+    @if (!carregando) {
       <app-section-card titulo="Resumo rápido" [divider]="false">
         <div class="resumo-grid">
           <div class="resumo-item">
@@ -35,7 +37,6 @@
           </div>
         </div>
       </app-section-card>
-
       <form [formGroup]="form" class="config-form">
         <app-section-card titulo="1) Regra padrão de pagamento" [divider]="false">
           <p class="section-hint">Esta regra será usada por padrão ao criar competências.</p>
@@ -48,17 +49,17 @@
                 [showNull]="false"
               ></app-input-options>
             </div>
-
-            <div class="col-12 col-lg-6" *ngIf="regraPagamentoControl.value === 'DIA_FIXO'">
-              <app-input-numerico
-                [control]="diaPagamentoControl"
-                label="Dia fixo do pagamento"
-              ></app-input-numerico>
-              <small class="text-muted">Informe um dia entre 1 e 31.</small>
-            </div>
+            @if (regraPagamentoControl.value === 'DIA_FIXO') {
+              <div class="col-12 col-lg-6">
+                <app-input-numerico
+                  [control]="diaPagamentoControl"
+                  label="Dia fixo do pagamento"
+                ></app-input-numerico>
+                <small class="text-muted">Informe um dia entre 1 e 31.</small>
+              </div>
+            }
           </div>
         </app-section-card>
-
         <app-section-card titulo="2) Política de passagem" [divider]="false">
           <p class="section-hint">Defina como a passagem impacta o cálculo da folha.</p>
           <div class="row g-3">
@@ -72,7 +73,6 @@
             </div>
           </div>
         </app-section-card>
-
         <app-section-card titulo="3) Política de acordos (adiantamento e empréstimo)" [divider]="false">
           <p class="section-hint">Controle permissões e limites para acordos na folha.</p>
           <div class="row g-3">
@@ -93,40 +93,43 @@
               ></app-input-options>
             </div>
           </div>
-
-          <div class="policy-alert" *ngIf="!exibirParametrosAcordo">
-            Adiantamento e empréstimo estão desabilitados. Os demais parâmetros de acordo não serão aplicados.
-          </div>
-
-          <div class="row g-3 m-t-8" *ngIf="exibirParametrosAcordo">
-            <div class="col-12 col-lg-4">
-              <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Limite percentual do salário</mat-label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input matInput type="number" min="0" max="100" step="0.01" formControlName="limitePercentualSalario" />
-                <mat-hint>Opcional. Ex.: 40 = 40%</mat-hint>
-                <mat-error *ngIf="form.get('limitePercentualSalario')?.invalid && form.get('limitePercentualSalario')?.touched">
-                  Informe um valor entre 0 e 100.
-                </mat-error>
-              </mat-form-field>
+          @if (!exibirParametrosAcordo) {
+            <div class="policy-alert">
+              Adiantamento e empréstimo estão desabilitados. Os demais parâmetros de acordo não serão aplicados.
             </div>
-
-            <div class="col-12 col-lg-4" *ngIf="exibirParametrosEmprestimo">
-              <app-input-numerico
-                [control]="maxParcelasControl"
-                label="Máximo de parcelas (empréstimo)"
-              ></app-input-numerico>
+          }
+          @if (exibirParametrosAcordo) {
+            <div class="row g-3 m-t-8">
+              <div class="col-12 col-lg-4">
+                <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Limite percentual do salário</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput type="number" min="0" max="100" step="0.01" formControlName="limitePercentualSalario" />
+                  <mat-hint>Opcional. Ex.: 40 = 40%</mat-hint>
+                  @if (form.get('limitePercentualSalario')?.invalid && form.get('limitePercentualSalario')?.touched) {
+                    <mat-error>
+                      Informe um valor entre 0 e 100.
+                    </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              @if (exibirParametrosEmprestimo) {
+                <div class="col-12 col-lg-4">
+                  <app-input-numerico
+                    [control]="maxParcelasControl"
+                    label="Máximo de parcelas (empréstimo)"
+                  ></app-input-numerico>
+                </div>
+              }
+              <div class="col-12 col-lg-4">
+                <app-input-numerico
+                  [control]="carenciaControl"
+                  label="Carência mínima (competências)"
+                ></app-input-numerico>
+              </div>
             </div>
-
-            <div class="col-12 col-lg-4">
-              <app-input-numerico
-                [control]="carenciaControl"
-                label="Carência mínima (competências)"
-              ></app-input-numerico>
-            </div>
-          </div>
+          }
         </app-section-card>
       </form>
-
       <div class="actions m-t-16" *temPermissao="['FOLHA_CONFIGURAR']">
         <span class="actions-hint">As alterações são aplicadas em novas competências e novos acordos.</span>
         <div class="actions-buttons">
@@ -136,6 +139,6 @@
           </button>
         </div>
       </div>
-    </ng-container>
+    }
   </mat-card-content>
 </mat-card>

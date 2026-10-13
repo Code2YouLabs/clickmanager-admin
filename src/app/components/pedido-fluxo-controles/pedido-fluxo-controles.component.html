@@ -1,4 +1,4 @@
-<ng-container *ngIf="renderCard; else content">
+@if (renderCard) {
   <app-section-card [titulo]="titulo" [divider]="divider">
     <div actions class="header-actions">
       <app-manual-link
@@ -8,7 +8,6 @@
         icon="help_outline"
         [onlyIcon]="true">
       </app-manual-link>
-
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Ações do fluxo" [disabled]="inativo || isReadOnly || !podeTrocarStatus">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -17,50 +16,109 @@
           <mat-icon>sync_alt</mat-icon>
           <span>Trocar status</span>
         </button>
-        <button mat-menu-item *ngIf="statusOptions?.includes('CANCELADO')" (click)="cancelarPedido.emit()" [disabled]="inativo || isReadOnly">
-          <mat-icon class="warn">cancel</mat-icon>
-          <span class="warn-text">Cancelar pedido</span>
-        </button>
-        <button mat-menu-item *ngIf="statusOptions?.includes('PRONTO')" (click)="finalizarPedido.emit()" [disabled]="inativo || isReadOnly">
-          <mat-icon>flag</mat-icon>
-          <span>Finalizar pedido</span>
-        </button>
+        @if (statusOptions?.includes('CANCELADO')) {
+          <button mat-menu-item (click)="cancelarPedido.emit()" [disabled]="inativo || isReadOnly">
+            <mat-icon class="warn">cancel</mat-icon>
+            <span class="warn-text">Cancelar pedido</span>
+          </button>
+        }
+        @if (statusOptions?.includes('PRONTO')) {
+          <button mat-menu-item (click)="finalizarPedido.emit()" [disabled]="inativo || isReadOnly">
+            <mat-icon>flag</mat-icon>
+            <span>Finalizar pedido</span>
+          </button>
+        }
       </mat-menu>
     </div>
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </app-section-card>
-</ng-container>
+} @else {
+  <div class="fluxo" [class.inativo]="inativo">
+    <div class="flow-body">
+      <div class="status-top">
+        <app-status-badge [status]="statusAtual"></app-status-badge>
+        @if (vm.nextAction) {
+          <div class="primary-action">
+            <button mat-flat-button color="primary" type="button"
+              [disabled]="vm.nextAction.disabled"
+              (click)="onNextAction()">
+              @if (vm.nextAction.icon) {
+                <mat-icon>{{ vm.nextAction.icon }}</mat-icon>
+              }
+              {{ vm.nextAction.label }}
+            </button>
+          </div>
+        }
+      </div>
+      <div class="status-secondary">
+        <div class="helper-text">{{ vm.helperText }}</div>
+        @if (hints?.length) {
+          <div class="hints">
+            @for (h of hints; track h) {
+              <span class="hint-chip">{{ h }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+    <div class="step-strip textual">
+      <span class="flow-label">Fluxo dos pedidos</span>
+      <div class="flow-line">
+        @for (s of vm.steps; track s; let last = $last) {
+          <span class="flow-step">
+            <span [class.active]="s.active" [class.done]="s.done">{{ s.label }}</span>
+            @if (!last) {
+              <span class="arrow">→</span>
+            }
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+}
 
 <ng-template #content>
   <div class="fluxo" [class.inativo]="inativo">
     <div class="flow-body">
       <div class="status-top">
         <app-status-badge [status]="statusAtual"></app-status-badge>
-        <div class="primary-action" *ngIf="vm.nextAction">
-          <button mat-flat-button color="primary" type="button"
-            [disabled]="vm.nextAction.disabled"
-            (click)="onNextAction()">
-            <mat-icon *ngIf="vm.nextAction.icon">{{ vm.nextAction.icon }}</mat-icon>
-            {{ vm.nextAction.label }}
-          </button>
-        </div>
+        @if (vm.nextAction) {
+          <div class="primary-action">
+            <button mat-flat-button color="primary" type="button"
+              [disabled]="vm.nextAction.disabled"
+              (click)="onNextAction()">
+              @if (vm.nextAction.icon) {
+                <mat-icon>{{ vm.nextAction.icon }}</mat-icon>
+              }
+              {{ vm.nextAction.label }}
+            </button>
+          </div>
+        }
       </div>
 
       <div class="status-secondary">
         <div class="helper-text">{{ vm.helperText }}</div>
-        <div class="hints" *ngIf="hints?.length">
-          <span class="hint-chip" *ngFor="let h of hints">{{ h }}</span>
-        </div>
+        @if (hints?.length) {
+          <div class="hints">
+            @for (h of hints; track h) {
+              <span class="hint-chip">{{ h }}</span>
+            }
+          </div>
+        }
       </div>
     </div>
 
     <div class="step-strip textual">
       <span class="flow-label">Fluxo dos pedidos</span>
       <div class="flow-line">
-        <span class="flow-step" *ngFor="let s of vm.steps; let last = last">
-          <span [class.active]="s.active" [class.done]="s.done">{{ s.label }}</span>
-          <span class="arrow" *ngIf="!last">→</span>
-        </span>
+        @for (s of vm.steps; track s; let last = $last) {
+          <span class="flow-step">
+            <span [class.active]="s.active" [class.done]="s.done">{{ s.label }}</span>
+            @if (!last) {
+              <span class="arrow">→</span>
+            }
+          </span>
+        }
       </div>
     </div>
   </div>

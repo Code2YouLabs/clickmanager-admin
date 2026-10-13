@@ -12,7 +12,7 @@ import {
   NgApexchartsModule,
 } from 'ng-apexcharts';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 export interface paymentsChart {
   series: ApexAxisChartSeries;
@@ -27,7 +27,7 @@ export interface paymentsChart {
 @Component({
   selector: 'app-payments',
   standalone: true,
-  imports: [MaterialModule, NgApexchartsModule, TablerIconsModule],
+  imports: [MaterialModule, NgApexchartsModule, DesignSystemIconsModule],
   templateUrl: './payments.component.html',
 })
 export class AppPaymentsComponent {

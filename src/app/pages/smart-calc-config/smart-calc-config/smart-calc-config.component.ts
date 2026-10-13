@@ -1,9 +1,9 @@
 import { Component, OnInit, DestroyRef, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -30,10 +30,16 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
     selector: 'app-calculadora-config',
     standalone: true,
     imports: [
-    CommonModule, ReactiveFormsModule,
-    MatCardModule, MatTabsModule, MatFormFieldModule, MatInputModule,
-    MatSlideToggleModule, MatSelectModule, MatButtonModule,
-    MatProgressSpinnerModule, MatIconModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
     RouterModule,
     CardHeaderComponent,
     MatDivider

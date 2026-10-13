@@ -19,97 +19,99 @@
     <!-- Stepper com cabeçalho fixo -->
     <mat-horizontal-stepper [linear]="true" #stepper class="wizard-stepper">
 
-        <!-- 1) Selecionar Produto -->
-        <mat-step [stepControl]="selectForm" label="Selecionar Produto">
-            <form [formGroup]="selectForm" class="step-inner step-full m-t-8">
-                <app-selecionar-produto-step
-                    [selectedId]="produtoIdSelecionado"
-                    (selectedChange)="onSelecionarProduto($event)">
-                </app-selecionar-produto-step>
-            </form>
-        </mat-step>
+      <!-- 1) Selecionar Produto -->
+      <mat-step [stepControl]="selectForm" label="Selecionar Produto">
+        <form [formGroup]="selectForm" class="step-inner step-full m-t-8">
+          <app-selecionar-produto-step
+            [selectedId]="produtoIdSelecionado"
+            (selectedChange)="onSelecionarProduto($event)">
+          </app-selecionar-produto-step>
+        </form>
+      </mat-step>
 
-        <!-- 2) Escolher Variação (+ Acabamentos) -->
-        <mat-step [stepControl]="variacaoForm" label="Escolher Variação">
-            <form [formGroup]="variacaoForm" class="step-inner step-wide m-t-8">
-                <app-escolher-variacao-step
-                    [form]="variacaoForm"
-                    [variacoes]="variacoes"
-                    [loadingVariacoes]="loadingVariacoes"
-                    [resumoVariacaoComAcab]="resumoVariacaoComAcab"
-                    [precoResumoFn]="precoResumo.bind(this)"
-                    [isSelectedFn]="isSelectedWrapper"
-                    (acabamentoToggle)="onAcabamentoToggle($event)"
-                    (selectionChange)="onVariacaoSelecionada($event)">
-                </app-escolher-variacao-step>
-            </form>
-        </mat-step>
+      <!-- 2) Escolher Variação (+ Acabamentos) -->
+      <mat-step [stepControl]="variacaoForm" label="Escolher Variação">
+        <form [formGroup]="variacaoForm" class="step-inner step-wide m-t-8">
+          <app-escolher-variacao-step
+            [form]="variacaoForm"
+            [variacoes]="variacoes"
+            [loadingVariacoes]="loadingVariacoes"
+            [resumoVariacaoComAcab]="resumoVariacaoComAcab"
+            [precoResumoFn]="precoResumo.bind(this)"
+            [isSelectedFn]="isSelectedWrapper"
+            (acabamentoToggle)="onAcabamentoToggle($event)"
+            (selectionChange)="onVariacaoSelecionada($event)">
+          </app-escolher-variacao-step>
+        </form>
+      </mat-step>
 
-        <!-- 3) Configurar Preço -->
-        <mat-step [stepControl]="configForm" label="Configurar Preço">
-            <form [formGroup]="configForm" class="step-inner step-wide m-t-8">
-                <app-configurar-preco-step
-                    [produto]="produtoAtual"
-                    [resumoPreco]="resumoPreco"
-                    [baseResumoTexto]="baseResumoTexto"
-                    [baseSubtotal]="baseSubtotal"
-                    (configConcluida)="onConfigConcluida($event)"
-                    (precoReadyChange)="onPrecoReady($event)">
-                </app-configurar-preco-step>
-            </form>
-        </mat-step>
+      <!-- 3) Configurar Preço -->
+      <mat-step [stepControl]="configForm" label="Configurar Preço">
+        <form [formGroup]="configForm" class="step-inner step-wide m-t-8">
+          <app-configurar-preco-step
+            [produto]="produtoAtual"
+            [resumoPreco]="resumoPreco"
+            [baseResumoTexto]="baseResumoTexto"
+            [baseSubtotal]="baseSubtotal"
+            (configConcluida)="onConfigConcluida($event)"
+            (precoReadyChange)="onPrecoReady($event)">
+          </app-configurar-preco-step>
+        </form>
+      </mat-step>
 
-        <!-- 4) Serviços -->
-        <mat-step [stepControl]="servicosForm" label="Serviços">
-            <form [formGroup]="servicosForm" class="step-inner step-wide m-t-8">
-                <app-servicos-step
-                    [servicosDisponiveis]="servicosDisponiveis"
-                    [control]="servicoIdsCtrl"
-                    [precoResumoFn]="precoResumo.bind(this)">
-                </app-servicos-step>
-            </form>
-        </mat-step>
+      <!-- 4) Serviços -->
+      <mat-step [stepControl]="servicosForm" label="Serviços">
+        <form [formGroup]="servicosForm" class="step-inner step-wide m-t-8">
+          <app-servicos-step
+            [servicosDisponiveis]="servicosDisponiveis"
+            [control]="servicoIdsCtrl"
+            [precoResumoFn]="precoResumo.bind(this)">
+          </app-servicos-step>
+        </form>
+      </mat-step>
 
-        <!-- 5) Revisão -->
-        <mat-step label="Revisão">
-            <div class="step-inner step-wide m-t-8">
-                <h3 class="f-s-16 f-w-600">Revisão</h3>
+      <!-- 5) Revisão -->
+      <mat-step label="Revisão">
+        <div class="step-inner step-wide m-t-8">
+          <h3 class="f-s-16 f-w-600">Revisão</h3>
 
-                <app-revisao-step
-                    [produtoBase]="produtoBase"
-                    [selectedVariacao]="selectedVariacao"
-                    [baseResumoTexto]="baseResumoTexto"
-                    [baseQtd]="baseQtd"
-                    [baseUnit]="baseUnit"
-                    [baseSubtotal]="baseSubtotal"
-                    [acabamentosSelecionadosDetalhe]="acabamentosSelecionadosDetalhe"
-                    [servicosSelecionadosDetalhe]="servicosSelecionadosDetalhe"
-                    [adicionaisFixosSubtotal]="adicionaisFixosSubtotal"
-                    [totalConhecido]="totalConhecido"
-                    [qtdeVariaveis]="qtdeVariaveis"
-                    [moneyFn]="money.bind(this)"
-                    [unitFromPrecoFn]="unitFromPreco.bind(this)">
-                </app-revisao-step>
-            </div>
-        </mat-step>
+          <app-revisao-step
+            [produtoBase]="produtoBase"
+            [selectedVariacao]="selectedVariacao"
+            [baseResumoTexto]="baseResumoTexto"
+            [baseQtd]="baseQtd"
+            [baseUnit]="baseUnit"
+            [baseSubtotal]="baseSubtotal"
+            [acabamentosSelecionadosDetalhe]="acabamentosSelecionadosDetalhe"
+            [servicosSelecionadosDetalhe]="servicosSelecionadosDetalhe"
+            [adicionaisFixosSubtotal]="adicionaisFixosSubtotal"
+            [totalConhecido]="totalConhecido"
+            [qtdeVariaveis]="qtdeVariaveis"
+            [moneyFn]="money.bind(this)"
+            [unitFromPrecoFn]="unitFromPreco.bind(this)">
+          </app-revisao-step>
+        </div>
+      </mat-step>
     </mat-horizontal-stepper>
-</mat-dialog-content>
+  </mat-dialog-content>
 
-<!-- RODAPÉ FIXO -->
-<div class="wizard-footer">
-  <div class="left">
-    <button mat-stroked-button class="bg-error text-white" (click)="goPrev()" [disabled]="isFirstStep" aria-label="Voltar para o passo anterior">
-      Voltar
-    </button>
-  </div>
+  <!-- RODAPÉ FIXO -->
+  <div class="wizard-footer">
+    <div class="left">
+      <button mat-stroked-button class="bg-error text-white" (click)="goPrev()" [disabled]="isFirstStep" aria-label="Voltar para o passo anterior">
+        Voltar
+      </button>
+    </div>
 
-  <div class="right">
-    <button mat-stroked-button color="warn" mat-dialog-close aria-label="Cancelar e fechar">
-      Cancelar
-    </button>
-    <button mat-flat-button color="primary" class="primary-action" (click)="goNext()" [disabled]="nextDisabled || isFinishing">
-      <mat-progress-spinner *ngIf="isFinishing" mode="indeterminate" diameter="18" strokeWidth="3"></mat-progress-spinner>
-      <span>{{ nextLabel }}</span>
-    </button>
+    <div class="right">
+      <button mat-stroked-button color="warn" mat-dialog-close aria-label="Cancelar e fechar">
+        Cancelar
+      </button>
+      <button mat-flat-button color="primary" class="primary-action" (click)="goNext()" [disabled]="nextDisabled || isFinishing">
+        @if (isFinishing) {
+          <mat-progress-spinner mode="indeterminate" diameter="18" strokeWidth="3"></mat-progress-spinner>
+        }
+        <span>{{ nextLabel }}</span>
+      </button>
+    </div>
   </div>
-</div>

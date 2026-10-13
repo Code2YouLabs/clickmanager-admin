@@ -1,0 +1,75 @@
+<div class="form-shell">
+  <mat-card class="form-card">
+    <div class="form-header">
+      <div>
+        <span class="eyebrow">Onboarding admin</span>
+        <h1>{{ tituloPagina }}</h1>
+        <p>
+          Configure código, nome, descrição, valor base e ordem de exibição do {{ labelSingular }}.
+        </p>
+      </div>
+
+      <button mat-stroked-button color="primary" (click)="voltar()">
+        <i-tabler name="arrow-left" class="icon-18 m-r-6"></i-tabler>
+        Voltar para listagem
+      </button>
+    </div>
+
+    @if (carregando) {
+      <div class="state-card">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Carregando {{ labelSingular }}...</span>
+      </div>
+    }
+
+    @if (!carregando) {
+      <div class="detail-grid">
+        <article class="detail-stat">
+          <span>Tipo</span>
+          <strong>{{ labelPlural }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Valor base</span>
+          <strong>{{ formatarMoedaPreview() }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Ordem</span>
+          <strong>{{ form.ordemExibicao ?? 'Auto' }}</strong>
+        </article>
+      </div>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Código</mat-label>
+          <input matInput [(ngModel)]="form.codigo" placeholder="CODIGO_MODELO" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="form.nome" [placeholder]="'Nome do ' + labelSingular" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Valor base (R$)</mat-label>
+          <input matInput type="number" min="0" step="0.01" [(ngModel)]="form.valorBaseReais" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ordem de exibição</mat-label>
+          <input matInput type="number" min="0" [(ngModel)]="form.ordemExibicao" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput rows="5" [(ngModel)]="form.descricao"></textarea>
+        </mat-form-field>
+        <div class="toggle-row full-width">
+          <mat-slide-toggle [(ngModel)]="form.ativo">
+            Manter {{ labelSingular }} ativo no onboarding
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="editor-actions">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="salvando">
+          {{ isEditMode ? 'Salvar alterações' : 'Criar ' + labelSingular }}
+        </button>
+        <button mat-stroked-button color="primary" (click)="voltar()">Cancelar</button>
+      </div>
+    }
+  </mat-card>
+</div>

@@ -11,7 +11,7 @@ import {
   NgApexchartsModule,
 } from 'ng-apexcharts';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 export interface customersChart {
   series: ApexAxisChartSeries;
@@ -26,7 +26,7 @@ export interface customersChart {
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [MaterialModule, NgApexchartsModule, TablerIconsModule],
+  imports: [MaterialModule, NgApexchartsModule, DesignSystemIconsModule],
   templateUrl: './customers.component.html',
 })
 export class AppCustomersComponent {

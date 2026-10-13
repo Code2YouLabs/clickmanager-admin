@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
 import { PageCardComponent } from 'src/app/components/page-card/page-card.component';
 import { SectionCardComponent } from 'src/app/components/section-card/section-card.component';
@@ -28,7 +28,6 @@ import { UsuarioService } from 'src/app/pages/usuarios/services/usuario.service'
   selector: 'app-form-funcionario',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     PageCardComponent,
@@ -43,7 +42,7 @@ import { UsuarioService } from 'src/app/pages/usuarios/services/usuario.service'
     InputMoedaComponent,
     EnderecoFormComponent,
     AutoCompleteComponent
-  ],
+],
   templateUrl: './form-funcionario.component.html',
   styleUrl: './form-funcionario.component.scss'
 })

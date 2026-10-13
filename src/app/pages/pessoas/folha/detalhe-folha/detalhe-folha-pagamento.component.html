@@ -1,209 +1,207 @@
-<app-page-card
-  *ngIf="folha as f"
-  titulo="Detalhe da folha"
-  [subtitulo]="f.funcionarioNome + ' • Competência ' + f.competencia"
-  [permissao]="['FOLHA_VER', 'FOLHA_EDITAR']"
-  botaoTexto="Voltar"
-  botaoIcone="arrow_back"
-  [botaoRota]="['/page/folha-pagamento']"
-  [helpRota]="['/page/ajuda']"
-  helpFragment="folha-pagamento"
-  helpTexto="Manual da Folha de Pagamento"
-  helpIcone="help_outline"
-  [mostrarDivisor]="true"
->
-  <div class="row g-3">
-    <div class="col-12 col-lg-8">
-      <app-section-card titulo="Resumo da competência" [divider]="false">
-        <div class="summary-grid">
-          <div class="summary-item summary-item--status">
-            <span>Status da folha</span>
-            <strong><app-status-badge [status]="f.statusFolha || f.status"></app-status-badge></strong>
+@if (folha; as f) {
+  <app-page-card
+    titulo="Detalhe da folha"
+    [subtitulo]="f.funcionarioNome + ' • Competência ' + f.competencia"
+    [permissao]="['FOLHA_VER', 'FOLHA_EDITAR']"
+    botaoTexto="Voltar"
+    botaoIcone="arrow_back"
+    [botaoRota]="['/page/folha-pagamento']"
+    [helpRota]="['/page/ajuda']"
+    helpFragment="folha-pagamento"
+    helpTexto="Manual da Folha de Pagamento"
+    helpIcone="help_outline"
+    [mostrarDivisor]="true"
+    >
+    <div class="row g-3">
+      <div class="col-12 col-lg-8">
+        <app-section-card titulo="Resumo da competência" [divider]="false">
+          <div class="summary-grid">
+            <div class="summary-item summary-item--status">
+              <span>Status da folha</span>
+              <strong><app-status-badge [status]="f.statusFolha || f.status"></app-status-badge></strong>
+            </div>
+            <div class="summary-item">
+              <span>Competência</span>
+              <strong>{{ f.competencia }}</strong>
+            </div>
+            <div class="summary-item">
+              <span>Salário</span>
+              <strong>{{ salarioAtual !== null ? (salarioAtual | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+            </div>
+            <div class="summary-item summary-item--pending">
+              <span>Pendente</span>
+              <strong class="pending">{{ saldoPendente | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+            </div>
+            <div class="summary-item">
+              <span>Bruto</span>
+              <strong>{{ totalBruto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+            </div>
+            <div class="summary-item">
+              <span>Descontos</span>
+              <strong>{{ totalDescontos | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+            </div>
+            <div class="summary-item">
+              <span>Líquido</span>
+              <strong>{{ totalLiquido | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+            </div>
+            <div class="summary-item">
+              <span>Pago</span>
+              <strong>{{ totalPago | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+            </div>
           </div>
-
-          <div class="summary-item">
-            <span>Competência</span>
-            <strong>{{ f.competencia }}</strong>
+        </app-section-card>
+        <app-section-card class="m-t-16" titulo="Lançamentos" [divider]="false">
+          <div class="table-responsive">
+            <table mat-table [dataSource]="f.lancamentos" class="w-100">
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                <td mat-cell *matCellDef="let l"><span [class.provento]="l.tipo === 'PROVENTO'" [class.desconto]="l.tipo === 'DESCONTO'">{{ l.tipo }}</span></td>
+              </ng-container>
+              <ng-container matColumnDef="descricao">
+                <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                <td mat-cell *matCellDef="let l">{{ l.descricao }}</td>
+              </ng-container>
+              <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef>Valor</th>
+                <td mat-cell *matCellDef="let l">{{ l.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="criadoEm">
+                <th mat-header-cell *matHeaderCellDef>Data</th>
+                <td mat-cell *matCellDef="let l">{{ (l.criadoEm || l.data) | date:'dd/MM/yyyy HH:mm' }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="lancamentosCols"></tr>
+              <tr mat-row *matRowDef="let row; columns: lancamentosCols"></tr>
+            </table>
           </div>
-
-          <div class="summary-item">
-            <span>Salário</span>
-            <strong>{{ salarioAtual !== null ? (salarioAtual | currency:'BRL':'symbol':'1.2-2':'pt-BR') : '—' }}</strong>
+        </app-section-card>
+        <app-section-card class="m-t-16" titulo="Pagamentos" [divider]="false">
+          <div class="table-responsive">
+            <table mat-table [dataSource]="f.pagamentos" class="w-100">
+              <ng-container matColumnDef="data">
+                <th mat-header-cell *matHeaderCellDef>Data</th>
+                <td mat-cell *matCellDef="let p">{{ p.data | date:'dd/MM/yyyy HH:mm' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="forma">
+                <th mat-header-cell *matHeaderCellDef>Forma</th>
+                <td mat-cell *matCellDef="let p">{{ p.forma }}</td>
+              </ng-container>
+              <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef>Valor</th>
+                <td mat-cell *matCellDef="let p">{{ p.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="observacao">
+                <th mat-header-cell *matHeaderCellDef>Obs</th>
+                <td mat-cell *matCellDef="let p">{{ p.observacao || '—' }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="pagamentosCols"></tr>
+              <tr mat-row *matRowDef="let row; columns: pagamentosCols; trackBy: trackPagamento"></tr>
+            </table>
           </div>
-
-          <div class="summary-item summary-item--pending">
-            <span>Pendente</span>
-            <strong class="pending">{{ saldoPendente | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>Bruto</span>
-            <strong>{{ totalBruto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>Descontos</span>
-            <strong>{{ totalDescontos | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>Líquido</span>
-            <strong>{{ totalLiquido | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>Pago</span>
-            <strong>{{ totalPago | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-        </div>
-      </app-section-card>
-
-      <app-section-card class="m-t-16" titulo="Lançamentos" [divider]="false">
-        <div class="table-responsive">
-          <table mat-table [dataSource]="f.lancamentos" class="w-100">
-            <ng-container matColumnDef="tipo">
-              <th mat-header-cell *matHeaderCellDef>Tipo</th>
-              <td mat-cell *matCellDef="let l"><span [class.provento]="l.tipo === 'PROVENTO'" [class.desconto]="l.tipo === 'DESCONTO'">{{ l.tipo }}</span></td>
+        </app-section-card>
+      </div>
+      <div class="col-12 col-lg-4">
+        <app-section-card titulo="Ações" [divider]="false">
+          <div class="actions">
+            <ng-container *temPermissao="['FOLHA_EDITAR']">
+              @if ((f.statusFolha || f.status) !== 'FECHADO') {
+                <button mat-stroked-button color="primary" (click)="fecharFolha()" [disabled]="!canFecharFolha">
+                  Fechar folha
+                </button>
+              }
+              @if ((f.statusFolha || f.status) === 'FECHADO') {
+                <button mat-stroked-button color="primary" (click)="reabrirFolha()">
+                  Reabrir folha
+                </button>
+              }
             </ng-container>
-
-            <ng-container matColumnDef="descricao">
-              <th mat-header-cell *matHeaderCellDef>Descrição</th>
-              <td mat-cell *matCellDef="let l">{{ l.descricao }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="valor">
-              <th mat-header-cell *matHeaderCellDef>Valor</th>
-              <td mat-cell *matCellDef="let l">{{ l.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="criadoEm">
-              <th mat-header-cell *matHeaderCellDef>Data</th>
-              <td mat-cell *matCellDef="let l">{{ (l.criadoEm || l.data) | date:'dd/MM/yyyy HH:mm' }}</td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="lancamentosCols"></tr>
-            <tr mat-row *matRowDef="let row; columns: lancamentosCols"></tr>
-          </table>
-        </div>
-      </app-section-card>
-
-      <app-section-card class="m-t-16" titulo="Pagamentos" [divider]="false">
-        <div class="table-responsive">
-          <table mat-table [dataSource]="f.pagamentos" class="w-100">
-            <ng-container matColumnDef="data">
-              <th mat-header-cell *matHeaderCellDef>Data</th>
-              <td mat-cell *matCellDef="let p">{{ p.data | date:'dd/MM/yyyy HH:mm' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="forma">
-              <th mat-header-cell *matHeaderCellDef>Forma</th>
-              <td mat-cell *matCellDef="let p">{{ p.forma }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="valor">
-              <th mat-header-cell *matHeaderCellDef>Valor</th>
-              <td mat-cell *matCellDef="let p">{{ p.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="observacao">
-              <th mat-header-cell *matHeaderCellDef>Obs</th>
-              <td mat-cell *matCellDef="let p">{{ p.observacao || '—' }}</td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="pagamentosCols"></tr>
-            <tr mat-row *matRowDef="let row; columns: pagamentosCols; trackBy: trackPagamento"></tr>
-          </table>
-        </div>
-      </app-section-card>
-    </div>
-
-    <div class="col-12 col-lg-4">
-      <app-section-card titulo="Ações" [divider]="false">
-        <div class="actions">
-          <ng-container *temPermissao="['FOLHA_EDITAR']">
-            <button mat-stroked-button color="primary" (click)="fecharFolha()" *ngIf="(f.statusFolha || f.status) !== 'FECHADO'" [disabled]="!canFecharFolha">
-              Fechar folha
+            @if ((f.statusFolha || f.status) !== 'FECHADO' && !canFecharFolha) {
+              <small class="text-muted">
+                Para fechar, quite o saldo pendente.
+              </small>
+            }
+            @if ((f.statusFolha || f.status) === 'FECHADO') {
+              <div class="closed-hint">
+                Folha fechada: lançamentos ficam bloqueados nesta competência.
+              </div>
+            }
+            <button mat-flat-button color="accent" (click)="abrirNovoAcordo()" *temPermissao="['FOLHA_EDITAR']"
+              [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
+              Novo empréstimo parcelado
             </button>
-            <button mat-stroked-button color="primary" (click)="reabrirFolha()" *ngIf="(f.statusFolha || f.status) === 'FECHADO'">
-              Reabrir folha
+            <button mat-stroked-button color="primary" (click)="abrirRenegociacaoAcordos()" *temPermissao="['FOLHA_EDITAR']"
+              [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
+              Renegociar acordos
             </button>
-          </ng-container>
-          <small class="text-muted" *ngIf="(f.statusFolha || f.status) !== 'FECHADO' && !canFecharFolha">
-            Para fechar, quite o saldo pendente.
-          </small>
-          <div class="closed-hint" *ngIf="(f.statusFolha || f.status) === 'FECHADO'">
-            Folha fechada: lançamentos ficam bloqueados nesta competência.
-          </div>
-          <button mat-flat-button color="accent" (click)="abrirNovoAcordo()" *temPermissao="['FOLHA_EDITAR']"
-            [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
-            Novo empréstimo parcelado
-          </button>
-          <button mat-stroked-button color="primary" (click)="abrirRenegociacaoAcordos()" *temPermissao="['FOLHA_EDITAR']"
-            [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
-            Renegociar acordos
-          </button>
-
-          <div class="actions-group" *temPermissao="['FOLHA_EDITAR']">
-            <div class="group-title">Lançamentos</div>
-            <button mat-stroked-button color="primary" (click)="lancarProvento()" [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
-              Lançar provento
-            </button>
-            <button mat-stroked-button color="warn" (click)="lancarDesconto()" [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
-              Lançar desconto
+            <div class="actions-group" *temPermissao="['FOLHA_EDITAR']">
+              <div class="group-title">Lançamentos</div>
+              <button mat-stroked-button color="primary" (click)="lancarProvento()" [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
+                Lançar provento
+              </button>
+              <button mat-stroked-button color="warn" (click)="lancarDesconto()" [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
+                Lançar desconto
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="registrarAdiantamento()"
+                [disabled]="(f.statusFolha || f.status) === 'FECHADO' || !permiteAdiantamento"
+                >
+                Registrar adiantamento
+              </button>
+              @if (!permiteAdiantamento) {
+                <small class="text-muted">
+                  Adiantamento desabilitado na configuração da folha.
+                </small>
+              }
+            </div>
+            <button mat-flat-button color="primary" (click)="registrarPagamento()" *temPermissao="['FOLHA_EDITAR']"
+              [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
+              Registrar pagamento
             </button>
             <button
               mat-stroked-button
-              color="accent"
-              (click)="registrarAdiantamento()"
-              [disabled]="(f.statusFolha || f.status) === 'FECHADO' || !permiteAdiantamento"
-            >
-              Registrar adiantamento
+              color="primary"
+              (click)="gerarDocumentoPagamento()"
+              *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']"
+              [disabled]="gerandoDocumento"
+              >
+              <mat-icon>picture_as_pdf</mat-icon>
+              {{ gerandoDocumento ? 'Gerando...' : 'Gerar ' + tituloDocumentoPagamento }}
             </button>
-            <small class="text-muted" *ngIf="!permiteAdiantamento">
-              Adiantamento desabilitado na configuração da folha.
-            </small>
+            <button mat-stroked-button color="primary" (click)="abrirResumoWhatsapp()" *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']">
+              <mat-icon>chat</mat-icon>
+              Resumo WhatsApp
+            </button>
           </div>
-
-          <button mat-flat-button color="primary" (click)="registrarPagamento()" *temPermissao="['FOLHA_EDITAR']"
-            [disabled]="(f.statusFolha || f.status) === 'FECHADO'">
-            Registrar pagamento
-          </button>
-          <button
-            mat-stroked-button
-            color="primary"
-            (click)="gerarDocumentoPagamento()"
-            *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']"
-            [disabled]="gerandoDocumento"
-          >
-            <mat-icon>picture_as_pdf</mat-icon>
-            {{ gerandoDocumento ? 'Gerando...' : 'Gerar ' + tituloDocumentoPagamento }}
-          </button>
-          <button mat-stroked-button color="primary" (click)="abrirResumoWhatsapp()" *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']">
-            <mat-icon>chat</mat-icon>
-            Resumo WhatsApp
-          </button>
-        </div>
-      </app-section-card>
-
-      <app-section-card class="m-t-16" titulo="Acordos ativos" [divider]="false">
-        <div class="agreement" *ngFor="let a of f.acordos">
-          <div class="agreement-head">
-            <strong>{{ a.tipo }}</strong>
-            <span>{{ a.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
-          </div>
-          <div class="agreement-desc">{{ a.descricao }}</div>
-          <div class="agreement-meta">Início: {{ a.competenciaInicio || a.dataInicioCompetencia }} • Status: {{ a.status }}</div>
-          <div class="agreement-parcelas" *ngIf="(a.listaParcelas || a.parcelas)?.length">
-            <div class="parcela-item" *ngFor="let p of (a.listaParcelas || a.parcelas); trackBy: trackParcela">
-              <span>Parcela {{ p.numero }}</span>
-              <span>{{ p.competencia }}</span>
-              <span>{{ p.valorPrevisto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
-              <span class="parcela-status" [class.paga]="p.status === 'PAGO'">{{ p.status }}</span>
+        </app-section-card>
+        <app-section-card class="m-t-16" titulo="Acordos ativos" [divider]="false">
+          @for (a of f.acordos; track a) {
+            <div class="agreement">
+              <div class="agreement-head">
+                <strong>{{ a.tipo }}</strong>
+                <span>{{ a.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+              </div>
+              <div class="agreement-desc">{{ a.descricao }}</div>
+              <div class="agreement-meta">Início: {{ a.competenciaInicio || a.dataInicioCompetencia }} • Status: {{ a.status }}</div>
+              @if ((a.listaParcelas || a.parcelas)?.length) {
+                <div class="agreement-parcelas">
+                  @for (p of (a.listaParcelas || a.parcelas); track trackParcela($index, p)) {
+                    <div class="parcela-item">
+                      <span>Parcela {{ p.numero }}</span>
+                      <span>{{ p.competencia }}</span>
+                      <span>{{ p.valorPrevisto | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+                      <span class="parcela-status" [class.paga]="p.status === 'PAGO'">{{ p.status }}</span>
+                    </div>
+                  }
+                </div>
+              }
             </div>
-          </div>
-        </div>
-        <p class="text-muted m-0" *ngIf="!f.acordos.length">Sem acordos ativos.</p>
-      </app-section-card>
+          }
+          @if (!f.acordos.length) {
+            <p class="text-muted m-0">Sem acordos ativos.</p>
+          }
+        </app-section-card>
+      </div>
     </div>
-  </div>
-</app-page-card>
+  </app-page-card>
+}

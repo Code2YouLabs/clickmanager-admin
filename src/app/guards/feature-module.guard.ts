@@ -1,15 +1,29 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { FeatureFlagService } from '../services/feature-flag.service';
+import { ToastrService } from 'src/app/services/toastr.service';
+import { AuthService } from '../services/auth.service';
 
 export const featureModuleGuard: CanActivateFn = (route) => {
-  const featureService = inject(FeatureFlagService);
+  const auth = inject(AuthService);
   const router = inject(Router);
   const toastr = inject(ToastrService);
   const featureKey = route.data?.['featureKey'] as string | undefined;
+  const requiredPermission = route.data?.['requiredPermission'] as string[] | string | undefined;
+  const requiredList = Array.isArray(requiredPermission)
+    ? requiredPermission
+    : requiredPermission
+      ? [requiredPermission]
+      : [];
 
-  if (!featureKey || featureService.isEnabled(featureKey)) {
+  if (!featureKey) {
+    return true;
+  }
+
+  const hasAccess = requiredList.length
+    ? requiredList.some(permission => auth.podeAcessarFuncionalidade(featureKey, permission))
+    : auth.podeAcessarFuncionalidade(featureKey);
+
+  if (hasAccess) {
     return true;
   }
 
@@ -18,4 +32,3 @@ export const featureModuleGuard: CanActivateFn = (route) => {
     queryParams: { modulo: featureKey }
   });
 };
-

@@ -1,8 +1,10 @@
-<ng-container *ngIf="produto as p; else selVarFirst">
+@if (produto; as p) {
   <div class="prod-summary">
     <div>
       <div class="prod-name">{{ p?.nome || 'Produto' }}</div>
-      <div class="prod-desc" *ngIf="p?.descricao">{{ p.descricao }}</div>
+      @if (p?.descricao) {
+        <div class="prod-desc">{{ p.descricao }}</div>
+      }
       <div class="meta-line">
         <span class="pill info">
           <mat-icon inline>sell</mat-icon>
@@ -12,28 +14,32 @@
       </div>
     </div>
   </div>
-
   <div class="config-grid">
     <div class="config-card">
-      <div class="config-inner" *ngIf="p?.preco?.tipo; else noTipo">
-        <app-preco-fixo-config *ngIf="p?.preco?.tipo === 'FIXO'" [produto]="p"
-          (adicionar)="configConcluida.emit($event)">
-        </app-preco-fixo-config>
-
-        <app-preco-quantidade-config *ngIf="p?.preco?.tipo === 'QUANTIDADE'" [produto]="p"
-          (adicionar)="configConcluida.emit($event)">
-        </app-preco-quantidade-config>
-
-        <app-preco-demanda-config *ngIf="p?.preco?.tipo === 'DEMANDA'" [produto]="p"
-          (adicionar)="configConcluida.emit($event)">
-        </app-preco-demanda-config>
-
-        <app-preco-metro-config *ngIf="p?.preco?.tipo === 'METRO'" [produto]="p"
-          (adicionar)="configConcluida.emit($event)" (readyChange)="precoReadyChange.emit($event)">
-        </app-preco-metro-config>
-      </div>
-
-      <ng-template #noTipo>
+      @if (p?.preco?.tipo) {
+        <div class="config-inner">
+          @if (p?.preco?.tipo === 'FIXO') {
+            <app-preco-fixo-config [produto]="p"
+              (adicionar)="configConcluida.emit($event)">
+            </app-preco-fixo-config>
+          }
+          @if (p?.preco?.tipo === 'QUANTIDADE') {
+            <app-preco-quantidade-config [produto]="p"
+              (adicionar)="configConcluida.emit($event)">
+            </app-preco-quantidade-config>
+          }
+          @if (p?.preco?.tipo === 'DEMANDA') {
+            <app-preco-demanda-config [produto]="p"
+              (adicionar)="configConcluida.emit($event)">
+            </app-preco-demanda-config>
+          }
+          @if (p?.preco?.tipo === 'METRO') {
+            <app-preco-metro-config [produto]="p"
+              (adicionar)="configConcluida.emit($event)" (readyChange)="precoReadyChange.emit($event)">
+            </app-preco-metro-config>
+          }
+        </div>
+      } @else {
         <div class="empty-card">
           <mat-icon>info</mat-icon>
           <div>
@@ -41,41 +47,43 @@
             <div class="empty-desc">Defina o tipo de preço para este produto antes de continuar.</div>
           </div>
         </div>
-      </ng-template>
+      }
     </div>
-
-    <mat-card *ngIf="resumoPreco" class="summary-card">
-      <mat-card-content>
-        <div class="summary-head">
-          <div class="summary-icon">
-            <mat-icon color="primary">check_circle</mat-icon>
+    @if (resumoPreco) {
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-head">
+            <div class="summary-icon">
+              <mat-icon color="primary">check_circle</mat-icon>
+            </div>
+            <div>
+              <div class="summary-title">Configuração pronta</div>
+              <div class="summary-sub">Clique em “Próximo” para continuar.</div>
+            </div>
           </div>
-          <div>
-            <div class="summary-title">Configuração pronta</div>
-            <div class="summary-sub">Clique em “Próximo” para continuar.</div>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="label">Tipo</div>
+              <div class="value">{{ p?.preco?.tipo || '—' }}</div>
+            </div>
+            @if (baseResumoTexto) {
+              <div class="summary-item">
+                <div class="label">Detalhe</div>
+                <div class="value">{{ baseResumoTexto }}</div>
+              </div>
+            }
+            @if (baseSubtotal !== null) {
+              <div class="summary-item">
+                <div class="label">Subtotal estimado</div>
+                <div class="value">{{ baseSubtotal | currency:'BRL' }}</div>
+              </div>
+            }
           </div>
-        </div>
-
-        <div class="summary-grid">
-          <div class="summary-item">
-            <div class="label">Tipo</div>
-            <div class="value">{{ p?.preco?.tipo || '—' }}</div>
-          </div>
-          <div class="summary-item" *ngIf="baseResumoTexto">
-            <div class="label">Detalhe</div>
-            <div class="value">{{ baseResumoTexto }}</div>
-          </div>
-          <div class="summary-item" *ngIf="baseSubtotal !== null">
-            <div class="label">Subtotal estimado</div>
-            <div class="value">{{ baseSubtotal | currency:'BRL' }}</div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    }
   </div>
-</ng-container>
-
-<ng-template #selVarFirst>
+} @else {
   <div class="empty-card">
     <mat-icon>info</mat-icon>
     <div>
@@ -83,4 +91,4 @@
       <div class="empty-desc">Escolha uma variação no passo anterior para configurar o preço.</div>
     </div>
   </div>
-</ng-template>
+}

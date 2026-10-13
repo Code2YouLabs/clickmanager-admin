@@ -5,7 +5,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,7 +28,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     CommonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatSortModule,
     MatDividerModule,
     Highlight,

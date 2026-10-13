@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,14 +16,13 @@ export interface CriarCompetenciaDialogResult {
   selector: 'app-dialog-criar-competencia',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule
-  ],
+],
   templateUrl: './dialog-criar-competencia.component.html',
   styleUrl: './dialog-criar-competencia.component.scss'
 })

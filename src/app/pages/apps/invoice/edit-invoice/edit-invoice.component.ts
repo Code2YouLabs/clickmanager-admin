@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OkDialogComponent } from './ok-dialog/ok-dialog.component';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
     selector: 'app-edit-invoice',
@@ -25,7 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         RouterLink,
         FormsModule,
         ReactiveFormsModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
     ]
 })
 export class AppEditInvoiceComponent {

@@ -1,7 +1,9 @@
 <div class="w-100">
   <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
     {{ label }}
-    <span *ngIf="isRequired" style="color: #ff110094">*</span>
+    @if (isRequired) {
+      <span style="color: #ff110094">*</span>
+    }
   </mat-label>
 
   <mat-form-field appearance="outline" class="w-100">
@@ -15,22 +17,28 @@
       (focus)="abrirOpcoes()"
       (blur)="updateErrorMessage()" />
 
-      <mat-autocomplete
+    <mat-autocomplete
       #auto="matAutocomplete"
       [displayWith]="displayWith"
       (optionSelected)="aoSelecionar($event.option.value)">
-    
-      <mat-option *ngFor="let item of opcoesFiltradas" [value]="item">
-        {{ displayWith(item) }}
-      </mat-option>
-    
-      <mat-option *ngIf="buscaExecutada && opcoesFiltradas.length === 0" disabled>
-        Nenhum resultado encontrado
-      </mat-option>
-    </mat-autocomplete>   
 
-    <mat-error *ngIf="control.invalid && control.touched">
-      {{ errorMessage() }}
-    </mat-error>
+      @for (item of opcoesFiltradas; track item) {
+        <mat-option [value]="item">
+          {{ displayWith(item) }}
+        </mat-option>
+      }
+
+      @if (buscaExecutada && opcoesFiltradas.length === 0) {
+        <mat-option disabled>
+          Nenhum resultado encontrado
+        </mat-option>
+      }
+    </mat-autocomplete>
+
+    @if (control.invalid && control.touched) {
+      <mat-error>
+        {{ errorMessage() }}
+      </mat-error>
+    }
   </mat-form-field>
 </div>

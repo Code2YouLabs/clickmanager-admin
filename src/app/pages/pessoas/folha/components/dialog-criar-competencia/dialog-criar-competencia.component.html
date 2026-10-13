@@ -9,11 +9,15 @@
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Mês(es)</mat-label>
     <mat-select formControlName="meses" multiple>
-      <mat-option *ngFor="let m of meses" [value]="m.id">{{ m.nome }}</mat-option>
+      @for (m of meses; track m) {
+        <mat-option [value]="m.id">{{ m.nome }}</mat-option>
+      }
     </mat-select>
-    <mat-error *ngIf="form.get('meses')?.touched && form.get('meses')?.invalid">
-      Selecione ao menos um mês
-    </mat-error>
+    @if (form.get('meses')?.touched && form.get('meses')?.invalid) {
+      <mat-error>
+        Selecione ao menos um mês
+      </mat-error>
+    }
   </mat-form-field>
 </mat-dialog-content>
 

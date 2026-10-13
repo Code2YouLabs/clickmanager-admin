@@ -5,9 +5,11 @@
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Pesquisar produto</mat-label>
           <input matInput placeholder="Ex: nome do item" [formControl]="searchCtrl">
-          <button *ngIf="searchCtrl.value" mat-icon-button matSuffix aria-label="Limpar busca" (click)="searchCtrl.setValue('')">
-            <mat-icon>close</mat-icon>
-          </button>
+          @if (searchCtrl.value) {
+            <button mat-icon-button matSuffix aria-label="Limpar busca" (click)="searchCtrl.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
       </div>
@@ -20,30 +22,38 @@
           <div class="col sel">Selecionar</div>
         </div>
 
-        <div class="list-rows" *ngIf="produtos.length; else emptyState">
-          <button
-            type="button"
-            class="row-btn"
-            *ngFor="let p of produtos; trackBy: trackById"
-            [class.is-selected]="isSelected(p)"
-            (click)="onSelect(p)"
-          >
-            <div class="col nome">
-              <div class="title">{{ p?.nome }}</div>
-              <div class="subtitle" *ngIf="p?.descricao">{{ p?.descricao }}</div>
-            </div>
-            <div class="col desc">{{ p?.descricao || '—' }}</div>
-            <div class="col var">{{ variacoesResumo(p) }}</div>
-            <div class="col sel">
-              <mat-icon color="primary" *ngIf="isSelected(p)">check_circle</mat-icon>
-              <mat-icon *ngIf="!isSelected(p)">radio_button_unchecked</mat-icon>
-            </div>
-          </button>
-        </div>
-
-        <ng-template #emptyState>
+        @if (produtos.length) {
+          <div class="list-rows">
+            @for (p of produtos; track trackById($index, p)) {
+              <button
+                type="button"
+                class="row-btn"
+                [class.is-selected]="isSelected(p)"
+                (click)="onSelect(p)"
+                >
+                <div class="col nome">
+                  <div class="title">{{ p?.nome }}</div>
+                  @if (p?.descricao) {
+                    <div class="subtitle">{{ p?.descricao }}</div>
+                  }
+                </div>
+                <div class="col desc">{{ p?.descricao || '—' }}</div>
+                <div class="col var">{{ variacoesResumo(p) }}</div>
+                <div class="col sel">
+                  @if (isSelected(p)) {
+                    <mat-icon color="primary">check_circle</mat-icon>
+                  }
+                  @if (!isSelected(p)) {
+                    <mat-icon>radio_button_unchecked</mat-icon>
+                  }
+                </div>
+              </button>
+            }
+          </div>
+        } @else {
           <div class="empty">Nenhum produto encontrado.</div>
-        </ng-template>
+        }
+
 
         <div class="paginator-wrap">
           <mat-paginator
@@ -56,9 +66,11 @@
           </mat-paginator>
         </div>
 
-        <div class="loading-overlay" *ngIf="loading">
-          <mat-progress-spinner diameter="32" strokeWidth="4" mode="indeterminate"></mat-progress-spinner>
-        </div>
+        @if (loading) {
+          <div class="loading-overlay">
+            <mat-progress-spinner diameter="32" strokeWidth="4" mode="indeterminate"></mat-progress-spinner>
+          </div>
+        }
       </div>
     </div>
 
@@ -69,7 +81,9 @@
             <div>
               <div class="preview-title">Selecionado</div>
               <div class="preview-name">{{ selectedProduto?.nome || 'Nenhum produto selecionado' }}</div>
-              <div class="preview-desc" *ngIf="selectedProduto?.descricao">{{ selectedProduto?.descricao }}</div>
+              @if (selectedProduto?.descricao) {
+                <div class="preview-desc">{{ selectedProduto?.descricao }}</div>
+              }
             </div>
           </div>
           <mat-divider class="m-y-12"></mat-divider>
@@ -78,9 +92,11 @@
               <span>Variações</span>
               <span>{{ selectedProduto?.variacoes?.length || 0 }}</span>
             </div>
-            <div class="meta-hint" *ngIf="!selectedProduto">
-              Selecione um produto para ver o resumo antes de avançar.
-            </div>
+            @if (!selectedProduto) {
+              <div class="meta-hint">
+                Selecione um produto para ver o resumo antes de avançar.
+              </div>
+            }
           </div>
         </mat-card-content>
       </mat-card>

@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { RouterModule } from '@angular/router';
 import { AppConfirmDeleteDialogComponent } from './confirm-delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,7 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
     ]
 })
 export class AppInvoiceListComponent implements AfterViewInit {

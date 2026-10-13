@@ -9,7 +9,7 @@ import { ToDo } from './todo';
 import { TodoService } from 'src/app/services/apps/todo/todo.service';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { AppDeleteDialogComponent } from '../kanban/delete-dialog/delete-dialog.component';
@@ -20,7 +20,7 @@ import { AppDeleteDialogComponent } from '../kanban/delete-dialog/delete-dialog.
     imports: [
         MaterialModule,
         CommonModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         FormsModule,
         ReactiveFormsModule,
     ]

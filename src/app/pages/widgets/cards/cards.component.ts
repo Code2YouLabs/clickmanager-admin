@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 // card 1
 interface topcards {
   id: number;
@@ -104,7 +104,7 @@ interface activities {
 
 @Component({
     selector: 'app-cards',
-    imports: [MatCardModule, MatChipsModule, TablerIconsModule, MatButtonModule],
+    imports: [MatCardModule, MatChipsModule, DesignSystemIconsModule, MatButtonModule],
     templateUrl: './cards.component.html',
 })
 export class AppCardsComponent {

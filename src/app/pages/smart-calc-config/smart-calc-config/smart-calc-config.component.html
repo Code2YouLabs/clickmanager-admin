@@ -41,33 +41,31 @@
 
         <!-- Coluna: Produtos (spinner ou select) -->
         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12 m-b-24">
-          <ng-container *ngIf="carregando(); else produtosTpl">
+          @if (carregando()) {
             <div class="d-flex align-items-center" style="height: 48px;">
               <mat-progress-spinner mode="indeterminate" diameter="28"></mat-progress-spinner>
               <span class="m-l-12">Carregando produtos...</span>
             </div>
-          </ng-container>
-
-          <ng-template #produtosTpl>
+          } @else {
             <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
               Produtos com SmartCalc habilitado *
             </mat-label>
-
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="produtoIds" multiple>
-                <mat-option *ngFor="let p of produtoOptions; trackBy: trackById" [value]="p.id">
-                  {{ p.nome }}
-                </mat-option>
+                @for (p of produtoOptions; track trackById($index, p)) {
+                  <mat-option [value]="p.id">
+                    {{ p.nome }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
-
             <small class="text-muted f-s-12 d-block">
               Somente os produtos selecionados aqui aparecerão como opção no SmartCalc.
             </small>
-            
-          </ng-template>
+          }
+
         </div>
-        
+
       </div>
 
       <!-- Botões -->

@@ -1,191 +1,194 @@
 <mat-card class="cardWithShadow empresa-config-card">
 
-    <app-card-header titulo="Configurações da Empresa" [mostrarDivisor]="true">
-    </app-card-header>
+  <app-card-header titulo="Configurações da Empresa" [mostrarDivisor]="true">
+  </app-card-header>
 
-    <mat-card-content>
+  <mat-card-content>
 
-        <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms" dynamicHeight>
-            <!-- Aba Empresa -->
-            <mat-tab label="Empresa">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms" dynamicHeight>
+      <!-- Aba Empresa -->
+      <mat-tab label="Empresa">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-                    <!-- Dados da Empresa -->
-                    <div class="row m-t-24">
-                        <div class="col-sm-12">
-                            <mat-card class="cardWithShadow">
-                                <mat-card-content>
-                                    <mat-card-title>Dados da Empresa</mat-card-title>
-                                    <mat-card-subtitle class="f-s-14">
-                                        Preencha as informações gerais da sua empresa.
-                                    </mat-card-subtitle>
+          <!-- Dados da Empresa -->
+          <div class="row m-t-24">
+            <div class="col-sm-12">
+              <mat-card class="cardWithShadow">
+                <mat-card-content>
+                  <mat-card-title>Dados da Empresa</mat-card-title>
+                  <mat-card-subtitle class="f-s-14">
+                    Preencha as informações gerais da sua empresa.
+                  </mat-card-subtitle>
 
-                                    <div class="row m-t-16">
-                                        <div class="col-lg-6">
+                  <div class="row m-t-16">
+                    <div class="col-lg-6">
 
-                                            <app-input-texto-restrito [control]="nomeControl" label="Nome da Empresa"
-                                                placeholder="Digite o nome" [maxlength]="120"></app-input-texto-restrito>
+                      <app-input-texto-restrito [control]="nomeControl" label="Nome da Empresa"
+                      placeholder="Digite o nome" [maxlength]="120"></app-input-texto-restrito>
 
-                                            <app-input-telefone [control]="telefoneControl" label="Telefone"
-                                                placeholder="(00) 00000-0000"></app-input-telefone>
+                      <app-input-telefone [control]="telefoneControl" label="Telefone"
+                      placeholder="(00) 00000-0000"></app-input-telefone>
 
-                                            <app-input-email [control]="emailControl" label="E-mail"
-                                                placeholder="contato@suaempresa.com"></app-input-email>
+                      <app-input-email [control]="emailControl" label="E-mail"
+                      placeholder="contato@suaempresa.com"></app-input-email>
 
-                                            <app-input-documento [control]="cnpjControl" label="CNPJ/CPF"
-                                                placeholder="00.000.000/0000-00"></app-input-documento>
+                      <app-input-documento [control]="cnpjControl" label="CNPJ/CPF"
+                      placeholder="00.000.000/0000-00"></app-input-documento>
 
-                                            <app-input-texto-restrito [control]="inscricaoEstadualControl"
-                                                label="Inscrição Estadual" placeholder="Informe a inscrição estadual"
-                                                [maxlength]="60"></app-input-texto-restrito>
+                      <app-input-texto-restrito [control]="inscricaoEstadualControl"
+                        label="Inscrição Estadual" placeholder="Informe a inscrição estadual"
+                      [maxlength]="60"></app-input-texto-restrito>
 
-                                            <app-input-texto-restrito [control]="horarioControl"
-                                                label="Horário de Funcionamento" placeholder="Ex.: Seg a Sex, 08h às 18h"
-                                                [maxlength]="120"></app-input-texto-restrito>
+                      <app-input-texto-restrito [control]="horarioControl"
+                        label="Horário de Funcionamento" placeholder="Ex.: Seg a Sex, 08h às 18h"
+                      [maxlength]="120"></app-input-texto-restrito>
 
-                                        </div>
+                    </div>
 
-                                        <!-- Logo -->
-                                        <div class="col-lg-6">
-                                            <mat-card-title class="m-t-16">
-                                                Logo da Empresa
-                                            </mat-card-title>
-                                            <mat-card-subtitle class="f-s-14">
-                                                Envie a logomarca da empresa para personalizar o sistema.
-                                            </mat-card-subtitle>
+                    <!-- Logo -->
+                    <div class="col-lg-6">
+                      <mat-card-title class="m-t-16">
+                        Logo da Empresa
+                      </mat-card-title>
+                      <mat-card-subtitle class="f-s-14">
+                        Envie a logomarca da empresa para personalizar o sistema.
+                      </mat-card-subtitle>
 
-                                            <div class="text-center m-t-24">
-                                                <div class="d-inline-block text-center p-2 bg-light rounded border"
-                                                    style="width: 340px; height: 216px;">
+                      <div class="text-center m-t-24">
+                        <div class="d-inline-block text-center p-2 bg-light rounded border"
+                          style="width: 340px; height: 216px;">
 
-                                                    <img [src]="imagemPreview || IMAGEM_PADRAO" [style.width.px]="340"
-                                                        [style.height.px]="216" class="img-fluid object-fit-contain"
-                                                        alt="Logo da empresa" />
-                                                </div>
-
-                                                <div class="m-t-16">
-                                                    <input #fileInput type="file"
-                                                        accept="image/png,image/jpeg,image/gif" hidden
-                                                        (change)="onFileSelected($event)" />
-
-                                                    <button type="button" mat-flat-button color="primary" class="m-r-8"
-                                                        (click)="fileInput.click()">
-                                                        Selecionar
-                                                    </button>
-
-                                                    <button type="button" mat-stroked-button color="warn"
-                                                        (click)="resetarImagem(fileInput)">
-                                                        Redefinir
-                                                    </button>
-                                                </div>
-
-                                                <span class="f-s-14 m-t-16 d-block">
-                                                    Dimensões ideais:
-                                                    <strong>340x216px</strong>.
-                                                    Formatos permitidos: JPG, GIF ou PNG.
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
+                          <img [src]="imagemPreview || IMAGEM_PADRAO" [style.width.px]="340"
+                            [style.height.px]="216" class="img-fluid object-fit-contain"
+                            alt="Logo da empresa" />
                         </div>
-                    </div>
 
-                    <!-- Endereço -->
-                    <div class="row m-t-24">
-                        <div class="col-sm-12">
-                            <mat-card class="cardWithShadow">
-                                <mat-card-content>
-                                    <mat-card-title>Endereço</mat-card-title>
-                                    <mat-card-subtitle class="f-s-14">
-                                        Informe o endereço completo da empresa.
-                                    </mat-card-subtitle>
+                        <div class="m-t-16">
+                          <input #fileInput type="file"
+                            accept="image/png,image/jpeg,image/gif" hidden
+                            (change)="onFileSelected($event)" />
 
-                                    <div formGroupName="enderecoRequest">
-                                        <div class="row m-t-16">
-                                            <div class="col-lg-6">
-                                                <app-input-cep [control]="cepControl" label="CEP"
-                                                    (enderecoEncontrado)="preencherEnderecoViaCep($event)">
-                                                </app-input-cep>
+                          <button type="button" mat-flat-button color="primary" class="m-r-8"
+                            (click)="fileInput.click()">
+                            Selecionar
+                          </button>
 
-                                                <app-input-texto-restrito [control]="complementoControl"
-                                                    label="Complemento" placeholder="Sala, bloco..." [maxlength]="120">
-                                                </app-input-texto-restrito>
-
-                                                <app-input-texto-restrito [control]="cidadeControl" label="Cidade"
-                                                    placeholder="Informe a cidade" [maxlength]="120">
-                                                </app-input-texto-restrito>
-
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="col-sm-8">
-                                                        <app-input-texto-restrito [control]="logradouroControl" label="Logradouro"
-                                                            placeholder="Rua, avenida..." [maxlength]="200">
-                                                        </app-input-texto-restrito>
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <app-input-texto-restrito [control]="numeroControl" label="Número"
-                                                            placeholder="Informe o número" [maxlength]="10">
-                                                        </app-input-texto-restrito>
-                                                    </div>
-                                                </div>
-
-                                                <app-input-texto-restrito [control]="bairroControl" label="Bairro"
-                                                    placeholder="Informe o bairro" [maxlength]="120">
-                                                </app-input-texto-restrito>
-
-                                                <app-input-texto-restrito [control]="estadoControl" label="Estado"
-                                                    placeholder="UF" [maxlength]="2">
-                                                </app-input-texto-restrito>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
+                          <button type="button" mat-stroked-button color="warn"
+                            (click)="resetarImagem(fileInput)">
+                            Redefinir
+                          </button>
                         </div>
+
+                        <span class="f-s-14 m-t-16 d-block">
+                          Dimensões ideais:
+                          <strong>340x216px</strong>.
+                          Formatos permitidos: JPG, GIF ou PNG.
+                        </span>
+                      </div>
                     </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
 
-                    <!-- Botões -->
-                    <!-- MODO NORMAL (tela de configurações) -->
-                    <div class="m-t-24 d-flex gap-2 flex-wrap" *ngIf="!modoOnboarding">
-                        <button mat-flat-button class="bg-error text-white" type="button">
-                            Cancelar
-                        </button>
+          <!-- Endereço -->
+          <div class="row m-t-24">
+            <div class="col-sm-12">
+              <mat-card class="cardWithShadow">
+                <mat-card-content>
+                  <mat-card-title>Endereço</mat-card-title>
+                  <mat-card-subtitle class="f-s-14">
+                    Informe o endereço completo da empresa.
+                  </mat-card-subtitle>
 
-                        <button mat-flat-button color="primary" type="submit">
-                            Salvar
-                        </button>
+                  <div formGroupName="enderecoRequest">
+                    <div class="row m-t-16">
+                      <div class="col-lg-6">
+                        <app-input-cep [control]="cepControl" label="CEP"
+                          (enderecoEncontrado)="preencherEnderecoViaCep($event)">
+                        </app-input-cep>
+
+                        <app-input-texto-restrito [control]="complementoControl"
+                          label="Complemento" placeholder="Sala, bloco..." [maxlength]="120">
+                        </app-input-texto-restrito>
+
+                        <app-input-texto-restrito [control]="cidadeControl" label="Cidade"
+                          placeholder="Informe a cidade" [maxlength]="120">
+                        </app-input-texto-restrito>
+
+                      </div>
+
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-sm-8">
+                            <app-input-texto-restrito [control]="logradouroControl" label="Logradouro"
+                              placeholder="Rua, avenida..." [maxlength]="200">
+                            </app-input-texto-restrito>
+                          </div>
+
+                          <div class="col-sm-4">
+                            <app-input-texto-restrito [control]="numeroControl" label="Número"
+                              placeholder="Informe o número" [maxlength]="10">
+                            </app-input-texto-restrito>
+                          </div>
+                        </div>
+
+                        <app-input-texto-restrito [control]="bairroControl" label="Bairro"
+                          placeholder="Informe o bairro" [maxlength]="120">
+                        </app-input-texto-restrito>
+
+                        <app-input-texto-restrito [control]="estadoControl" label="Estado"
+                          placeholder="UF" [maxlength]="2">
+                        </app-input-texto-restrito>
+                      </div>
                     </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
 
-                    <!-- MODO ONBOARDING (dentro do wizard) -->
-                    <div class="m-t-24 d-flex justify-content-end" *ngIf="modoOnboarding">
-                        <button mat-flat-button color="primary" type="submit">
-                            Salvar dados da empresa
-                        </button>
-                    </div>
+          <!-- Botões -->
+          <!-- MODO NORMAL (tela de configurações) -->
+          @if (!modoOnboarding) {
+            <div class="m-t-24 d-flex gap-2 flex-wrap">
+              <button mat-flat-button class="bg-error text-white" type="button">
+                Cancelar
+              </button>
+              <button mat-flat-button color="primary" type="submit">
+                Salvar
+              </button>
+            </div>
+          }
 
-                </form>
-            </mat-tab>
+          <!-- MODO ONBOARDING (dentro do wizard) -->
+          @if (modoOnboarding) {
+            <div class="m-t-24 d-flex justify-content-end">
+              <button mat-flat-button color="primary" type="submit">
+                Salvar dados da empresa
+              </button>
+            </div>
+          }
 
-            <!-- Aba Redes Sociais -->
-            <mat-tab label="Redes Sociais">
-                <div class="m-t-24">
-                    <mat-card class="cardWithShadow">
-                        <mat-card-content class="p-y-24">
-                            <mat-card-title>Redes Sociais</mat-card-title>
-                            <mat-card-subtitle class="f-s-14">
-                                Aqui você poderá adicionar os links das redes sociais da empresa.
-                            </mat-card-subtitle>
-                            Ainda vou fazer
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
+        </form>
+      </mat-tab>
 
-    </mat-card-content>
+      <!-- Aba Redes Sociais -->
+      <mat-tab label="Redes Sociais">
+        <div class="m-t-24">
+          <mat-card class="cardWithShadow">
+            <mat-card-content class="p-y-24">
+              <mat-card-title>Redes Sociais</mat-card-title>
+              <mat-card-subtitle class="f-s-14">
+                Aqui você poderá adicionar os links das redes sociais da empresa.
+              </mat-card-subtitle>
+              Ainda vou fazer
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+  </mat-card-content>
 </mat-card>

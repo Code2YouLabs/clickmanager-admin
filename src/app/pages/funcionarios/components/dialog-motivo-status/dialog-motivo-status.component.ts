@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,25 +25,28 @@ export interface DialogMotivoStatusResult {
   selector: 'app-dialog-motivo-status',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule
-  ],
+],
   template: `
     <h2 mat-dialog-title>{{ data.titulo || 'Confirmar ação' }}</h2>
     <mat-dialog-content>
       <p class="m-b-12">{{ data.mensagem }}</p>
 
-      <mat-form-field appearance="outline" class="w-100" *ngIf="data.mostrarDataEfetiva">
-        <mat-label>{{ data.labelDataEfetiva || 'Data efetiva' }}</mat-label>
-        <input matInput type="date" [formControl]="dataEfetivaControl" />
-        <mat-error *ngIf="dataEfetivaControl.touched && dataEfetivaControl.invalid">
-          Data efetiva é obrigatória
-        </mat-error>
-      </mat-form-field>
+      @if (data.mostrarDataEfetiva) {
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ data.labelDataEfetiva || 'Data efetiva' }}</mat-label>
+          <input matInput type="date" [formControl]="dataEfetivaControl" />
+          @if (dataEfetivaControl.touched && dataEfetivaControl.invalid) {
+            <mat-error>
+              Data efetiva é obrigatória
+            </mat-error>
+          }
+        </mat-form-field>
+      }
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Motivo</mat-label>
@@ -55,9 +58,11 @@ export interface DialogMotivoStatusResult {
           placeholder="Informe o motivo"
         ></textarea>
         <mat-hint align="end">{{ (motivoControl.value || '').length }}/240</mat-hint>
-        <mat-error *ngIf="motivoControl.touched && motivoControl.invalid">
-          Motivo é obrigatório
-        </mat-error>
+        @if (motivoControl.touched && motivoControl.invalid) {
+          <mat-error>
+            Motivo é obrigatório
+          </mat-error>
+        }
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -66,7 +71,7 @@ export interface DialogMotivoStatusResult {
         {{ data.acaoLabel || 'Confirmar' }}
       </button>
     </mat-dialog-actions>
-  `
+    `
 })
 export class DialogMotivoStatusComponent {
   motivoControl = new FormControl('', [Validators.required, Validators.maxLength(240)]);

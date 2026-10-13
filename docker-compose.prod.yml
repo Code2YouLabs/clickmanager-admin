@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:14
@@ -15,7 +13,7 @@ services:
       - clickmanager-network
 
   backend:
-    image: ghcr.io/leonardombr89/clickmanager-backend:latest
+    image: ghcr.io/code2youlabs/clickmanager-backend:latest
     container_name: clickmanager-backend
     restart: always
     depends_on:
@@ -31,9 +29,9 @@ services:
     networks:
       - clickmanager-network
 
-  admin-frontend:
-    image: ghcr.io/leonardombr89/clickmanager-admin-frontend:latest
-    container_name: clickmanager-admin-frontend
+  admin:
+    image: ghcr.io/code2youlabs/clickmanager-admin:latest
+    container_name: clickmanager-admin
     restart: always
     depends_on:
       - backend
@@ -52,7 +50,7 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     depends_on:
-      - admin-frontend
+      - admin
     networks:
       - clickmanager-network
 

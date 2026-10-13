@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,11 +14,10 @@ import { Preco } from 'src/app/models/preco/preco-response.model';
     templateUrl: './servicos-step.component.html',
     styleUrls: ['./servicos-step.component.scss'],
     imports: [
-        CommonModule,
-        MatCheckboxModule,
-        MatTooltipModule,
-        MatIconModule,
-    ],
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatIconModule
+],
 })
 export class ServicosStepComponent {
     @Input() servicosDisponiveis: ServicoResponse[] = [];

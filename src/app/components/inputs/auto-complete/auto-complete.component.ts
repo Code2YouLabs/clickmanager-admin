@@ -7,7 +7,7 @@ import {
   ViewChild,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -23,13 +23,12 @@ import { MatOptionModule } from '@angular/material/core';
   selector: 'app-auto-complete',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
     MatOptionModule
-  ],
+],
   templateUrl: './auto-complete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

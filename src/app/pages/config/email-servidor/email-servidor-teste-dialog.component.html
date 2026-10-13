@@ -11,7 +11,9 @@
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Mensagem</mat-label>
       <textarea matInput rows="4" formControlName="mensagem"></textarea>
-      <mat-error *ngIf="mensagemControl?.hasError('required')">Mensagem obrigatória</mat-error>
+      @if (mensagemControl?.hasError('required')) {
+        <mat-error>Mensagem obrigatória</mat-error>
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>

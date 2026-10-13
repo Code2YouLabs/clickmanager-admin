@@ -11,7 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { BrandingComponent } from '../../../layouts/full/vertical/sidebar/branding.component';
 import { AuthService } from '../../../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 @Component({
   selector: 'app-boxed-forgot-password',
@@ -53,7 +53,7 @@ export class AppBoxedForgotPasswordComponent {
     this.authService.recuperarSenha(email).subscribe({
       next: () => {
         this.toastr.success('Link de recuperação enviado para o e-mail.');
-        this.router.navigate(['/authentication/login']);
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         const msg = err?.error?.message || 'Erro ao enviar e-mail de recuperação.';

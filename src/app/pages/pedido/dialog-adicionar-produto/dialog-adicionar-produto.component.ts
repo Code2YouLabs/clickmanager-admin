@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
@@ -43,17 +43,24 @@ type Variacao = {
     templateUrl: './dialog-adicionar-produto.component.html',
     styleUrls: ['./dialog-adicionar-produto.component.scss'],
     imports: [
-        CommonModule, ReactiveFormsModule,
-        MatDialogModule, MatStepperModule, MatButtonModule,
-        MatRadioModule, MatDividerModule, MatCheckboxModule, MatTooltipModule, MatIconModule,
-        MatCardModule, MatProgressSpinnerModule, MatDialogClose,
-        // filhos
-        SelecionarProdutoStepComponent,
-        EscolherVariacaoStepComponent,
-        ServicosStepComponent,
-        RevisaoStepComponent,
-        ConfigurarPrecoStepComponent,
-    ],
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatRadioModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatDialogClose,
+    SelecionarProdutoStepComponent,
+    EscolherVariacaoStepComponent,
+    ServicosStepComponent,
+    RevisaoStepComponent,
+    ConfigurarPrecoStepComponent
+],
 })
 export class DialogAdicionarProdutoComponent {
     precoReady = false;

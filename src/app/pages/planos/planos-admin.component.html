@@ -1,0 +1,280 @@
+<div class="planos-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Billing admin</span>
+      <h1>Planos da plataforma</h1>
+      <p>
+        Gerencie catálogo comercial, ordem de exibição, integrações com Mercado Pago
+        e os blocos de benefícios/limites usados na oferta do ClickManager.
+      </p>
+    </div>
+
+    <div class="hero-actions">
+      <button mat-flat-button color="primary" (click)="novoPlano()">
+        Novo plano
+      </button>
+      <button mat-stroked-button color="primary" (click)="recarregar()" [disabled]="carregandoLista">
+        Atualizar lista
+      </button>
+    </div>
+  </section>
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span>Total</span>
+      <strong>{{ totalPlanos }}</strong>
+      <small>planos cadastrados</small>
+    </article>
+
+    <article class="summary-card active">
+      <span>Ativos</span>
+      <strong>{{ planosAtivos }}</strong>
+      <small>disponíveis para comercialização</small>
+    </article>
+
+    <article class="summary-card inactive">
+      <span>Inativos</span>
+      <strong>{{ planosInativos }}</strong>
+      <small>fora da vitrine atual</small>
+    </article>
+
+    <article class="summary-card gateway">
+      <span>Integrados</span>
+      <strong>{{ planosIntegrados }}</strong>
+      <small>com `mercadoPagoPlanId` configurado</small>
+    </article>
+  </section>
+
+  <section class="content-grid">
+    <div class="list-card">
+      <div class="section-header">
+        <div>
+          <h3>Catálogo de planos</h3>
+          <p>{{ totalPlanos }} item(ns) disponíveis no admin</p>
+        </div>
+      </div>
+
+      @if (carregandoLista) {
+      <div class="state-card">
+        <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+        <span>Carregando planos...</span>
+      </div>
+      } @else if (!planos.length) {
+      <div class="state-card">
+        <i-tabler name="credit-card-off" class="icon-24"></i-tabler>
+        <span>Nenhum plano cadastrado ainda.</span>
+      </div>
+      } @else {
+      <div class="planos-list">
+        @for (plano of planos; track plano.id) {
+        <button
+          type="button"
+          class="plano-item"
+          [class.selected]="planoSelecionado?.id === plano.id && !modoCriacao"
+          (click)="selecionarPlano(plano)"
+        >
+          <div class="plano-item-top">
+            <div>
+              <strong>{{ plano.nome }}</strong>
+              <span>{{ plano.codigo }}</span>
+            </div>
+            <span class="status-badge" [ngClass]="statusClass(plano.ativo)">
+              {{ plano.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+
+          <div class="plano-item-meta">
+            <span>{{ periodicidadeLabel(plano.periodicidade) }}</span>
+            <span>{{ formatarMoeda(plano.precoCentavos, plano.moeda) }}</span>
+            <span>Ordem {{ plano.ordemExibicao ?? 'auto' }}</span>
+          </div>
+
+          <div class="plano-item-footer">
+            <small>{{ plano.destaque || 'Sem destaque comercial' }}</small>
+            <small>{{ plano.mercadoPagoPlanId || 'Sem vínculo MP' }}</small>
+          </div>
+        </button>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="detail-card">
+      @if (carregandoDetalhe) {
+      <div class="state-card detail-state">
+        <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+        <span>Carregando detalhe do plano...</span>
+      </div>
+      } @else {
+      <div class="detail-header">
+        <div>
+          <span class="detail-id">
+            {{ modoCriacao ? 'Novo plano' : 'Plano #' + (planoSelecionado?.id || '-') }}
+          </span>
+          <h2>{{ modoCriacao ? 'Cadastrar plano' : (planoSelecionado?.nome || 'Selecione um plano') }}</h2>
+          <p>
+            @if (modoCriacao) {
+              Defina dados comerciais e estrutura de limites para publicar um novo plano.
+            } @else if (planoSelecionado) {
+              {{ planoSelecionado.codigo }} · {{ periodicidadeLabel(planoSelecionado.periodicidade) }}
+            } @else {
+              Escolha um plano da lista para visualizar ou editar.
+            }
+          </p>
+        </div>
+
+        @if (planoSelecionado && !modoCriacao) {
+        <div class="detail-actions">
+          <span class="status-badge" [ngClass]="statusClass(planoSelecionado.ativo)">
+            {{ planoSelecionado.ativo ? 'Ativo' : 'Inativo' }}
+          </span>
+          <button mat-stroked-button color="primary" (click)="alternarAtivo()" [disabled]="atualizandoAtivo">
+            {{ planoSelecionado.ativo ? 'Desativar' : 'Ativar' }}
+          </button>
+        </div>
+        }
+      </div>
+
+      @if (modoCriacao || planoSelecionado) {
+      <div class="detail-grid">
+        <article class="detail-stat">
+          <span>Preço atual</span>
+          <strong>{{ formatarMoeda(form.precoCentavos, form.moeda) }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Periodicidade</span>
+          <strong>{{ periodicidadeLabel(form.periodicidade) }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Ordem</span>
+          <strong>{{ form.ordemExibicao ?? 'Automática' }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Gateway</span>
+          <strong>{{ form.mercadoPagoPlanId || 'Não integrado' }}</strong>
+        </article>
+      </div>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Código</mat-label>
+          <input matInput [(ngModel)]="form.codigo" placeholder="MENSAL_001" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="form.nome" placeholder="Plano Mensal" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Periodicidade</mat-label>
+          <mat-select [(ngModel)]="form.periodicidade">
+            @for (option of periodicidadeOptions; track option) {
+            <mat-option [value]="option">{{ periodicidadeLabel(option) }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Preço em centavos</mat-label>
+          <input matInput type="number" [(ngModel)]="form.precoCentavos" min="0" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Moeda</mat-label>
+          <input matInput [(ngModel)]="form.moeda" maxlength="3" placeholder="BRL" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ordem de exibição</mat-label>
+          <input matInput type="number" [(ngModel)]="form.ordemExibicao" min="1" placeholder="Automática" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput rows="3" [(ngModel)]="form.descricao"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Vantagem</mat-label>
+          <input matInput [(ngModel)]="form.vantagem" placeholder="Mais vendido" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Destaque</mat-label>
+          <input matInput [(ngModel)]="form.destaque" placeholder="Popular" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mercado Pago Plan ID</mat-label>
+          <input matInput [(ngModel)]="form.mercadoPagoPlanId" placeholder="abc123" />
+        </mat-form-field>
+
+        <div class="toggle-field">
+          <mat-slide-toggle [(ngModel)]="form.ativo">Salvar como ativo</mat-slide-toggle>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Limites JSON</mat-label>
+          <textarea matInput rows="7" [(ngModel)]="form.limitesJson"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Benefícios JSON</mat-label>
+          <textarea matInput rows="7" [(ngModel)]="form.beneficiosJson"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="editor-actions">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="salvandoPlano">
+          {{ modoCriacao ? 'Criar plano' : 'Salvar alterações' }}
+        </button>
+        <button mat-stroked-button color="primary" (click)="cancelarEdicao()">
+          {{ modoCriacao ? 'Limpar formulário' : 'Cancelar edição' }}
+        </button>
+      </div>
+
+      <div class="preview-grid">
+        <section class="preview-card">
+          <div class="preview-header">
+            <h3>Benefícios</h3>
+            <span>{{ beneficiosPreview.length }} item(ns)</span>
+          </div>
+
+          @if (beneficiosPreview.length) {
+          <div class="chip-list">
+            @for (beneficio of beneficiosPreview; track beneficio) {
+            <span class="chip">{{ beneficio }}</span>
+            }
+          </div>
+          } @else {
+          <p class="preview-empty">Informe um array JSON para visualizar os benefícios do plano.</p>
+          }
+        </section>
+
+        <section class="preview-card">
+          <div class="preview-header">
+            <h3>Limites</h3>
+            <span>Prévia</span>
+          </div>
+
+          @if (limitesPreview) {
+          <pre>{{ limitesPreview }}</pre>
+          } @else {
+          <p class="preview-empty">Informe um objeto JSON com os limites do plano.</p>
+          }
+        </section>
+      </div>
+      } @else {
+      <div class="empty-state">
+        <i-tabler name="credit-card" class="icon-28"></i-tabler>
+        <div>
+          <strong>Selecione um plano</strong>
+          <p>Escolha um item da lista para editar detalhes comerciais ou crie um novo plano.</p>
+        </div>
+      </div>
+      }
+      }
+    </div>
+  </section>
+</div>

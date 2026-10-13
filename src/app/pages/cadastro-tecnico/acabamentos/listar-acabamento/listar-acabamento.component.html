@@ -41,9 +41,11 @@
           <td mat-cell *matCellDef="let a" class="f-s-14">
             <div class="variacoes-cell" [matTooltip]="tooltipVariacoes(a) || ''"
               [matTooltipDisabled]="!(a?.variacoes?.length > 5)" matTooltipShowDelay="300">
-              <div *ngFor="let linha of variacoesPreview(a)" class="variacao-linha">
-                {{ linha }}
-              </div>
+              @for (linha of variacoesPreview(a); track linha) {
+                <div class="variacao-linha">
+                  {{ linha }}
+                </div>
+              }
             </div>
           </td>
         </ng-container>

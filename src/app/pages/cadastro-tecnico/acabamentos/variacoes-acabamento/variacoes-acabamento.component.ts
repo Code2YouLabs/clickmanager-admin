@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
@@ -28,7 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 import { AutoCompleteComponent } from 'src/app/components/inputs/auto-complete/auto-complete.component';
 import { PrecoSelectorComponent } from 'src/app/components/preco/preco-selector.component';
@@ -53,7 +53,6 @@ export interface AcabamentoVariacaoForm {
   selector: 'app-variacoes-acabamento',
   templateUrl: './variacoes-acabamento.component.html',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -70,7 +69,7 @@ export interface AcabamentoVariacaoForm {
     AutoCompleteComponent,
     PrecoSelectorComponent,
     NomeDePipe
-  ],
+],
 })
 export class VariacoesAcabamentoComponent {
 

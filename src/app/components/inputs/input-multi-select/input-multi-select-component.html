@@ -1,25 +1,30 @@
 <mat-card class="cardWithShadow h-100 d-flex flex-column smart-card" [style.min-height.px]="cardMinHeight">
-    <mat-card-header>
-        <mat-card-title class="f-s-16 f-w-600">
-            {{ label }} <span *ngIf="isRequired" style="color:#ff110094">*</span>
-        </mat-card-title>
-    </mat-card-header>
+  <mat-card-header>
+    <mat-card-title class="f-s-16 f-w-600">
+      {{ label }} @if (isRequired) {
+      <span style="color:#ff110094">*</span>
+    }
+  </mat-card-title>
+</mat-card-header>
 
-    <!-- scroll aqui garante barra colada à borda direita do card -->
-    <mat-card-content class="smart-card-content" [style.height.px]="listHeight">
-        <ng-container *ngIf="options?.length; else vazio">
-            <mat-selection-list [formControl]="control" class="smart-list">
-                <mat-list-option *ngFor="let option of options; trackBy: trackById" [value]="option.id">
-                    {{ option.nome }}
-                </mat-list-option>
-            </mat-selection-list>
-        </ng-container>
-        <ng-template #vazio>
-            <div class="text-body f-s-12 px-12 py-8">Nenhuma opção disponível.</div>
-        </ng-template>
-    </mat-card-content>
+<!-- scroll aqui garante barra colada à borda direita do card -->
+<mat-card-content class="smart-card-content" [style.height.px]="listHeight">
+  @if (options?.length) {
+    <mat-selection-list [formControl]="control" class="smart-list">
+      @for (option of options; track trackById($index, option)) {
+        <mat-list-option [value]="option.id">
+          {{ option.nome }}
+        </mat-list-option>
+      }
+    </mat-selection-list>
+  } @else {
+    <div class="text-body f-s-12 px-12 py-8">Nenhuma opção disponível.</div>
+  }
+</mat-card-content>
 </mat-card>
 
-<div *ngIf="control?.invalid && control?.touched" class="text-body f-s-12 text-error mt-4">
+@if (control?.invalid && control?.touched) {
+  <div class="text-body f-s-12 text-error mt-4">
     {{ errorMessage() }}
-</div>
+  </div>
+}

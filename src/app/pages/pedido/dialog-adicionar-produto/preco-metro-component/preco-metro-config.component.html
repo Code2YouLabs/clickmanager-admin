@@ -1,97 +1,110 @@
-<div *ngIf="produto?.preco?.tipo === 'METRO'" [formGroup]="form" class="p-metro">
-
+@if (produto?.preco?.tipo === 'METRO') {
+  <div [formGroup]="form" class="p-metro">
     <!-- Cabeçalho -->
     <h2 class="f-s-20 f-w-600 m-b-8">{{ produto?.nome }}</h2>
-    <p class="f-s-14 m-b-16 text-muted" *ngIf="produto?.descricao">{{ produto?.descricao }}</p>
-
+    @if (produto?.descricao) {
+      <p class="f-s-14 m-b-16 text-muted">{{ produto?.descricao }}</p>
+    }
     <!-- Metadados da variação (se existirem) -->
     <div class="row m-b-16 m-t-16 meta-row">
-        <div class="col-md-3" *ngIf="produto?.formato">
-            <div class="f-w-600">Formato</div>
-            <div>{{ produto?.formato }}</div>
+      @if (produto?.formato) {
+        <div class="col-md-3">
+          <div class="f-w-600">Formato</div>
+          <div>{{ produto?.formato }}</div>
         </div>
-        <div class="col-md-3" *ngIf="produto?.material">
-            <div class="f-w-600">Material</div>
-            <div>{{ produto?.material }}</div>
+      }
+      @if (produto?.material) {
+        <div class="col-md-3">
+          <div class="f-w-600">Material</div>
+          <div>{{ produto?.material }}</div>
         </div>
-        <div class="col-md-3" *ngIf="produto?.cor">
-            <div class="f-w-600">Cor</div>
-            <div>{{ produto?.cor }}</div>
+      }
+      @if (produto?.cor) {
+        <div class="col-md-3">
+          <div class="f-w-600">Cor</div>
+          <div>{{ produto?.cor }}</div>
         </div>
-        <div class="col-md-3" *ngIf="produto?.acabamento">
-            <div class="f-w-600">Acabamento</div>
-            <div>{{ produto?.acabamento }}</div>
+      }
+      @if (produto?.acabamento) {
+        <div class="col-md-3">
+          <div class="f-w-600">Acabamento</div>
+          <div>{{ produto?.acabamento }}</div>
         </div>
+      }
     </div>
-
     <mat-divider></mat-divider>
-
     <!-- Campos -->
     <div class="row m-t-16">
-        <!-- Altura -->
+      <!-- Altura -->
+      <div class="col-md-4">
+        <app-input-numerico [control]="alturaControl" label="Altura (cm)" [placeholder]="alturaPlaceholder">
+        </app-input-numerico>
+        @if (precoMetro?.alturaMaxima) {
+          <div class="hint">Máx: {{ precoMetro?.alturaMaxima }} cm</div>
+        }
+      </div>
+      <!-- Largura (somente QUADRADO) -->
+      @if (!isLinear) {
         <div class="col-md-4">
-            <app-input-numerico [control]="alturaControl" label="Altura (cm)" [placeholder]="alturaPlaceholder">
-            </app-input-numerico>
-            <div class="hint" *ngIf="precoMetro?.alturaMaxima">Máx: {{ precoMetro?.alturaMaxima }} cm</div>
+          <app-input-numerico [control]="larguraControl!" label="Largura (cm)" [placeholder]="larguraPlaceholder">
+          </app-input-numerico>
+          @if (precoMetro?.larguraMaxima) {
+            <div class="hint">Máx: {{ precoMetro?.larguraMaxima }} cm</div>
+          }
         </div>
-
-        <!-- Largura (somente QUADRADO) -->
-        <div class="col-md-4" *ngIf="!isLinear">
-            <app-input-numerico [control]="larguraControl!" label="Largura (cm)" [placeholder]="larguraPlaceholder">
-            </app-input-numerico>
-            <div class="hint" *ngIf="precoMetro?.larguraMaxima">Máx: {{ precoMetro?.larguraMaxima }} cm</div>
-        </div>
-
-        <!-- Quantidade -->
-        <div class="col-md-4">
-            <app-input-numerico [control]="quantidadeControl" label="Quantidade" placeholder="Digite a quantidade">
-            </app-input-numerico>
-            <div class="hint">Mín: 1</div>
-        </div>
+      }
+      <!-- Quantidade -->
+      <div class="col-md-4">
+        <app-input-numerico [control]="quantidadeControl" label="Quantidade" placeholder="Digite a quantidade">
+        </app-input-numerico>
+        <div class="hint">Mín: 1</div>
+      </div>
     </div>
-
     <!-- Indicação do modo LINEAR -->
-    <div class="m-t-8 text-muted" *ngIf="isLinear && precoMetro?.larguraMaxima">
+    @if (isLinear && precoMetro?.larguraMaxima) {
+      <div class="m-t-8 text-muted">
         Largura fixa (modo linear): <b>{{ precoMetro?.larguraMaxima }} cm</b>
-    </div>
-
+      </div>
+    }
     <!-- Resultado -->
     <div class="result m-t-16">
-        <div class="valores">
-            <div class="total">
-                Valor total:
-                <strong>{{ subTotal | currency:'BRL' }}</strong>
-            </div>
-            <div class="unitario text-muted">
-                Valor unitário:
-                <b>{{ valorUnitario | currency:'BRL' }}</b>
-                <ng-container *ngIf="areaM2 > 0">
-                    • Área: {{ areaM2 | number:'1.2-2' }} m²
-                </ng-container>
-            </div>
+      <div class="valores">
+        <div class="total">
+          Valor total:
+          <strong>{{ subTotal | currency:'BRL' }}</strong>
         </div>
-
-        <!-- Ações -->
-        <div class="acoes">
-            <button mat-flat-button color="primary" (click)="onAdicionar()"
-                [disabled]="form.invalid || subTotal <= 0 || added">
-                Adicionar
-            </button>
-
-            <button mat-stroked-button color="primary" *ngIf="added" (click)="editar()">
-                Editar medidas
-            </button>
+        <div class="unitario text-muted">
+          Valor unitário:
+          <b>{{ valorUnitario | currency:'BRL' }}</b>
+          @if (areaM2 > 0) {
+            • Área: {{ areaM2 | number:'1.2-2' }} m²
+          }
         </div>
+      </div>
+      <!-- Ações -->
+      <div class="acoes">
+        <button mat-flat-button color="primary" (click)="onAdicionar()"
+          [disabled]="form.invalid || subTotal <= 0 || added">
+          Adicionar
+        </button>
+        @if (added) {
+          <button mat-stroked-button color="primary" (click)="editar()">
+            Editar medidas
+          </button>
+        }
+      </div>
     </div>
-
     <!-- Banner de confirmação -->
-    <div class="added-banner" *ngIf="added" aria-live="polite">
+    @if (added) {
+      <div class="added-banner" aria-live="polite">
         <mat-icon class="ok">check_circle</mat-icon>
         <div class="msg">
-            <div class="title">Item adicionado</div>
-            <div class="subtitle">
-                Medidas confirmadas. Você pode avançar para o próximo passo.
-            </div>
+          <div class="title">Item adicionado</div>
+          <div class="subtitle">
+            Medidas confirmadas. Você pode avançar para o próximo passo.
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    }
+  </div>
+}

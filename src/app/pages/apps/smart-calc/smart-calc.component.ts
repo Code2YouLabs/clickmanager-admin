@@ -25,7 +25,7 @@ import { SmartCalcResultado } from 'src/app/models/smart-calc/smart-calc-resulta
 import { SmartCalcInitResponse, ProdutoSmartCalcInitResponse, ProdutoVariacaoSmartCalcInitResponse } from 'src/app/models/smart-calc/init/smartcalc-init.model';
 import { ProdutoListagem } from 'src/app/models/produto/produto-listagem.model';
 
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { of, switchMap, map, finalize, Observable } from 'rxjs';
 
 import { PedidoItemRequest } from 'src/app/models/pedido/pedido-item-request.model';

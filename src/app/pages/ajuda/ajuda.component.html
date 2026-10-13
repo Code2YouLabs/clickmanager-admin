@@ -42,42 +42,58 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Pesquisar</mat-label>
         <input matInput type="text" placeholder="Ex: SmartCalc, pagamento, onboarding" (input)="filtro = $any($event.target).value" />
-        <button *ngIf="filtro" mat-icon-button matSuffix aria-label="Limpar" (click)="filtro = ''">
-          <mat-icon>close</mat-icon>
-        </button>
+        @if (filtro) {
+          <button mat-icon-button matSuffix aria-label="Limpar" (click)="filtro = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
       </mat-form-field>
     </div>
   </header>
 
   <div class="secoes">
     <mat-accordion multi>
-      <mat-expansion-panel *ngFor="let secao of filteredSecoes" [id]="secao.id" [expanded]="expandedId === secao.id">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon class="secao-icon" *ngIf="secao.icon">{{ secao.icon }}</mat-icon>
-            {{ secao.titulo }}
-          </mat-panel-title>
-          <mat-panel-description>{{ secao.descricao }}</mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <div class="conteudo">
-          <ol *ngIf="secao.passos?.length" class="passos">
-            <li *ngFor="let passo of secao.passos">{{ passo }}</li>
-          </ol>
-
-          <div *ngIf="secao.itens?.length" class="itens">
-            <div class="item" *ngFor="let item of secao.itens">
-              <h4>{{ item.titulo }}</h4>
-              <ul>
-                <li *ngFor="let det of item.detalhes">{{ det }}</li>
-              </ul>
-            </div>
+      @for (secao of filteredSecoes; track secao) {
+        <mat-expansion-panel [id]="secao.id" [expanded]="expandedId === secao.id">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              @if (secao.icon) {
+                <mat-icon class="secao-icon">{{ secao.icon }}</mat-icon>
+              }
+              {{ secao.titulo }}
+            </mat-panel-title>
+            <mat-panel-description>{{ secao.descricao }}</mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="conteudo">
+            @if (secao.passos?.length) {
+              <ol class="passos">
+                @for (passo of secao.passos; track passo) {
+                  <li>{{ passo }}</li>
+                }
+              </ol>
+            }
+            @if (secao.itens?.length) {
+              <div class="itens">
+                @for (item of secao.itens; track item) {
+                  <div class="item">
+                    <h4>{{ item.titulo }}</h4>
+                    <ul>
+                      @for (det of item.detalhes; track det) {
+                        <li>{{ det }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+            }
           </div>
-        </div>
-      </mat-expansion-panel>
+        </mat-expansion-panel>
+      }
     </mat-accordion>
-    <div *ngIf="!filteredSecoes.length && filtro" class="no-results">
-      Nenhum resultado para "{{ filtro }}".
-    </div>
+    @if (!filteredSecoes.length && filtro) {
+      <div class="no-results">
+        Nenhum resultado para "{{ filtro }}".
+      </div>
+    }
   </div>
 </div>

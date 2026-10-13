@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { AppCodeViewComponent } from '../../../components/code-view/code-view.component';
 
 // snippets
@@ -26,7 +26,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
     Highlight,
     HighlightAuto,
     HighlightLineNumbers,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     AppCodeViewComponent,
   ],
 })

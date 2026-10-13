@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -36,14 +36,13 @@ export interface DialogValorAcaoResult {
   selector: 'app-dialog-valor-acao',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
     InputOptionsComponent,
     InputMoedaComponent,
     InputTextareaComponent
-  ],
+],
   templateUrl: './dialog-valor-acao.component.html',
   styleUrl: './dialog-valor-acao.component.scss'
 })

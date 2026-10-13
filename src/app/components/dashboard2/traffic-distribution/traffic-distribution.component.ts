@@ -11,7 +11,7 @@ import {
   NgApexchartsModule,
 } from 'ng-apexcharts';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 export interface trafficChart {
   series: ApexAxisChartSeries;
@@ -25,7 +25,7 @@ export interface trafficChart {
 @Component({
   selector: 'app-traffic-distribution',
   standalone: true,
-  imports: [MaterialModule, NgApexchartsModule, TablerIconsModule],
+  imports: [MaterialModule, NgApexchartsModule, DesignSystemIconsModule],
   templateUrl: './traffic-distribution.component.html',
 })
 export class AppTrafficDistributionComponent {

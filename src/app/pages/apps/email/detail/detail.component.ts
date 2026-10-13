@@ -6,14 +6,14 @@ import {
 } from 'src/app/services/apps/email/email.service';
 import { Router } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
 @Component({
     selector: 'app-maildetail',
     templateUrl: './detail.component.html',
-    imports: [MaterialModule, TablerIconsModule, CommonModule, NgScrollbarModule]
+    imports: [MaterialModule, DesignSystemIconsModule, CommonModule, NgScrollbarModule]
 })
 export class DetailComponent {
   // tslint:disable-next-line: no-shadowed-variable

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,6 @@ interface DialogOpcao {
   selector: 'app-pedido-trocar-status-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -27,7 +26,7 @@ interface DialogOpcao {
     MatOptionModule,
     ReactiveFormsModule,
     StatusLabelPipe
-  ],
+],
   templateUrl: './pedido-trocar-status-dialog.component.html',
   styleUrls: ['./pedido-trocar-status-dialog.component.scss']
 })

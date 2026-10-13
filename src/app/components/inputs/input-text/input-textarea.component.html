@@ -1,16 +1,13 @@
 <div class="w-100">
-    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-        {{ label }}
-        <span *ngIf="isRequired" class="text-danger">*</span>
-    </mat-label>
-
-    <mat-form-field appearance="outline" class="w-100">
-        <textarea matInput [formControl]="control" [rows]="rows" [placeholder]="placeholder"
-            [attr.maxLength]="maxlength">
-      </textarea>
-
-        <ng-container *ngIf="control.invalid && (control.dirty || control.touched)">
-            <mat-error>{{ errorMessage() }}</mat-error>
-        </ng-container>
-    </mat-form-field>
+  <ds-field [label]="label" [htmlFor]="inputId" [required]="isRequired" [error]="errorTexto">
+    <textarea
+      [id]="inputId"
+      dsTextarea
+      [formControl]="control"
+      [rows]="rows"
+      [placeholder]="placeholder"
+      [attr.maxLength]="maxlength"
+      [invalid]="control.invalid && (control.dirty || control.touched)">
+    </textarea>
+  </ds-field>
 </div>

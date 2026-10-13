@@ -1,17 +1,18 @@
-<button
-  *ngIf="!onlyIcon; else iconOnly"
-  mat-stroked-button
-  [color]="color"
-  [routerLink]="routerLink"
-  [fragment]="fragment"
-  [attr.aria-label]="ariaLabel"
-  class="manual-btn"
->
-  <mat-icon>{{ icon }}</mat-icon>
-  <span *ngIf="label">{{ label }}</span>
-</button>
-
-<ng-template #iconOnly>
+@if (!onlyIcon) {
+  <button
+    mat-stroked-button
+    [color]="color"
+    [routerLink]="routerLink"
+    [fragment]="fragment"
+    [attr.aria-label]="ariaLabel"
+    class="manual-btn"
+    >
+    <mat-icon>{{ icon }}</mat-icon>
+    @if (label) {
+      <span>{{ label }}</span>
+    }
+  </button>
+} @else {
   <button
     mat-icon-button
     [color]="color"
@@ -20,7 +21,7 @@
     [matTooltip]="label || ariaLabel"
     [attr.aria-label]="ariaLabel"
     class="manual-btn"
-  >
+    >
     <mat-icon>{{ icon }}</mat-icon>
   </button>
-</ng-template>
+}

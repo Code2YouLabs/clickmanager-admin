@@ -6,11 +6,15 @@
       (valorAlterado)="onPesquisar($event)">
     </app-input-pesquisa>
 
-    <mat-form-field appearance="outline" class="status-filter" *ngIf="mostrarStatus">
-      <mat-label>Status</mat-label>
-      <mat-select [value]="statusSelecionado" (selectionChange)="onStatusChange($event.value)">
-        <mat-option *ngFor="let s of statusOptions" [value]="s">{{ s }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (mostrarStatus) {
+      <mat-form-field appearance="outline" class="status-filter">
+        <mat-label>Status</mat-label>
+        <mat-select [value]="statusSelecionado" (selectionChange)="onStatusChange($event.value)">
+          @for (s of statusOptions; track s) {
+            <mat-option [value]="s">{{ s }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
   </div>
 </app-section-card>

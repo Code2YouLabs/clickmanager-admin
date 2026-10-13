@@ -1,162 +1,174 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
-    <ng-container *ngIf="formGroup.get('tipo') as tipoCtrl">
+    @if (formGroup.get('tipo'); as tipoCtrl) {
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de Preço</mat-label>
         <mat-select [formControl]="getControl('tipo')" (selectionChange)="onTipoSelecionado($event.value)">
-          <mat-option *ngFor="let tipo of tipos" [value]="tipo">
-            {{ traduzirTipo(tipo) }}
-          </mat-option>
+          @for (tipo of tipos; track tipo) {
+            <mat-option [value]="tipo">
+              {{ traduzirTipo(tipo) }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
-    </ng-container>
+    }
 
     <!-- Preço Fixo -->
-    <mat-card class="cardWithShadow" *ngIf="formGroup.get('tipo')?.value === 'FIXO'">
-      <mat-card-content>
-        <ng-container *ngIf="formGroup.get('valor') as valorCtrl">
-          <app-input-moeda [control]="getControl('valor')" label="Valor" placeholder="Valor" />
-        </ng-container>
-      </mat-card-content>
-    </mat-card>
+    @if (formGroup.get('tipo')?.value === 'FIXO') {
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          @if (formGroup.get('valor'); as valorCtrl) {
+            <app-input-moeda [control]="getControl('valor')" label="Valor" placeholder="Valor" />
+          }
+        </mat-card-content>
+      </mat-card>
+    }
 
     <!-- Preço por Quantidade -->
-    <mat-card *ngIf="formGroup.get('tipo')?.value === 'QUANTIDADE' && formGroup.get('faixas')">
-      <mat-card-content>
-        <div [formGroup]="formGroup">
-          <div formArrayName="faixas">
-            <div *ngFor="let grupo of faixas.controls; let i = index" [formGroupName]="i" class="mb-4">
-              <div class="row align-items-start g-2">
-                <div class="col-md-6">
-                  <ng-container *ngIf="grupo.get('quantidade') as qtdCtrl">
-                    <app-input-numerico [control]="getControlDoGrupo(grupo, 'quantidade')"
-                      [label]="'Quantidade ' + (i + 1)" placeholder="Quantidade" />
-                  </ng-container>
-                </div>
-                <div class="col-md-6">
-                  <div class="row">
-                    <div class="col-md-11">
-                      <ng-container *ngIf="grupo.get('valor') as valorFaixaCtrl">
-                        <app-input-moeda [control]="getControlDoGrupo(grupo, 'valor')" [label]="'Valor ' + (i + 1)"
-                          placeholder="Preço" />
-                      </ng-container>
+    @if (formGroup.get('tipo')?.value === 'QUANTIDADE' && formGroup.get('faixas')) {
+      <mat-card>
+        <mat-card-content>
+          <div [formGroup]="formGroup">
+            <div formArrayName="faixas">
+              @for (grupo of faixas.controls; track grupo; let i = $index) {
+                <div [formGroupName]="i" class="mb-4">
+                  <div class="row align-items-start g-2">
+                    <div class="col-md-6">
+                      @if (grupo.get('quantidade'); as qtdCtrl) {
+                        <app-input-numerico [control]="getControlDoGrupo(grupo, 'quantidade')"
+                          [label]="'Quantidade ' + (i + 1)" placeholder="Quantidade" />
+                      }
                     </div>
-                    <div class="col-md-1 d-flex align-items-center justify-content-center" style="min-height: 100%;">
-                      <button type="button" mat-icon-button color="warn" *ngIf="faixas.length > 1"
-                        (click)="removerFaixa(i)" matTooltip="Remover faixa">
-                        <mat-icon>delete</mat-icon>
-                      </button>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-11">
+                          @if (grupo.get('valor'); as valorFaixaCtrl) {
+                            <app-input-moeda [control]="getControlDoGrupo(grupo, 'valor')" [label]="'Valor ' + (i + 1)"
+                              placeholder="Preço" />
+                          }
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center justify-content-center" style="min-height: 100%;">
+                          @if (faixas.length > 1) {
+                            <button type="button" mat-icon-button color="warn"
+                              (click)="removerFaixa(i)" matTooltip="Remover faixa">
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          }
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  @if (i < faixas.length - 1) {
+                    <div style="border-bottom: 1px solid #e0e0e0; margin: 1rem 0;"></div>
+                  }
                 </div>
-              </div>
-
-              <div *ngIf="i < faixas.length - 1" style="border-bottom: 1px solid #e0e0e0; margin: 1rem 0;"></div>
+              }
             </div>
           </div>
-        </div>
-
-        <button type="button" mat-stroked-button color="primary" (click)="adicionarFaixaPorTipo()">
-          <mat-icon class="me-1">add</mat-icon> Adicionar Faixa
-        </button>
-
-      </mat-card-content>
-    </mat-card>
+          <button type="button" mat-stroked-button color="primary" (click)="adicionarFaixaPorTipo()">
+            <mat-icon class="me-1">add</mat-icon> Adicionar Faixa
+          </button>
+        </mat-card-content>
+      </mat-card>
+    }
 
     <!-- Preço por Metro -->
-    <mat-card *ngIf="formGroup.get('tipo')?.value === 'METRO'">
-      <mat-card-content>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="f-s-14 f-w-600 d-block m-b-8">Modo de Cobrança</label>
-            <ng-container *ngIf="formGroup.get('modoCobranca') as modoCtrl">
-              <mat-radio-group [formControl]="getControl('modoCobranca')" class="d-flex gap-3 m-b-16">
-                <mat-radio-button value="QUADRADO">Quadrado</mat-radio-button>
-                <mat-radio-button value="LINEAR">Linear</mat-radio-button>
-              </mat-radio-group>
-            </ng-container>
-
-            <ng-container *ngIf="formGroup.get('precoMetro') as precoMetroCtrl">
-              <app-input-moeda [control]="getControl('precoMetro')" label="Preço por metro" placeholder="Preço" />
-            </ng-container>
-
-            <ng-container *ngIf="formGroup.get('alturaMaxima') as alturaCtrl">
-              <app-input-numerico [control]="getControl('alturaMaxima')" label="Altura Máxima" />
-            </ng-container>
-          </div>
-
-          <div class="col-md-6">
-            <ng-container *ngIf="formGroup.get('larguraMaxima') as larguraCtrl">
-              <app-input-numerico [control]="getControl('larguraMaxima')" label="Largura Máxima" class="m-b-16" />
-            </ng-container>
-
-            <ng-container *ngIf="formGroup.get('precoMinimo') as precoMinCtrl">
-              <app-input-moeda [control]="getControl('precoMinimo')" label="Preço Mínimo"
-                placeholder="Valor mínimo por item" class="m-b-16" />
-            </ng-container>
-
-            <ng-container *ngIf="formGroup.get('largurasLinearesPermitidas') as largurasCtrl">
-              <app-input-texto-restrito [control]="getControl('largurasLinearesPermitidas')"
-                label="Larguras (separe por vírgula)" placeholder="Ex: 20, 30, 50" />
-            </ng-container>
-
-          </div>
-        </div>
-      </mat-card-content>
-
-    </mat-card>
-
-    <!-- Preço por Demanda -->
-    <mat-card *ngIf="formGroup.get('tipo')?.value === 'DEMANDA' && formGroup.get('faixas')">
-      <mat-card-content>
-        <div [formGroup]="formGroup">
-          <div formArrayName="faixas">
-            <div *ngFor="let grupo of faixas.controls; let i = index" [formGroupName]="i" class="mb-4">
-              <div class="row align-items-center g-2">
-                <div class="col-md-4">
-                  <app-input-numerico [control]="getControlDoGrupo(grupo, 'de')" label="De" placeholder="De" />
-                </div>
-                <div class="col-md-4">
-                  <app-input-numerico [control]="getControlDoGrupo(grupo, 'ate')" label="Até" placeholder="Até" />
-                </div>
-                <div class="col-md-3">
-                  <app-input-moeda [control]="getControlDoGrupo(grupo, 'valorUnitario')" label="Valor Unitário"
-                    placeholder="Valor Unitário" />
-                </div>
-                <div class="col-md-1 d-flex align-items-center justify-content-center">
-                  <button type="button" mat-icon-button color="warn" *ngIf="faixas.length > 1" (click)="removerFaixa(i)"
-                    matTooltip="Remover faixa">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </div>
-
-              <div *ngIf="i < faixas.length - 1" style="border-bottom: 1px solid #e0e0e0; margin: 1rem 0;"></div>
+    @if (formGroup.get('tipo')?.value === 'METRO') {
+      <mat-card>
+        <mat-card-content>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="f-s-14 f-w-600 d-block m-b-8">Modo de Cobrança</label>
+              @if (formGroup.get('modoCobranca'); as modoCtrl) {
+                <mat-radio-group [formControl]="getControl('modoCobranca')" class="d-flex gap-3 m-b-16">
+                  <mat-radio-button value="QUADRADO">Quadrado</mat-radio-button>
+                  <mat-radio-button value="LINEAR">Linear</mat-radio-button>
+                </mat-radio-group>
+              }
+              @if (formGroup.get('precoMetro'); as precoMetroCtrl) {
+                <app-input-moeda [control]="getControl('precoMetro')" label="Preço por metro" placeholder="Preço" />
+              }
+              @if (formGroup.get('alturaMaxima'); as alturaCtrl) {
+                <app-input-numerico [control]="getControl('alturaMaxima')" label="Altura Máxima" />
+              }
+            </div>
+            <div class="col-md-6">
+              @if (formGroup.get('larguraMaxima'); as larguraCtrl) {
+                <app-input-numerico [control]="getControl('larguraMaxima')" label="Largura Máxima" class="m-b-16" />
+              }
+              @if (formGroup.get('precoMinimo'); as precoMinCtrl) {
+                <app-input-moeda [control]="getControl('precoMinimo')" label="Preço Mínimo"
+                  placeholder="Valor mínimo por item" class="m-b-16" />
+              }
+              @if (formGroup.get('largurasLinearesPermitidas'); as largurasCtrl) {
+                <app-input-texto-restrito [control]="getControl('largurasLinearesPermitidas')"
+                  label="Larguras (separe por vírgula)" placeholder="Ex: 20, 30, 50" />
+              }
             </div>
           </div>
-        </div>
+        </mat-card-content>
+      </mat-card>
+    }
 
-        <button type="button" mat-stroked-button color="primary" class="d-flex align-items-center gap-2 m-t-16"
-          (click)="adicionarFaixaPorTipo()">
-          <mat-icon>add</mat-icon>
-          <span>Adicionar Faixa</span>
-        </button>
-      </mat-card-content>
-    </mat-card>
+    <!-- Preço por Demanda -->
+    @if (formGroup.get('tipo')?.value === 'DEMANDA' && formGroup.get('faixas')) {
+      <mat-card>
+        <mat-card-content>
+          <div [formGroup]="formGroup">
+            <div formArrayName="faixas">
+              @for (grupo of faixas.controls; track grupo; let i = $index) {
+                <div [formGroupName]="i" class="mb-4">
+                  <div class="row align-items-center g-2">
+                    <div class="col-md-4">
+                      <app-input-numerico [control]="getControlDoGrupo(grupo, 'de')" label="De" placeholder="De" />
+                    </div>
+                    <div class="col-md-4">
+                      <app-input-numerico [control]="getControlDoGrupo(grupo, 'ate')" label="Até" placeholder="Até" />
+                    </div>
+                    <div class="col-md-3">
+                      <app-input-moeda [control]="getControlDoGrupo(grupo, 'valorUnitario')" label="Valor Unitário"
+                        placeholder="Valor Unitário" />
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                      @if (faixas.length > 1) {
+                        <button type="button" mat-icon-button color="warn" (click)="removerFaixa(i)"
+                          matTooltip="Remover faixa">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      }
+                    </div>
+                  </div>
+                  @if (i < faixas.length - 1) {
+                    <div style="border-bottom: 1px solid #e0e0e0; margin: 1rem 0;"></div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <button type="button" mat-stroked-button color="primary" class="d-flex align-items-center gap-2 m-t-16"
+            (click)="adicionarFaixaPorTipo()">
+            <mat-icon>add</mat-icon>
+            <span>Adicionar Faixa</span>
+          </button>
+        </mat-card-content>
+      </mat-card>
+    }
 
     <!-- Preço por Hora -->
-    <mat-card *ngIf="formGroup.get('tipo')?.value === 'HORA'">
-      <mat-card-content>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <app-input-moeda [control]="getControl('valorHora')" label="Valor Hora" placeholder="Ex: R$ 50,00" />
+    @if (formGroup.get('tipo')?.value === 'HORA') {
+      <mat-card>
+        <mat-card-content>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <app-input-moeda [control]="getControl('valorHora')" label="Valor Hora" placeholder="Ex: R$ 50,00" />
+            </div>
+            <div class="col-md-6">
+              <app-input-numerico [control]="getControl('tempoEstimado')" label="Tempo Estimado (minutos)"
+                placeholder="Ex: 30" />
+            </div>
           </div>
-          <div class="col-md-6">
-            <app-input-numerico [control]="getControl('tempoEstimado')" label="Tempo Estimado (minutos)"
-              placeholder="Ex: 30" />
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    }
   </mat-card-content>
 </mat-card>

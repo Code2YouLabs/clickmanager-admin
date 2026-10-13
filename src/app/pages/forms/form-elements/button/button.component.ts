@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { AppCodeViewComponent } from 'src/app/components/code-view/code-view.component';
 
 // snippets
@@ -14,7 +14,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 
 @Component({
     selector: 'app-button',
-    imports: [FormsModule, ReactiveFormsModule, MaterialModule, TablerIconsModule,
+    imports: [FormsModule, ReactiveFormsModule, MaterialModule, DesignSystemIconsModule,
       Highlight,
       HighlightAuto,
       HighlightLineNumbers,

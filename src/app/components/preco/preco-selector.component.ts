@@ -3,7 +3,7 @@ import {
   FormBuilder, FormGroup, Validators, ReactiveFormsModule,
   FormArray, FormControl, AbstractControl, ValidatorFn
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,7 +22,6 @@ import { InputTextoRestritoComponent } from '../inputs/input-texto/input-texto-r
   standalone: true,
   templateUrl: './preco-selector.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -34,7 +33,7 @@ import { InputTextoRestritoComponent } from '../inputs/input-texto/input-texto-r
     InputMoedaComponent,
     InputNumericoComponent,
     InputTextoRestritoComponent
-  ]
+]
 })
 export class PrecoSelectorComponent implements OnInit, OnChanges {
 

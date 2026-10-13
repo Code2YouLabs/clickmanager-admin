@@ -3,7 +3,7 @@ import { Note } from './note';
 import { NoteService } from 'src/app/services/apps/notes/note.service';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     imports: [
         CommonModule,
         NgScrollbarModule,
-        TablerIconsModule,
+        DesignSystemIconsModule,
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,

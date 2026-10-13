@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { Perfil } from 'src/app/models/perfil.model';
 
 @Component({
@@ -15,15 +15,14 @@ import { Perfil } from 'src/app/models/perfil.model';
   templateUrl: './trocar-perfil-dialog.component.html',
   styleUrls: ['./trocar-perfil-dialog.component.scss'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    MatButtonModule,
-  ]
+    MatButtonModule
+]
 })
 export class TrocarPerfilDialogComponent implements OnInit {
   form!: FormGroup;

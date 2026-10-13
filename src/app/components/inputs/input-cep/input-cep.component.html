@@ -1,21 +1,23 @@
 <div class="w-100">
   <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
-    {{ label }} <span *ngIf="isRequired" style="color: #f44336">*</span>
-  </mat-label>
+    {{ label }} @if (isRequired) {
+    <span style="color: #f44336">*</span>
+  }
+</mat-label>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <input #input matInput type="text"
-      [placeholder]="placeholder"
-      [formControl]="control"
-      (input)="onInput($event)"
-      (blur)="onBlur()" />
+<mat-form-field appearance="outline" class="w-100">
+  <input #input matInput type="text"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    (input)="onInput($event)"
+    (blur)="onBlur()" />
 
-    @if (carregando) {
+  @if (carregando) {
     <mat-hint>Buscando endereço...</mat-hint>
-    }
+  }
 
-    @if (control.invalid && control.touched) {
+  @if (control.invalid && control.touched) {
     <mat-error>{{ errorMessage() }}</mat-error>
-    }
-  </mat-form-field>
+  }
+</mat-form-field>
 </div>

@@ -1,133 +1,127 @@
 <!-- Nova Variação (acordeon) -->
 <mat-accordion [multi]="false" #accordion="matAccordion" class="var-accordion">
-    <mat-expansion-panel #novaVarPanel class="cardWithShadow" [expanded]="false">
-        <mat-expansion-panel-header>
-            <mat-panel-title class="f-w-600">Nova Variação</mat-panel-title>
-            <mat-panel-description class="f-s-14">
-                Clique para preencher os campos
-            </mat-panel-description>
-        </mat-expansion-panel-header>
+  <mat-expansion-panel #novaVarPanel class="cardWithShadow" [expanded]="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="f-w-600">Nova Variação</mat-panel-title>
+      <mat-panel-description class="f-s-14">
+        Clique para preencher os campos
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-        <div *ngIf="formVariacaoAtual" class="p-16 var-form-grid">
-
-            <div class="row g-3 m-b-16">
-                <div class="col-12 col-md-4">
-                    <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('materialId'))" label="Material"
-                        [displayWith]="mostrarDescricaoMaterial" [buscarFn]="buscarMateriais" [minimoCaracteres]="0"
-                        [multiplo]="false" />
-                </div>
-
-                <div class="col-12 col-md-4">
-                    <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('formatoId'))" label="Formato"
-                        [displayWith]="mostrarDescricaoFormato" [buscarFn]="buscarFormatos" [minimoCaracteres]="0"
-                        [multiplo]="false" />
-                </div>
-
-                <div class="col-12 col-md-4">
-                    <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('cor'))" label="Cor"
-                        [displayWith]="mostrarDescricao" [buscarFn]="buscarCores" [minimoCaracteres]="0"
-                        [multiplo]="false" />
-                </div>
-            </div>
-
-            <div class="row g-3 m-b-16">
-                <div class="col-12 col-md-6">
-                    <app-input-multi-select [control]="getFormControl(formVariacaoAtual.get('acabamentos'))"
-                        [options]="acabamentosDisponiveis" label="Acabamentos" />
-                </div>
-
-                <div class="col-12 col-md-6">
-                    <app-input-multi-select [control]="getFormControl(formVariacaoAtual.get('servicos'))"
-                        [options]="servicosDisponiveis" label="Serviços" />
-                </div>
-            </div>
-
-            <div class="row g-3 m-b-16">
-                <div class="col-12">
-                    <app-preco-selector [formGroup]="getFormGroup(formVariacaoAtual.get('preco')!)"
-                        [tiposDisponiveis]="['FIXO', 'QUANTIDADE', 'DEMANDA', 'METRO']">
-                    </app-preco-selector>
-                </div>
-            </div>
-
-            <div class="text-end add-var-action">
-                <button type="button" mat-flat-button color="primary" (click)="addVariacao()"
-                    [disabled]="formVariacaoAtual?.invalid || formVariacaoAtual.get('preco')?.invalid">
-                    <mat-icon>add</mat-icon>
-                    Adicionar Variação
-                </button>
-            </div>
-
+    @if (formVariacaoAtual) {
+      <div class="p-16 var-form-grid">
+        <div class="row g-3 m-b-16">
+          <div class="col-12 col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('materialId'))" label="Material"
+              [displayWith]="mostrarDescricaoMaterial" [buscarFn]="buscarMateriais" [minimoCaracteres]="0"
+              [multiplo]="false" />
+          </div>
+          <div class="col-12 col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('formatoId'))" label="Formato"
+              [displayWith]="mostrarDescricaoFormato" [buscarFn]="buscarFormatos" [minimoCaracteres]="0"
+              [multiplo]="false" />
+          </div>
+          <div class="col-12 col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('cor'))" label="Cor"
+              [displayWith]="mostrarDescricao" [buscarFn]="buscarCores" [minimoCaracteres]="0"
+              [multiplo]="false" />
+          </div>
         </div>
-    </mat-expansion-panel>
+        <div class="row g-3 m-b-16">
+          <div class="col-12 col-md-6">
+            <app-input-multi-select [control]="getFormControl(formVariacaoAtual.get('acabamentos'))"
+              [options]="acabamentosDisponiveis" label="Acabamentos" />
+          </div>
+          <div class="col-12 col-md-6">
+            <app-input-multi-select [control]="getFormControl(formVariacaoAtual.get('servicos'))"
+              [options]="servicosDisponiveis" label="Serviços" />
+          </div>
+        </div>
+        <div class="row g-3 m-b-16">
+          <div class="col-12">
+            <app-preco-selector [formGroup]="getFormGroup(formVariacaoAtual.get('preco')!)"
+              [tiposDisponiveis]="['FIXO', 'QUANTIDADE', 'DEMANDA', 'METRO']">
+            </app-preco-selector>
+          </div>
+        </div>
+        <div class="text-end add-var-action">
+          <button type="button" mat-flat-button color="primary" (click)="addVariacao()"
+            [disabled]="formVariacaoAtual?.invalid || formVariacaoAtual.get('preco')?.invalid">
+            <mat-icon>add</mat-icon>
+            Adicionar Variação
+          </button>
+        </div>
+      </div>
+    }
+  </mat-expansion-panel>
 </mat-accordion>
 
 <!-- Tabela com variações salvas -->
 <mat-card class="p-16 m-t-16 cardWithShadow variacoes-card">
-    <mat-card-title class="f-s-16 f-w-600 m-b-16">Variações Salvas</mat-card-title>
+  <mat-card-title class="f-s-16 f-w-600 m-b-16">Variações Salvas</mat-card-title>
 
-    <div class="table-responsive">
-        <table mat-table [dataSource]="dataSource" class="w-100 f-s-14">
-        <!-- Material -->
-        <ng-container matColumnDef="material">
-            <th mat-header-cell *matHeaderCellDef>Material</th>
-            <td mat-cell *matCellDef="let v">{{ v.materialId | nomeDe: materiais }}</td>
-        </ng-container>
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="w-100 f-s-14">
+      <!-- Material -->
+      <ng-container matColumnDef="material">
+        <th mat-header-cell *matHeaderCellDef>Material</th>
+        <td mat-cell *matCellDef="let v">{{ v.materialId | nomeDe: materiais }}</td>
+      </ng-container>
 
-        <!-- Formato -->
-        <ng-container matColumnDef="formato">
-            <th mat-header-cell *matHeaderCellDef>Formato</th>
-            <td mat-cell *matCellDef="let v">{{ v.formatoId | nomeDe: formatos }}</td>
-        </ng-container>
+      <!-- Formato -->
+      <ng-container matColumnDef="formato">
+        <th mat-header-cell *matHeaderCellDef>Formato</th>
+        <td mat-cell *matCellDef="let v">{{ v.formatoId | nomeDe: formatos }}</td>
+      </ng-container>
 
-        <!-- Cor -->
-        <ng-container matColumnDef="cor">
-            <th mat-header-cell *matHeaderCellDef>Cor</th>
-            <td mat-cell *matCellDef="let v">
-                {{ v.corLabel ?? resolveLabel(v.cor ?? v.corId, coresDisponiveis) ?? '---' }}
-            </td>
-        </ng-container>
+      <!-- Cor -->
+      <ng-container matColumnDef="cor">
+        <th mat-header-cell *matHeaderCellDef>Cor</th>
+        <td mat-cell *matCellDef="let v">
+          {{ v.corLabel ?? resolveLabel(v.cor ?? v.corId, coresDisponiveis) ?? '---' }}
+        </td>
+      </ng-container>
 
-        <!-- Preço -->
-        <ng-container matColumnDef="preco">
-            <th mat-header-cell *matHeaderCellDef>Preço</th>
-            <td mat-cell *matCellDef="let v">{{ precoResumo(v.preco) }}</td>
-        </ng-container>
+      <!-- Preço -->
+      <ng-container matColumnDef="preco">
+        <th mat-header-cell *matHeaderCellDef>Preço</th>
+        <td mat-cell *matCellDef="let v">{{ precoResumo(v.preco) }}</td>
+      </ng-container>
 
-        <!-- Política -->
-        <ng-container matColumnDef="politica">
-            <th mat-header-cell *matHeaderCellDef>Política de Revenda</th>
-            <td mat-cell *matCellDef="let v">
-                {{ politicaResumo(
-                v.preco?.politicaAtiva
-                ? v.preco?.politicaRevenda
-                : (v.politicaRevenda ?? politicaProduto)
-                ) }}
-            </td>
-        </ng-container>
+      <!-- Política -->
+      <ng-container matColumnDef="politica">
+        <th mat-header-cell *matHeaderCellDef>Política de Revenda</th>
+        <td mat-cell *matCellDef="let v">
+          {{ politicaResumo(
+          v.preco?.politicaAtiva
+          ? v.preco?.politicaRevenda
+          : (v.politicaRevenda ?? politicaProduto)
+          ) }}
+        </td>
+      </ng-container>
 
-        <!-- Ações -->
-        <ng-container matColumnDef="acoes">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let v; let i = index">
-                <button type="button" mat-icon-button color="warn" (click)="removerVariacao(i)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+      <!-- Ações -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let v; let i = index">
+          <button type="button" mat-icon-button color="warn" (click)="removerVariacao(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-        <!-- Ações: Ver -->
-        <ng-container matColumnDef="ver">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let v">
-                <button type="button" mat-icon-button color="primary" (click)="verVariacao(v)" matTooltip="Visualizar">
-                    <mat-icon>visibility</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+      <!-- Ações: Ver -->
+      <ng-container matColumnDef="ver">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let v">
+          <button type="button" mat-icon-button color="primary" (click)="verVariacao(v)" matTooltip="Visualizar">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackByIndex"></tr>
-        </table>
-    </div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackByIndex"></tr>
+    </table>
+  </div>
 </mat-card>

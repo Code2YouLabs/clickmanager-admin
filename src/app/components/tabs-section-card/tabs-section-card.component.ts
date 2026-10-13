@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-tabs-section-card',
   standalone: true,
-  imports: [CommonModule, MatTabsModule],
+  imports: [MatTabsModule],
   templateUrl: './tabs-section-card.component.html',
   styleUrls: ['./tabs-section-card.component.scss']
 })

@@ -17,45 +17,42 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <mat-tab-group class="tabs-responsive">
+      <mat-tab-group
+        class="tabs-responsive"
+        [selectedIndex]="selectedTabIndex"
+        (selectedIndexChange)="onTabIndexChange($event)">
 
-        <!-- Aba Geral -->
-        <mat-tab label="Geral">
-          <mat-card class="cardWithShadow tab-card">
-            <mat-card-content>
-
-              <app-input-texto-restrito class="m-b-16" [control]="nomeControl" label="Nome" placeholder="Digite o nome do produto">
-              </app-input-texto-restrito>
-
-              <app-input-texto-restrito class="m-b-16" [control]="descricaoControl" label="Descrição"
-                placeholder="Digite uma descrição do produto">
-              </app-input-texto-restrito>
-
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
-
-        <!-- Aba Política de Revenda -->
-        <mat-tab label="Política de Revenda">
-          <mat-card class="cardWithShadow tab-card">
-            <mat-card-content>
-              <app-politica-revenda [formGroup]="form" [value]="politicaDoProduto"
-                (valueChange)="onPoliticaChange($event)">
-              </app-politica-revenda>
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
-
-        <!-- Aba Variações -->
-        <mat-tab label="Variações">
-          <mat-card class="cardWithShadow tab-card">
-            <mat-card-content>
-              <app-variacoes-produto [variacoesIniciais]="variacoesIniciais" [politicaProduto]="politicaDoProduto"
-                (variacoesChange)="onVariacoesChange($event)">
-              </app-variacoes-produto>
-            </mat-card-content>
-          </mat-card>
-        </mat-tab>
+        @for (tab of tabs; track tab) {
+          <mat-tab [label]="tab.label">
+            <mat-card class="cardWithShadow tab-card">
+              <mat-card-content>
+                @switch (tab.id) {
+                  @case ('geral') {
+                    <app-input-texto-restrito class="m-b-16" [control]="nomeControl" label="Nome" placeholder="Digite o nome do produto">
+                    </app-input-texto-restrito>
+                    <app-input-texto-restrito class="m-b-16" [control]="descricaoControl" label="Descrição"
+                      placeholder="Digite uma descrição do produto">
+                    </app-input-texto-restrito>
+                  }
+                  @case ('politica-revenda') {
+                    <app-politica-revenda [formGroup]="form" [value]="politicaDoProduto"
+                      (valueChange)="onPoliticaChange($event)">
+                    </app-politica-revenda>
+                  }
+                  @case ('variacoes') {
+                    <app-variacoes-produto [variacoesIniciais]="variacoesIniciais" [politicaProduto]="politicaDoProduto"
+                      (variacoesChange)="onVariacoesChange($event)">
+                    </app-variacoes-produto>
+                  }
+                  @case ('calculadora-materiais') {
+                    <app-calculadora-materiais [produtoId]="produtoId">
+                    </app-calculadora-materiais>
+                  }
+                }
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+        }
 
       </mat-tab-group>
 
@@ -66,6 +63,14 @@
         <button mat-flat-button class="bg-error text-white" type="button"
           [routerLink]="['/page/cadastro-tecnico/produtos']">
           Cancelar
+        </button>
+
+        <button mat-stroked-button color="primary" type="button" [disabled]="isFirstTab" (click)="previousTab()">
+          Anterior
+        </button>
+
+        <button mat-stroked-button color="primary" type="button" [disabled]="isLastTab" (click)="nextTab()">
+          Próximo
         </button>
 
         <!-- SALVAR -->

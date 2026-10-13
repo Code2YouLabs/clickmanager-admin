@@ -1,17 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { DsFieldComponent } from 'src/app/ui/field';
+import { DsTextareaDirective } from 'src/app/ui/textarea';
 
 @Component({
     selector: 'app-input-textarea',
     standalone: true,
     imports: [
-        CommonModule,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule
+        DsFieldComponent,
+        DsTextareaDirective
     ],
     templateUrl: './input-textarea.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,6 +20,8 @@ export class InputTextareaComponent implements OnInit {
     @Input() placeholder: string = '';
     @Input() rows: number = 5;
     @Input() maxlength: number = 255;
+
+    readonly inputId: string = `input-textarea-${Math.random().toString(36).slice(2, 9)}`;
 
     ngOnInit(): void {
         if (!this.control) {
@@ -40,6 +40,10 @@ export class InputTextareaComponent implements OnInit {
         return this.control?.validator?.({} as any)?.['required'] ?? false;
     }
 
+    get errorTexto(): string {
+        return this.control.invalid && (this.control.dirty || this.control.touched) ? this.errorMessage() : '';
+    }
+
     errorMessage(): string {
         if (this.control.hasError('required')) {
             return 'Campo obrigatório';
@@ -50,4 +54,3 @@ export class InputTextareaComponent implements OnInit {
         return 'Valor inválido';
     }
 }
-

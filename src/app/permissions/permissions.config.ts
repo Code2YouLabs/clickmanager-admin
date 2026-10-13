@@ -61,6 +61,12 @@ export const DEFINICOES: PermissaoDefinicao[] = [
   // 🔔 Notificações
   { chave: 'NOTIFICACAO_ENVIAR', titulo: 'Enviar notificações', grupo: 'Notificações' },
 
+  // 🌐 Meu Site
+  { chave: 'SITE_HOME_SECTIONS_VER', titulo: 'Visualizar seções da home', grupo: 'Meu Site' },
+  { chave: 'SITE_HOME_SECTIONS_CADASTRAR', titulo: 'Cadastrar seção da home', grupo: 'Meu Site' },
+  { chave: 'SITE_HOME_SECTIONS_EDITAR', titulo: 'Editar seção da home', grupo: 'Meu Site' },
+  { chave: 'SITE_HOME_SECTIONS_EXCLUIR', titulo: 'Excluir seção da home', grupo: 'Meu Site' },
+
   // 🧮 Calculadoras
   { chave: 'CONFIG_CALCULADORAS', titulo: 'Configurar calculadoras', grupo: 'Calculadoras' },
   { chave: 'USAR_CALCULADORAS', titulo: 'Utilizar calculadoras', grupo: 'Calculadoras' },

@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-latest-deals',
   standalone: true,
-  imports: [MaterialModule, TablerIconsModule],
+  imports: [MaterialModule, DesignSystemIconsModule],
   templateUrl: './latest-deals.component.html',
 })
 export class AppLatestDealsComponent {

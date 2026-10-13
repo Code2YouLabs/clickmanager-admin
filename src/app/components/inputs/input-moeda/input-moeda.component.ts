@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   OnChanges
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,11 +21,10 @@ import { Subscription } from 'rxjs';
   standalone: true,
   templateUrl: './input-moeda.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule
-  ],
+],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputMoedaComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {

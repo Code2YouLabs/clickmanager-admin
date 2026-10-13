@@ -6,7 +6,7 @@ import { ContactService } from 'src/app/services/apps/contact-list/contact-list.
 import { AppDeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactBox } from 'src/app/pages/apps/contact-list/contact-list';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -17,7 +17,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     FormsModule,
     CommonModule,
     MaterialModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     NgScrollbarModule,
   ],
   templateUrl: './detail.component.html',

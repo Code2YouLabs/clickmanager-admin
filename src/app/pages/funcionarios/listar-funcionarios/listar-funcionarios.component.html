@@ -10,7 +10,7 @@
   helpIcone="help_outline"
   [permissao]="['FUNCIONARIO_CRIAR']"
   [mostrarDivisor]="true"
->
+  >
   <app-section-card [divider]="false">
     <div class="kpi-grid m-b-8">
       <div class="kpi">
@@ -33,12 +33,12 @@
   </app-section-card>
 
   <app-filtro-pesquisa-card
-      titulo="Pesquisar"
-      placeholder="Pesquisar por nome, CPF, e-mail, cargo ou setor"
-      [statusOptions]="statusOptions"
-      [statusSelecionado]="statusSelecionado"
-      (pesquisar)="onPesquisar($event)"
-      (statusChange)="onStatusChange($event)">
+    titulo="Pesquisar"
+    placeholder="Pesquisar por nome, CPF, e-mail, cargo ou setor"
+    [statusOptions]="statusOptions"
+    [statusSelecionado]="statusSelecionado"
+    (pesquisar)="onPesquisar($event)"
+    (statusChange)="onStatusChange($event)">
   </app-filtro-pesquisa-card>
 
   <app-section-card [divider]="false">
@@ -77,11 +77,11 @@
             <button mat-icon-button color="primary" (click)="detalhar(f)" matTooltip="Detalhar" *temPermissao="['FUNCIONARIO_VER']">
               <mat-icon>visibility</mat-icon>
             </button>
-            <ng-container *ngIf="f.status !== 'DESLIGADO'">
+            @if (f.status !== 'DESLIGADO') {
               <button mat-icon-button color="accent" (click)="editar(f)" matTooltip="Editar" *temPermissao="['FUNCIONARIO_EDITAR']">
                 <mat-icon>edit</mat-icon>
               </button>
-            </ng-container>
+            }
           </td>
         </ng-container>
 
@@ -90,6 +90,8 @@
       </table>
     </div>
 
-    <p class="text-muted m-t-16" *ngIf="!funcionarios.length">Nenhum funcionário encontrado.</p>
+    @if (!funcionarios.length) {
+      <p class="text-muted m-t-16">Nenhum funcionário encontrado.</p>
+    }
   </app-section-card>
 </app-page-card>

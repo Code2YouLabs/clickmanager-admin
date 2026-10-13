@@ -1,7 +1,7 @@
 import { Component, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { ChatService } from 'src/app/services/apps/chat/chat.service';
@@ -12,7 +12,7 @@ import { Message } from 'src/app/pages/apps/chat/chat';
   imports: [
     CommonModule,
     NgScrollbarModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,

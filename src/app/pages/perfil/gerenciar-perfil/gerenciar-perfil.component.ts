@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { ToastrService } from 'src/app/services/toastr.service';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { Usuario } from 'src/app/models/usuario/usuario.model';
 import { PerfilDialogComponent } from '../modal-perfil/perfil-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,7 +28,6 @@ import { PerfilRequest } from 'src/app/models/perfil/perfil-request.model';
   templateUrl: './gerenciar-perfil.component.html',
   styleUrls: ['./gerenciar-perfil.component.scss'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatSidenavModule,
@@ -38,7 +37,7 @@ import { PerfilRequest } from 'src/app/models/perfil/perfil-request.model';
     MatButtonModule,
     MatListModule,
     MatDividerModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatTableModule,
     CardHeaderComponent
 ]

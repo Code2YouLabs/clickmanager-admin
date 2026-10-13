@@ -1,69 +1,77 @@
 <app-section-card titulo="Itens do pedido" [divider]="true">
   <div class="itens-wrapper" [class.inativo]="inativo">
-    <div class="d-flex gap-8 flex-wrap m-b-8" actions *ngIf="mostrarAcoes">
-      <button mat-flat-button color="primary" type="button" (click)="buscarProdutos.emit()" [disabled]="inativo">
-        Buscar produtos
-      </button>
-      <button mat-stroked-button color="accent" type="button" (click)="descreverItens.emit()" [disabled]="inativo">
-        Descrever itens
-      </button>
-    </div>
-
-    <div class="table-responsive m-t-12" *ngIf="itens.length; else emptyItens">
-      <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light m-b-20">
-        <thead>
-        <tr>
-            <th class="p-12 header-cell">Item</th>
-            <th class="p-12 header-cell text-right">Qtd</th>
-          <th class="p-12 header-cell text-right">Valor</th>
-          <th class="p-12 header-cell text-right">Subtotal</th>
-          <th class="p-12 header-cell text-right" *ngIf="mostrarAcoes">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="bordered-row" *ngFor="let item of itens; let i = index">
-          <td class="p-12">{{ item.descricao }}</td>
-          <td class="p-12 text-right">
-            <ng-container *ngIf="permitirAlterarQuantidade; else qtdText">
-              <input
-                type="number"
-                min="1"
-                class="qty-input"
-                [value]="item.quantidade"
-                (change)="onQtdChange(i, $any($event.target).value)"
-                (keydown.enter)="$event.preventDefault()"
-                [disabled]="inativo"
-              />
-            </ng-container>
-            <ng-template #qtdText>
-              <span>{{ item.quantidade }}</span>
-            </ng-template>
-          </td>
-          <td class="p-12 text-right">{{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
-          <td class="p-12 text-right">
-            {{ (item.subTotal ?? item.quantidade * item.valor) | currency:'BRL':'symbol':'1.2-2' }}
-          </td>
-          <td class="p-12 text-right action-link" *ngIf="mostrarAcoes">
-            <button mat-icon-button color="warn" type="button" (click)="removerItem.emit(i)" matTooltip="Remover item" [disabled]="inativo">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="subtotal-inline">
-      <div class="subtotal-label">Subtotal (itens)</div>
-      <div class="subtotal-value">
-        <span class="currency">{{ subtotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+    @if (mostrarAcoes) {
+      <div class="d-flex gap-8 flex-wrap m-b-8" actions>
+        <button mat-flat-button color="primary" type="button" (click)="buscarProdutos.emit()" [disabled]="inativo">
+          Buscar produtos
+        </button>
+        <button mat-stroked-button color="accent" type="button" (click)="descreverItens.emit()" [disabled]="inativo">
+          Descrever itens
+        </button>
       </div>
-    </div>
-    </div>
+    }
 
-    <ng-template #emptyItens>
+    @if (itens.length) {
+      <div class="table-responsive m-t-12">
+        <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light m-b-20">
+          <thead>
+            <tr>
+              <th class="p-12 header-cell">Item</th>
+              <th class="p-12 header-cell text-right">Qtd</th>
+              <th class="p-12 header-cell text-right">Valor</th>
+              <th class="p-12 header-cell text-right">Subtotal</th>
+              @if (mostrarAcoes) {
+                <th class="p-12 header-cell text-right">Ações</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of itens; track item; let i = $index) {
+              <tr class="bordered-row">
+                <td class="p-12">{{ item.descricao }}</td>
+                <td class="p-12 text-right">
+                  @if (permitirAlterarQuantidade) {
+                    <input
+                      type="number"
+                      min="1"
+                      class="qty-input"
+                      [value]="item.quantidade"
+                      (change)="onQtdChange(i, $any($event.target).value)"
+                      (keydown.enter)="$event.preventDefault()"
+                      [disabled]="inativo"
+                      />
+                  } @else {
+                    <span>{{ item.quantidade }}</span>
+                  }
+                </td>
+                <td class="p-12 text-right">{{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td class="p-12 text-right">
+                  {{ (item.subTotal ?? item.quantidade * item.valor) | currency:'BRL':'symbol':'1.2-2' }}
+                </td>
+                @if (mostrarAcoes) {
+                  <td class="p-12 text-right action-link">
+                    <button mat-icon-button color="warn" type="button" (click)="removerItem.emit(i)" matTooltip="Remover item" [disabled]="inativo">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="subtotal-inline">
+          <div class="subtotal-label">Subtotal (itens)</div>
+          <div class="subtotal-value">
+            <span class="currency">{{ subtotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    } @else {
       <div class="empty-itens">
         <div class="title">Nenhum item adicionado.</div>
         <div class="desc">Use “Buscar produtos” ou “Descrever itens” para incluir itens no pedido.</div>
       </div>
-    </ng-template>
+    }
+
   </div>
 </app-section-card>

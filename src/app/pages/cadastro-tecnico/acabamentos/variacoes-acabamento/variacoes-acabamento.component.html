@@ -8,49 +8,44 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <div *ngIf="formVariacaoAtual" class="p-16">
-
-      <div class="row g-3 m-b-16">
-        <div class="col-md-4">
-          <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('materialId'))" label="Material (opcional)"
-            [displayWith]="mostrarDescricaoMaterial" [buscarFn]="buscarMateriais" [minimoCaracteres]="0"
-            [multiplo]="false">
-          </app-auto-complete>
+    @if (formVariacaoAtual) {
+      <div class="p-16">
+        <div class="row g-3 m-b-16">
+          <div class="col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('materialId'))" label="Material (opcional)"
+              [displayWith]="mostrarDescricaoMaterial" [buscarFn]="buscarMateriais" [minimoCaracteres]="0"
+              [multiplo]="false">
+            </app-auto-complete>
+          </div>
+          <div class="col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('formatoId'))" label="Formato (opcional)"
+              [displayWith]="mostrarDescricaoFormato" [buscarFn]="buscarFormatos" [minimoCaracteres]="0"
+              [multiplo]="false">
+            </app-auto-complete>
+          </div>
+          <div class="col-md-4">
+            <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('tipoAplicacao'))"
+              label="Tipo de Aplicação" [displayWith]="mostrarTipoAplicacao" [buscarFn]="buscarTiposAplicacao"
+              [minimoCaracteres]="0" [multiplo]="false">
+            </app-auto-complete>
+          </div>
         </div>
-
-        <div class="col-md-4">
-          <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('formatoId'))" label="Formato (opcional)"
-            [displayWith]="mostrarDescricaoFormato" [buscarFn]="buscarFormatos" [minimoCaracteres]="0"
-            [multiplo]="false">
-          </app-auto-complete>
+        <div class="row g-3 m-b-16">
+          <div class="col-md-12">
+            <app-preco-selector [formGroup]="getFormGroup(formVariacaoAtual.get('preco')!)"
+              [tiposDisponiveis]="['FIXO', 'QUANTIDADE', 'DEMANDA', 'METRO', 'HORA']">
+            </app-preco-selector>
+          </div>
         </div>
-
-        <div class="col-md-4">
-          <app-auto-complete [control]="getFormControl(formVariacaoAtual.get('tipoAplicacao'))"
-            label="Tipo de Aplicação" [displayWith]="mostrarTipoAplicacao" [buscarFn]="buscarTiposAplicacao"
-            [minimoCaracteres]="0" [multiplo]="false">
-          </app-auto-complete>
+        <div class="text-end">
+          <button type="button" mat-flat-button color="primary" (click)="addVariacao()"
+            [disabled]="formVariacaoAtual?.invalid || formVariacaoAtual.get('preco')?.invalid">
+            <mat-icon>add</mat-icon>
+            Adicionar Variação
+          </button>
         </div>
-
       </div>
-
-      <div class="row g-3 m-b-16">
-        <div class="col-md-12">
-          <app-preco-selector [formGroup]="getFormGroup(formVariacaoAtual.get('preco')!)"
-            [tiposDisponiveis]="['FIXO', 'QUANTIDADE', 'DEMANDA', 'METRO', 'HORA']">
-          </app-preco-selector>
-        </div>
-      </div>
-
-      <div class="text-end">
-        <button type="button" mat-flat-button color="primary" (click)="addVariacao()"
-          [disabled]="formVariacaoAtual?.invalid || formVariacaoAtual.get('preco')?.invalid">
-          <mat-icon>add</mat-icon>
-          Adicionar Variação
-        </button>
-      </div>
-
-    </div>
+    }
   </mat-expansion-panel>
 </mat-accordion>
 

@@ -9,7 +9,7 @@ import { ContactService } from 'src/app/services/apps/contact/contact.service';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface ContactData {
@@ -30,7 +30,7 @@ export interface ContactData {
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     CommonModule,
   ],
 })
@@ -106,7 +106,7 @@ export class AppContactComponent implements OnInit {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
   ],
   templateUrl: 'contact-dialog-content.html',
 })

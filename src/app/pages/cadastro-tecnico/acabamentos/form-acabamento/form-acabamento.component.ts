@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit
@@ -11,7 +11,7 @@ import {
   Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -35,7 +35,6 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
   selector: 'app-form-acabamento',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -44,7 +43,7 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
     InputTextoRestritoComponent,
     CardHeaderComponent,
     VariacoesAcabamentoComponent
-  ],
+],
   templateUrl: './form-acabamento.component.html',
   styleUrl: './form-acabamento.component.scss'
 })

@@ -7,172 +7,174 @@
   helpTexto="Manual da Folha de Pagamento"
   helpIcone="help_outline"
   [mostrarDivisor]="true"
->
+  >
   <app-section-card [divider]="false">
-    <div class="header-row" *ngIf="competenciaAtual as comp">
-      <div class="top-grid">
-        <div class="contexto-card">
-          <span class="block-label">Contexto</span>
-          <div class="titulo-linha">
-            <h3>Competência {{ competenciaSelecionada || '—' }}</h3>
-            <div class="status-destaque" aria-label="Status da competência">
-              <app-status-badge [status]="comp.status === 'FECHADA' ? 'FECHADO' : 'ABERTO'"></app-status-badge>
+    @if (competenciaAtual; as comp) {
+      <div class="header-row">
+        <div class="top-grid">
+          <div class="contexto-card">
+            <span class="block-label">Contexto</span>
+            <div class="titulo-linha">
+              <h3>Competência {{ competenciaSelecionada || '—' }}</h3>
+              <div class="status-destaque" aria-label="Status da competência">
+                <app-status-badge [status]="comp.status === 'FECHADA' ? 'FECHADO' : 'ABERTO'"></app-status-badge>
+              </div>
+            </div>
+            <div class="contexto-grid">
+              <mat-form-field appearance="outline" class="competencia-field">
+                <mat-label>Competência</mat-label>
+                <mat-select [(value)]="competenciaSelecionada" (selectionChange)="onCompetenciaChange()">
+                  @for (c of competencias; track c) {
+                    <mat-option [value]="c.competencia">{{ c.competencia }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <div class="info-linha">
+                <span>Pagamento previsto</span>
+                <strong>{{ comp.diaPagamento ? (comp.diaPagamento | date:'dd/MM/yyyy') : 'A definir' }}</strong>
+              </div>
             </div>
           </div>
-
-          <div class="contexto-grid">
-            <mat-form-field appearance="outline" class="competencia-field">
-              <mat-label>Competência</mat-label>
-              <mat-select [(value)]="competenciaSelecionada" (selectionChange)="onCompetenciaChange()">
-                <mat-option *ngFor="let c of competencias" [value]="c.competencia">{{ c.competencia }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div class="info-linha">
-              <span>Pagamento previsto</span>
-              <strong>{{ comp.diaPagamento ? (comp.diaPagamento | date:'dd/MM/yyyy') : 'A definir' }}</strong>
+          @if (resumoAtual; as r) {
+            <div class="resumo-card">
+              <span class="block-label">Resumo financeiro</span>
+              <div class="resumo-pendente" [class.com-atencao]="r.totalPendente > 0">
+                <span>Saldo pendente</span>
+                <strong>{{ r.totalPendente | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+              </div>
+              <div class="resumo-secundario">
+                <div class="resumo-item">
+                  <span>Líquido</span>
+                  <strong>{{ r.totalLiquido | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+                </div>
+                <div class="resumo-item">
+                  <span>Pago</span>
+                  <strong>{{ r.totalPago | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div class="resumo-card" *ngIf="resumoAtual as r">
-          <span class="block-label">Resumo financeiro</span>
-          <div class="resumo-pendente" [class.com-atencao]="r.totalPendente > 0">
-            <span>Saldo pendente</span>
-            <strong>{{ r.totalPendente | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-          </div>
-
-          <div class="resumo-secundario">
-            <div class="resumo-item">
-              <span>Líquido</span>
-              <strong>{{ r.totalLiquido | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-            </div>
-            <div class="resumo-item">
-              <span>Pago</span>
-              <strong>{{ r.totalPago | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="acoes-card" *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']">
-          <span class="block-label">Ações</span>
-
-          <ng-container *temPermissao="['FOLHA_EDITAR']">
-            <div class="warn-close" *ngIf="canFecharCompetencia && !canFecharCompetenciaQuitada">
-              <mat-icon>info</mat-icon>
-              <span>Para fechar a competência, quite o saldo pendente total.</span>
-            </div>
-
-            <div class="acoes">
-              <span
-                [matTooltip]="closeCompetenciaTooltip"
-                [matTooltipDisabled]="!closeCompetenciaTooltip"
-                matTooltipPosition="above"
-                class="tooltip-wrap"
-              >
+          }
+          <div class="acoes-card" *temPermissao="['FOLHA_VER', 'FOLHA_EDITAR']">
+            <span class="block-label">Ações</span>
+            <ng-container *temPermissao="['FOLHA_EDITAR']">
+              @if (canFecharCompetencia && !canFecharCompetenciaQuitada) {
+                <div class="warn-close">
+                  <mat-icon>info</mat-icon>
+                  <span>Para fechar a competência, quite o saldo pendente total.</span>
+                </div>
+              }
+              <div class="acoes">
+                <span
+                  [matTooltip]="closeCompetenciaTooltip"
+                  [matTooltipDisabled]="!closeCompetenciaTooltip"
+                  matTooltipPosition="above"
+                  class="tooltip-wrap"
+                  >
+                  <button
+                    mat-flat-button
+                    color="primary"
+                    (click)="fecharCompetencia()"
+                    [disabled]="!canFecharCompetencia || !canFecharCompetenciaQuitada"
+                    aria-label="Fechar competência"
+                    >
+                    <mat-icon>lock</mat-icon>
+                    Fechar competência
+                  </button>
+                </span>
                 <button
-                  mat-flat-button
+                  mat-stroked-button
                   color="primary"
-                  (click)="fecharCompetencia()"
-                  [disabled]="!canFecharCompetencia || !canFecharCompetenciaQuitada"
-                  aria-label="Fechar competência"
-                >
-                  <mat-icon>lock</mat-icon>
-                  Fechar competência
+                  (click)="reabrirCompetencia()"
+                  [disabled]="!canReabrirCompetencia"
+                  aria-label="Reabrir competência"
+                  >
+                  <mat-icon>lock_open</mat-icon>
+                  Reabrir competência
                 </button>
-              </span>
-
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  (click)="criarCompetencia()"
+                  aria-label="Criar competência"
+                  >
+                  <mat-icon>add</mat-icon>
+                  Criar competência
+                </button>
+              </div>
+            </ng-container>
+            <div class="acoes export-actions">
               <button
                 mat-stroked-button
                 color="primary"
-                (click)="reabrirCompetencia()"
-                [disabled]="!canReabrirCompetencia"
-                aria-label="Reabrir competência"
-              >
-                <mat-icon>lock_open</mat-icon>
-                Reabrir competência
+                (click)="exportarCompetenciaCsv()"
+                [disabled]="!competenciaSelecionada || exportandoCompetencia"
+                aria-label="Exportar CSV da competência selecionada"
+                >
+                <mat-icon>download</mat-icon>
+                {{ exportandoCompetencia ? 'Exportando...' : 'Exportar competência CSV' }}
               </button>
-
               <button
                 mat-stroked-button
                 color="primary"
-                (click)="criarCompetencia()"
-                aria-label="Criar competência"
-              >
-                <mat-icon>add</mat-icon>
-                Criar competência
+                (click)="exportarTodasCsv()"
+                [disabled]="exportandoTodas"
+                aria-label="Exportar CSV de todas as competências"
+                >
+                <mat-icon>download</mat-icon>
+                {{ exportandoTodas ? 'Exportando...' : 'Exportar todas CSV' }}
               </button>
             </div>
-          </ng-container>
-
-          <div class="acoes export-actions">
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="exportarCompetenciaCsv()"
-              [disabled]="!competenciaSelecionada || exportandoCompetencia"
-              aria-label="Exportar CSV da competência selecionada"
-            >
-              <mat-icon>download</mat-icon>
-              {{ exportandoCompetencia ? 'Exportando...' : 'Exportar competência CSV' }}
-            </button>
-
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="exportarTodasCsv()"
-              [disabled]="exportandoTodas"
-              aria-label="Exportar CSV de todas as competências"
-            >
-              <mat-icon>download</mat-icon>
-              {{ exportandoTodas ? 'Exportando...' : 'Exportar todas CSV' }}
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    }
   </app-section-card>
 
   <app-section-card titulo="Detalhes da competência" [divider]="false">
-    <div class="detalhes-grid" *ngIf="resumoAtual as r">
-      <div class="detalhe-item">
-        <span>Regra padrão</span>
-        <strong>{{ regraPadraoLabel }}</strong>
+    @if (resumoAtual; as r) {
+      <div class="detalhes-grid">
+        <div class="detalhe-item">
+          <span>Regra padrão</span>
+          <strong>{{ regraPadraoLabel }}</strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Política</span>
+          <strong>{{ politicaAcordosLabel }}</strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Colaboradores</span>
+          <strong>{{ r.totalColaboradores }}</strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Status geral da competência</span>
+          <strong class="status-inline">
+            <app-status-badge [status]="r.statusGeral"></app-status-badge>
+          </strong>
+        </div>
       </div>
-      <div class="detalhe-item">
-        <span>Política</span>
-        <strong>{{ politicaAcordosLabel }}</strong>
+    }
+    @if (!resumoAtual && competenciaAtual; as comp) {
+      <div class="detalhes-grid">
+        <div class="detalhe-item">
+          <span>Regra padrão</span>
+          <strong>{{ regraPadraoLabel }}</strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Política</span>
+          <strong>{{ politicaAcordosLabel }}</strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Status da competência</span>
+          <strong class="status-inline">
+            <app-status-badge [status]="comp.status === 'FECHADA' ? 'FECHADO' : 'ABERTO'"></app-status-badge>
+          </strong>
+        </div>
+        <div class="detalhe-item">
+          <span>Colaboradores</span>
+          <strong>{{ folhasCompetencia.length }}</strong>
+        </div>
       </div>
-      <div class="detalhe-item">
-        <span>Colaboradores</span>
-        <strong>{{ r.totalColaboradores }}</strong>
-      </div>
-      <div class="detalhe-item">
-        <span>Status geral da competência</span>
-        <strong class="status-inline">
-          <app-status-badge [status]="r.statusGeral"></app-status-badge>
-        </strong>
-      </div>
-    </div>
-    <div class="detalhes-grid" *ngIf="!resumoAtual && competenciaAtual as comp">
-      <div class="detalhe-item">
-        <span>Regra padrão</span>
-        <strong>{{ regraPadraoLabel }}</strong>
-      </div>
-      <div class="detalhe-item">
-        <span>Política</span>
-        <strong>{{ politicaAcordosLabel }}</strong>
-      </div>
-      <div class="detalhe-item">
-        <span>Status da competência</span>
-        <strong class="status-inline">
-          <app-status-badge [status]="comp.status === 'FECHADA' ? 'FECHADO' : 'ABERTO'"></app-status-badge>
-        </strong>
-      </div>
-      <div class="detalhe-item">
-        <span>Colaboradores</span>
-        <strong>{{ folhasCompetencia.length }}</strong>
-      </div>
-    </div>
+    }
   </app-section-card>
 
   <app-section-card [divider]="false">
@@ -231,8 +233,10 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.pending-row]="row.pendente > 0"></tr>
       </table>
     </div>
-    <p class="text-muted m-t-16" *ngIf="!folhasCompetencia.length">
-      Nenhum funcionário elegível encontrado para esta competência.
-    </p>
+    @if (!folhasCompetencia.length) {
+      <p class="text-muted m-t-16">
+        Nenhum funcionário elegível encontrado para esta competência.
+      </p>
+    }
   </app-section-card>
 </app-page-card>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-manual-link',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, RouterModule],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterModule],
   templateUrl: './manual-link.component.html',
   styleUrls: ['./manual-link.component.scss']
 })

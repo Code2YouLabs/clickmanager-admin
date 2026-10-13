@@ -15,7 +15,7 @@
       </mat-expansion-panel-header>
 
       <div class="pay-body" [class.inativo]="inativo" (focusin)="expandPanel()">
-        <ng-container *ngIf="pagamentoNovo">
+        @if (pagamentoNovo) {
           <div class="row align-items-end m-b-12">
             <div class="col-md-6">
               <app-input-options [control]="formaControl" label="Forma"
@@ -24,9 +24,11 @@
             </div>
             <div class="col-md-6">
               <app-input-moeda [control]="valorControl" (focusin)="expandPanel()"></app-input-moeda>
-              <div class="error-text" *ngIf="!valorValido() && !inativo">
-                Valor não pode exceder o restante do pedido.
-              </div>
+              @if (!valorValido() && !inativo) {
+                <div class="error-text">
+                  Valor não pode exceder o restante do pedido.
+                </div>
+              }
             </div>
             <div class="col-12 d-flex justify-content-end">
               <button mat-flat-button color="primary" type="button" class="btn-add-pagamento" (click)="expandPanel(); addPagamento.emit()"
@@ -36,65 +38,93 @@
               </button>
             </div>
           </div>
-        </ng-container>
+        }
 
-        <div class="table-responsive table-wrapper m-t-8" *ngIf="pagamentosControls.length">
-          <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light center-table">
-            <thead>
-              <tr>
-                <th class="p-12 header-cell">Forma</th>
-                <th class="p-12 header-cell">Valor</th>
-                <th class="p-12 header-cell" *ngIf="mostrarConfirmado">Confirmado</th>
-                <th class="p-12 header-cell" *ngIf="mostrarData">Data</th>
-                <th class="p-12 header-cell" *ngIf="mostrarAcoes">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (pg of pagamentosControls; track $index; let i = $index) {
-              <tr class="bordered-row">
-                <td class="p-12">{{ pg.value.forma || '-' }}</td>
-                <td class="p-12">{{ pg.value.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
-                <td class="p-12" *ngIf="mostrarConfirmado">—</td>
-                <td class="p-12" *ngIf="mostrarData">—</td>
-                <td class="p-12 action-link" *ngIf="mostrarAcoes">
-                  <button mat-icon-button color="warn" type="button" (click)="removerPagamento.emit(i)" [disabled]="inativo">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+        @if (pagamentosControls.length) {
+          <div class="table-responsive table-wrapper m-t-8">
+            <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light center-table">
+              <thead>
+                <tr>
+                  <th class="p-12 header-cell">Forma</th>
+                  <th class="p-12 header-cell">Valor</th>
+                  @if (mostrarConfirmado) {
+                    <th class="p-12 header-cell">Confirmado</th>
+                  }
+                  @if (mostrarData) {
+                    <th class="p-12 header-cell">Data</th>
+                  }
+                  @if (mostrarAcoes) {
+                    <th class="p-12 header-cell">Ações</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (pg of pagamentosControls; track $index; let i = $index) {
+                  <tr class="bordered-row">
+                    <td class="p-12">{{ pg.value.forma || '-' }}</td>
+                    <td class="p-12">{{ pg.value.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+                    @if (mostrarConfirmado) {
+                      <td class="p-12">—</td>
+                    }
+                    @if (mostrarData) {
+                      <td class="p-12">—</td>
+                    }
+                    @if (mostrarAcoes) {
+                      <td class="p-12 action-link">
+                        <button mat-icon-button color="warn" type="button" (click)="removerPagamento.emit(i)" [disabled]="inativo">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
 
-        <div class="table-responsive table-wrapper m-t-8" *ngIf="pagamentosLista?.length">
-          <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light center-table">
-            <thead>
-              <tr>
-                <th class="p-12 header-cell">Forma</th>
-                <th class="p-12 header-cell">Valor</th>
-                <th class="p-12 header-cell" *ngIf="mostrarConfirmado">Confirmado</th>
-                <th class="p-12 header-cell" *ngIf="mostrarData">Data</th>
-                <th class="p-12 header-cell" *ngIf="mostrarAcoes">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (pg of pagamentosLista; track $index; let i = $index) {
-              <tr class="bordered-row">
-                <td class="p-12">{{ pg.forma || '-' }}</td>
-                <td class="p-12">{{ pg.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
-                <td class="p-12" *ngIf="mostrarConfirmado">{{ pg.confirmado ? 'Sim' : 'Não' }}</td>
-                <td class="p-12" *ngIf="mostrarData">{{ pg.data | date:"dd/MM/yyyy 'às' HH:mm" }}</td>
-                <td class="p-12 action-link" *ngIf="mostrarAcoes">
-                  <button mat-icon-button color="warn" type="button" (click)="removerPagamento.emit(i)" [disabled]="inativo">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+        @if (pagamentosLista?.length) {
+          <div class="table-responsive table-wrapper m-t-8">
+            <table class="table table-hover b-1 no-wrap w-100 rounded text-left table-bg-light center-table">
+              <thead>
+                <tr>
+                  <th class="p-12 header-cell">Forma</th>
+                  <th class="p-12 header-cell">Valor</th>
+                  @if (mostrarConfirmado) {
+                    <th class="p-12 header-cell">Confirmado</th>
+                  }
+                  @if (mostrarData) {
+                    <th class="p-12 header-cell">Data</th>
+                  }
+                  @if (mostrarAcoes) {
+                    <th class="p-12 header-cell">Ações</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (pg of pagamentosLista; track $index; let i = $index) {
+                  <tr class="bordered-row">
+                    <td class="p-12">{{ pg.forma || '-' }}</td>
+                    <td class="p-12">{{ pg.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+                    @if (mostrarConfirmado) {
+                      <td class="p-12">{{ pg.confirmado ? 'Sim' : 'Não' }}</td>
+                    }
+                    @if (mostrarData) {
+                      <td class="p-12">{{ pg.data | date:"dd/MM/yyyy 'às' HH:mm" }}</td>
+                    }
+                    @if (mostrarAcoes) {
+                      <td class="p-12 action-link">
+                        <button mat-icon-button color="warn" type="button" (click)="removerPagamento.emit(i)" [disabled]="inativo">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
         <mat-divider class="m-t-12 m-b-8"></mat-divider>
         <div class="total-inline">
           <div class="total-label">Total pago</div>

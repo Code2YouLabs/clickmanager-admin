@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { CardHeaderComponent } from 'src/app/components/card-header/card-header.component';
 import { UsuarioService } from '../services/usuario.service';
 import { PerfilService } from '../services/perfil.service';
@@ -20,7 +20,6 @@ import { Perfil } from 'src/app/models/perfil.model';
   templateUrl: './form-usuario.component.html',
   styleUrls: ['./form-usuario.component.scss'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     MatCardModule,
@@ -30,7 +29,7 @@ import { Perfil } from 'src/app/models/perfil.model';
     MatButtonModule,
     MatSlideToggleModule,
     CardHeaderComponent
-  ]
+]
 })
 export class FormUsuarioComponent implements OnInit {
   form!: FormGroup;

@@ -14,7 +14,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TicketService } from 'src/app/services/apps/ticket/ticket.service';
 import { TicketElement } from 'src/app/pages/apps/tickets/ticket';
@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-ticket-list',
   templateUrl: './tickets.component.html',
-  imports: [MaterialModule, CommonModule, TablerIconsModule],
+  imports: [MaterialModule, CommonModule, DesignSystemIconsModule],
 })
 export class AppTicketlistComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -109,10 +109,10 @@ export class AppTicketlistComponent implements OnInit, AfterViewInit {
   imports: [
     MaterialModule,
     CommonModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
   ],
 })
 export class TicketDialogComponent {

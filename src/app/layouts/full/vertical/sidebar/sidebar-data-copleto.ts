@@ -132,6 +132,13 @@ export const navItems: NavItem[] = [
                 bgcolor: 'transparent',
                 route: '/page/cadastro-tecnico/servico',
                 requiredPermission: ['SERVICOS_VER', 'SERVICOS_CADASTRAR', 'SERVICOS_EDITAR', 'SERVICOS_EXCLUIR']
+            },
+            {
+                displayName: 'Catálogo Onboarding',
+                iconName: 'point',
+                bgcolor: 'transparent',
+                route: '/page/onboarding/catalogo',
+                requiredPermission: ['GERENCIAR_PRODUTOS']
             }
         ]
     },    
@@ -695,13 +702,13 @@ export const navItems: NavItem[] = [
                 displayName: 'Login',
                 iconName: 'point',
                 bgcolor: 'tranparent',
-                route: '/authentication/login',
+                route: '/login',
             },
             {
                 displayName: 'Boxed Login',
                 iconName: 'point',
                 bgcolor: 'tranparent',
-                route: '/authentication/boxed-login',
+                route: '/login',
             },
         ],
     },

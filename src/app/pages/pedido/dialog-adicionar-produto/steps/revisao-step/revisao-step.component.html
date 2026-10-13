@@ -3,15 +3,24 @@
     <div class="rev-field">
       <div class="rev-label">Produto</div>
       <div class="rev-value">{{ produtoBase?.nome || '—' }}</div>
-      <div class="rev-subtle" *ngIf="produtoBase?.descricao">{{ produtoBase?.descricao }}</div>
+      @if (produtoBase?.descricao) {
+        <div class="rev-subtle">{{ produtoBase?.descricao }}</div>
+      }
     </div>
     <div class="rev-field">
       <div class="rev-label">Variação</div>
-      <div class="rev-chipline" *ngIf="variacaoChips.length; else semVar">
-        <span class="rev-chip" *ngFor="let chip of variacaoChips">{{ chip }}</span>
-      </div>
-      <ng-template #semVar>—</ng-template>
-      <div class="rev-subtle" *ngIf="baseResumoTexto">({{ baseResumoTexto }})</div>
+      @if (variacaoChips.length) {
+        <div class="rev-chipline">
+          @for (chip of variacaoChips; track chip) {
+            <span class="rev-chip">{{ chip }}</span>
+          }
+        </div>
+      } @else {
+        —
+      }
+      @if (baseResumoTexto) {
+        <div class="rev-subtle">({{ baseResumoTexto }})</div>
+      }
     </div>
   </div>
 </section>
@@ -19,7 +28,6 @@
 <section class="rev-section">
   <div class="rev-label">Itens</div>
   <div class="rev-table">
-    <ng-template #dash>—</ng-template>
 
     <div class="rev-row rev-head">
       <div>Item</div>
@@ -31,53 +39,81 @@
     <div class="rev-row">
       <div>
         <div class="rev-item">Produto (variação)</div>
-        <div class="rev-subtle" *ngIf="baseResumoTexto">{{ baseResumoTexto }}</div>
+        @if (baseResumoTexto) {
+          <div class="rev-subtle">{{ baseResumoTexto }}</div>
+        }
       </div>
 
       <div class="text-center">{{ baseQtd }}</div>
 
       <div class="text-right">
-        <ng-container *ngIf="baseUnit !== null; else dash">{{ moneyFn(baseUnit) }}</ng-container>
+        @if (baseUnit !== null) {
+          {{ moneyFn(baseUnit) }}
+        } @else {
+          —
+        }
       </div>
 
       <div class="text-right">
-        <ng-container *ngIf="baseSubtotal !== null; else dash">{{ moneyFn(baseSubtotal) }}</ng-container>
+        @if (baseSubtotal !== null) {
+          {{ moneyFn(baseSubtotal) }}
+        } @else {
+          —
+        }
       </div>
     </div>
 
-    <div class="rev-row" *ngFor="let a of acabamentosSelecionadosDetalhe; trackBy: trackById">
-      <div>
-        <div class="rev-item">Acabamento: {{ a.nome }}</div>
-        <div class="rev-subtle" *ngIf="a.descricao">{{ a.descricao }}</div>
+    @for (a of acabamentosSelecionadosDetalhe; track trackById($index, a)) {
+      <div class="rev-row">
+        <div>
+          <div class="rev-item">Acabamento: {{ a.nome }}</div>
+          @if (a.descricao) {
+            <div class="rev-subtle">{{ a.descricao }}</div>
+          }
+        </div>
+        <div class="text-center">1</div>
+        <div class="text-right">
+          @if (unitFromPrecoFn(a.preco); as u) {
+            {{ moneyFn(u) }}
+          } @else {
+            —
+          }
+        </div>
+        <div class="text-right">
+          @if (unitFromPrecoFn(a.preco); as u) {
+            {{ moneyFn(u) }}
+          } @else {
+            —
+          }
+        </div>
       </div>
+    }
 
-      <div class="text-center">1</div>
-
-      <div class="text-right">
-        <ng-container *ngIf="unitFromPrecoFn(a.preco) as u; else dash">{{ moneyFn(u) }}</ng-container>
+    @for (s of servicosSelecionadosDetalhe; track trackById($index, s)) {
+      <div class="rev-row">
+        <div>
+          <div class="rev-item">Serviço: {{ s.nome }}</div>
+          @if (s.descricao) {
+            <div class="rev-subtle">{{ s.descricao }}</div>
+          }
+        </div>
+        <div class="text-center">1</div>
+        <div class="text-right">
+          @if (unitFromPrecoFn(s.preco); as u) {
+            {{ moneyFn(u) }}
+          } @else {
+            —
+          }
+        </div>
+        <div class="text-right">
+          @if (unitFromPrecoFn(s.preco); as u) {
+            {{ moneyFn(u) }}
+          } @else {
+            —
+          }
+        </div>
       </div>
-
-      <div class="text-right">
-        <ng-container *ngIf="unitFromPrecoFn(a.preco) as u; else dash">{{ moneyFn(u) }}</ng-container>
-      </div>
-    </div>
-
-    <div class="rev-row" *ngFor="let s of servicosSelecionadosDetalhe; trackBy: trackById">
-      <div>
-        <div class="rev-item">Serviço: {{ s.nome }}</div>
-        <div class="rev-subtle" *ngIf="s.descricao">{{ s.descricao }}</div>
-      </div>
-
-      <div class="text-center">1</div>
-
-      <div class="text-right">
-        <ng-container *ngIf="unitFromPrecoFn(s.preco) as u; else dash">{{ moneyFn(u) }}</ng-container>
-      </div>
-
-      <div class="text-right">
-        <ng-container *ngIf="unitFromPrecoFn(s.preco) as u; else dash">{{ moneyFn(u) }}</ng-container>
-      </div>
-    </div>
+    }
   </div>
 </section>
 
@@ -98,9 +134,11 @@
     <span>{{ totalConhecido !== null ? moneyFn(totalConhecido) : '—' }}</span>
   </div>
 
-  <div class="rev-note" *ngIf="qtdeVariaveis > 0">
-    <mat-icon class="m-r-4" inline>info</mat-icon>
-    Existem {{ qtdeVariaveis }} item(ns) com preço variável (ex.: por hora, por metro ou
-    faixas). Eles não foram somados ao total e podem alterar o valor final.
-  </div>
+  @if (qtdeVariaveis > 0) {
+    <div class="rev-note">
+      <mat-icon class="m-r-4" inline>info</mat-icon>
+      Existem {{ qtdeVariaveis }} item(ns) com preço variável (ex.: por hora, por metro ou
+      faixas). Eles não foram somados ao total e podem alterar o valor final.
+    </div>
+  }
 </section>

@@ -1,0 +1,263 @@
+<div class="demo-funnel-shell">
+  <section class="hero-card">
+    <div class="hero-copy">
+      <span class="eyebrow">Analytics da demo</span>
+      <h1>Funil SmartCalc</h1>
+      <p>
+        Leitura executiva da jornada da demo pública, com foco em cálculo, geração de pedido,
+        intenção comercial e pontos reais de abandono.
+      </p>
+      <small class="hero-meta">
+        Período: {{ periodoSelecionadoLabel }} · Base: {{ baseContagemLabel }}
+      </small>
+    </div>
+
+    <div class="hero-actions">
+      @for (preset of presetOptions; track preset.value) {
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        [class.is-active]="presetSelecionado === preset.value"
+        (click)="aplicarPreset(preset.value)"
+      >
+        {{ preset.label }}
+      </button>
+      }
+    </div>
+  </section>
+
+  <section class="filters-card">
+    <div class="filters-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Data inicial</mat-label>
+        <input matInput type="date" [(ngModel)]="dataInicio" (change)="presetSelecionado = 'CUSTOM'" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data final</mat-label>
+        <input matInput type="date" [(ngModel)]="dataFim" (change)="presetSelecionado = 'CUSTOM'" />
+      </mat-form-field>
+
+      <div class="filter-actions">
+        <button mat-flat-button color="primary" type="button" (click)="aplicarPeriodoPersonalizado()">
+          Atualizar visão
+        </button>
+        <button mat-stroked-button color="primary" type="button" (click)="aplicarPreset('LAST_30_DAYS')">
+          Voltar para 30 dias
+        </button>
+      </div>
+    </div>
+  </section>
+
+  @if (carregando) {
+  <section class="state-card">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    <div>
+      <strong>Carregando analytics da demo...</strong>
+      <span>Montando funil, comparativos e insights do período.</span>
+    </div>
+  </section>
+  } @else if (erro) {
+  <section class="state-card error">
+    <i-tabler name="alert-circle" class="icon-24"></i-tabler>
+    <div>
+      <strong>{{ erro }}</strong>
+      <span>Confira o backend da demo ou tente recarregar o período.</span>
+    </div>
+    <button mat-flat-button color="primary" type="button" (click)="recarregar()">
+      Tentar novamente
+    </button>
+  </section>
+  } @else if (!possuiDados) {
+  <section class="state-card empty">
+    <i-tabler name="chart-funnel" class="icon-24"></i-tabler>
+    <div>
+      <strong>Nenhum dado da demo para o período.</strong>
+      <span>Ajuste o recorte de datas ou valide se o backend já está registrando eventos da demo.</span>
+    </div>
+  </section>
+  } @else {
+  <section class="summary-grid">
+    @for (card of cardsResumo; track card.label) {
+    <article class="summary-card" [ngClass]="'tone-' + card.tone">
+      <div class="summary-top">
+        <span>{{ card.label }}</span>
+        <small class="variation" [ngClass]="'variation-' + card.variationTone">
+          {{ card.variationLabel }}
+        </small>
+      </div>
+      <strong>{{ card.value }}</strong>
+      <small>{{ card.helper }}</small>
+    </article>
+    }
+  </section>
+
+  <section class="insights-strip">
+    @for (insight of insightsRapidos; track insight.label) {
+    <article class="insight-pill" [ngClass]="'tone-' + insight.tone">
+      <span>{{ insight.label }}</span>
+      <strong>{{ insight.value }}</strong>
+      <small>{{ insight.helper }}</small>
+    </article>
+    }
+  </section>
+
+  <section class="funnel-section">
+    <div class="section-header">
+      <div>
+        <h3>Funil principal da demo</h3>
+        <p>
+          Cada etapa mostra volume absoluto, avanço sobre a etapa anterior e retenção acumulada sobre o topo.
+        </p>
+      </div>
+    </div>
+
+    <div class="funnel-grid">
+      @for (step of etapasFunil; track step.key) {
+      <article class="funnel-card" [class.is-bottleneck]="step.isBottleneck">
+        <div class="funnel-head">
+          <span>{{ step.label }}</span>
+          @if (step.isBottleneck) {
+          <small class="bottleneck-badge">Gargalo</small>
+          }
+        </div>
+
+        <strong>{{ formatarNumero(step.value) }}</strong>
+        <p>{{ step.helper }}</p>
+
+        <div class="progress-track">
+          <div class="progress-bar" [style.width.%]="percentualBarra(step)"></div>
+        </div>
+
+        <div class="metrics-grid">
+          <div>
+            <span>Topo</span>
+            <strong>{{ formatarPercentual(step.percentFromTop) }}</strong>
+          </div>
+          <div>
+            <span>Etapa anterior</span>
+            <strong>{{ formatarPercentual(step.percentFromPrevious) }}</strong>
+          </div>
+          <div>
+            <span>Perda</span>
+            <strong>{{ formatarNumero(step.lossAbsolute) }}</strong>
+          </div>
+          <div>
+            <span>Perda %</span>
+            <strong>{{ formatarPercentual(step.lossPercent) }}</strong>
+          </div>
+        </div>
+      </article>
+      }
+    </div>
+  </section>
+
+  <section class="comparison-grid">
+    <article class="panel-card">
+      <div class="section-header">
+        <div>
+          <h3>Comparativo por dispositivo</h3>
+          <p>Participação no topo do funil, com base em visitantes únicos que visualizaram a demo.</p>
+        </div>
+      </div>
+
+      <div class="breakdown-grid">
+        @for (item of comparativoDispositivos; track item.label) {
+        <div class="breakdown-card" [ngClass]="'tone-' + item.tone">
+          <span>{{ item.label }}</span>
+          <strong>{{ formatarNumero(item.value) }}</strong>
+          <small>{{ formatarPercentual(item.share) }}</small>
+          <p>{{ item.helper }}</p>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="panel-card">
+      <div class="section-header">
+        <div>
+          <h3>Comparativo por origem</h3>
+          <p>As fontes abaixo representam onde a demo está atraindo mais entrada no período.</p>
+        </div>
+      </div>
+
+      <div class="ranking-list">
+        @for (item of comparativoOrigens; track item.label) {
+        <div class="ranking-item">
+          <div class="ranking-top">
+            <div>
+              <span>{{ item.label }}</span>
+              <small>{{ item.helper }}</small>
+            </div>
+            <strong>{{ formatarNumero(item.value) }}</strong>
+          </div>
+          <div class="ranking-track">
+            <div class="ranking-bar" [style.width.%]="item.share"></div>
+          </div>
+        </div>
+        }
+      </div>
+    </article>
+
+    <article class="panel-card">
+      <div class="section-header">
+        <div>
+          <h3>Tour e abandono</h3>
+          <p>
+            Aqui está a leitura do comportamento inicial da demo. A comparação causal de tour vs conversão ainda
+            depende de breakdowns mais profundos no backend.
+          </p>
+        </div>
+      </div>
+
+      <div class="breakdown-grid compact">
+        @for (item of tourCards; track item.label) {
+        <div class="breakdown-card" [ngClass]="'tone-' + item.tone">
+          <span>{{ item.label }}</span>
+          <strong>{{ formatarNumero(item.value) }}</strong>
+          <small>{{ formatarPercentual(item.share) }}</small>
+          <p>{{ item.helper }}</p>
+        </div>
+        }
+      </div>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <div class="section-header">
+      <div>
+        <h3>Leitura operacional do funil</h3>
+        <p>Resumo tabular para identificar onde a demo está perdendo mais pessoas.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="analytics-table">
+        <thead>
+          <tr>
+            <th>Etapa</th>
+            <th>Total</th>
+            <th>% do topo</th>
+            <th>% da etapa anterior</th>
+            <th>Perda absoluta</th>
+            <th>Perda %</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of tabelaOperacional; track row.etapa) {
+          <tr>
+            <td>{{ row.etapa }}</td>
+            <td>{{ formatarNumero(row.total) }}</td>
+            <td>{{ formatarPercentual(row.percentFromTop) }}</td>
+            <td>{{ formatarPercentual(row.percentFromPrevious) }}</td>
+            <td>{{ formatarNumero(row.lossAbsolute) }}</td>
+            <td>{{ formatarPercentual(row.lossPercent) }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  }
+</div>

@@ -1,0 +1,135 @@
+<div class="form-shell">
+  <mat-card class="form-card">
+    <div class="form-header">
+      <div>
+        <span class="eyebrow">Onboarding admin</span>
+        <h1>{{ tituloPagina }}</h1>
+        <p>
+          Configure o produto base, destaque, ordem e os vínculos de serviços e acabamentos
+          que o onboarding novo vai oferecer.
+        </p>
+      </div>
+
+      <button mat-stroked-button color="primary" (click)="voltar()">
+        <i-tabler name="arrow-left" class="icon-18 m-r-6"></i-tabler>
+        Voltar para listagem
+      </button>
+    </div>
+
+    @if (carregando) {
+      <div class="state-card">
+        <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        <span>Carregando produto...</span>
+      </div>
+    }
+
+    @if (!carregando) {
+      <div class="detail-grid">
+        <article class="detail-stat">
+          <span>Serviços vinculados</span>
+          <strong>{{ form.servicoIds.length }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Acabamentos vinculados</span>
+          <strong>{{ form.acabamentoIds.length }}</strong>
+        </article>
+        <article class="detail-stat">
+          <span>Ordem</span>
+          <strong>{{ form.ordemExibicao ?? 'Auto' }}</strong>
+        </article>
+      </div>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Código</mat-label>
+          <input matInput [(ngModel)]="form.codigo" placeholder="CARTAO_VISITA" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="form.nome" placeholder="Cartão de visita" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Categoria</mat-label>
+          <input matInput [(ngModel)]="form.categoria" placeholder="Gráficos rápidos" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Destaque</mat-label>
+          <input matInput [(ngModel)]="form.destaque" placeholder="Alto giro" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ordem de exibição</mat-label>
+          <input matInput type="number" min="0" [(ngModel)]="form.ordemExibicao" />
+        </mat-form-field>
+        <div class="toggle-stack">
+          <mat-slide-toggle [(ngModel)]="form.ativo">
+            Produto ativo no onboarding
+          </mat-slide-toggle>
+          <mat-slide-toggle [(ngModel)]="form.preSelecionado">
+            Sugerir como pré-selecionado
+          </mat-slide-toggle>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput rows="5" [(ngModel)]="form.descricao"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Serviços vinculados</mat-label>
+          <mat-select [(ngModel)]="form.servicoIds" multiple>
+            @for (item of servicos; track item) {
+              <mat-option [value]="item.id">
+                {{ item.nome }} ({{ item.codigo }}){{ item.ativo ? '' : ' · inativo' }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Acabamentos vinculados</mat-label>
+          <mat-select [(ngModel)]="form.acabamentoIds" multiple>
+            @for (item of acabamentos; track item) {
+              <mat-option [value]="item.id">
+                {{ item.nome }} ({{ item.codigo }}){{ item.ativo ? '' : ' · inativo' }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="preview-grid">
+        <section class="preview-card">
+          <div class="preview-header">
+            <h3>Serviços selecionados</h3>
+            <span>{{ servicosSelecionadosResumo.length }}</span>
+          </div>
+          @if (servicosSelecionadosResumo.length) {
+            <div class="chip-list">
+              @for (nome of servicosSelecionadosResumo; track nome) {
+                <span class="chip">{{ nome }}</span>
+              }
+            </div>
+          } @else {
+            <p class="preview-empty">Nenhum serviço selecionado.</p>
+          }
+        </section>
+        <section class="preview-card">
+          <div class="preview-header">
+            <h3>Acabamentos selecionados</h3>
+            <span>{{ acabamentosSelecionadosResumo.length }}</span>
+          </div>
+          @if (acabamentosSelecionadosResumo.length) {
+            <div class="chip-list">
+              @for (nome of acabamentosSelecionadosResumo; track nome) {
+                <span class="chip">{{ nome }}</span>
+              }
+            </div>
+          } @else {
+            <p class="preview-empty">Nenhum acabamento selecionado.</p>
+          }
+        </section>
+      </div>
+      <div class="editor-actions">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="salvando">
+          {{ isEditMode ? 'Salvar alterações' : 'Criar produto' }}
+        </button>
+        <button mat-stroked-button color="primary" (click)="voltar()">Cancelar</button>
+      </div>
+    }
+  </mat-card>
+</div>

@@ -10,7 +10,7 @@ import {
   NgApexchartsModule,
 } from 'ng-apexcharts';
 import { MaterialModule } from '../../../material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import {
   DashboardService,
   ReceitaResumoRequest,
@@ -35,7 +35,7 @@ type DonutChart = {
 @Component({
   selector: 'app-receita-resumo',
   standalone: true,
-  imports: [MaterialModule, NgApexchartsModule, TablerIconsModule, CommonModule, MatButtonToggleModule],
+  imports: [MaterialModule, NgApexchartsModule, DesignSystemIconsModule, CommonModule, MatButtonToggleModule],
   templateUrl: './receita-resumo.component.html',
 })
 export class AppReceitaResumoComponent implements OnInit {

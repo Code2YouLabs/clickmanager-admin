@@ -18,8 +18,10 @@
       </app-input-textarea>
 
       <!-- Preço -->
-      <app-preco-selector *ngIf="precoControl" [formGroup]="precoControl" [tiposDisponiveis]="['FIXO']">
-      </app-preco-selector>
+      @if (precoControl) {
+        <app-preco-selector [formGroup]="precoControl" [tiposDisponiveis]="['FIXO']">
+        </app-preco-selector>
+      }
 
       <!-- Botões -->
       <div class="d-flex gap-12 m-t-24 flex-wrap">

@@ -1,38 +1,40 @@
 <mat-card class="cardWithShadow">
-    <mat-card-content>
+  <mat-card-content>
 
-        <div class="m-b-16">
-            <mat-slide-toggle [formControl]="ativaCtrl">
-                Usar política de revenda neste produto
-            </mat-slide-toggle>
+    <div class="m-b-16">
+      <mat-slide-toggle [formControl]="ativaCtrl">
+        Usar política de revenda neste produto
+      </mat-slide-toggle>
+    </div>
+
+    @if (ativaCtrl.value) {
+      <!-- 🔧 Aqui garantimos que todos os inputs usam formControlName -->
+      <div [formGroup]="grp">
+        <div class="m-b-8">
+          <mat-radio-group formControlName="percentual" class="d-block m-b-16">
+            <mat-radio-button [value]="true" class="m-r-16">Percentual de desconto</mat-radio-button>
+            <mat-radio-button [value]="false">Preço fixo de revenda</mat-radio-button>
+          </mat-radio-group>
         </div>
+        @if (isPercentual) {
+          <div>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Percentual de desconto (%)</mat-label>
+              <input matInput type="number" min="0.01" max="100" step="0.01"
+                formControlName="percentualDesconto" />
+            </mat-form-field>
+          </div>
+        }
+        @if (!isPercentual) {
+          <div>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Preço fixo de revenda</mat-label>
+              <input matInput type="number" min="0.01" step="0.01" formControlName="precoFixo" />
+            </mat-form-field>
+          </div>
+        }
+      </div>
+    }
 
-        <ng-container *ngIf="ativaCtrl.value">
-            <!-- 🔧 Aqui garantimos que todos os inputs usam formControlName -->
-            <div [formGroup]="grp">
-                <div class="m-b-8">
-                    <mat-radio-group formControlName="percentual" class="d-block m-b-16">
-                        <mat-radio-button [value]="true" class="m-r-16">Percentual de desconto</mat-radio-button>
-                        <mat-radio-button [value]="false">Preço fixo de revenda</mat-radio-button>
-                    </mat-radio-group>
-                </div>
-
-                <div *ngIf="isPercentual">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Percentual de desconto (%)</mat-label>
-                        <input matInput type="number" min="0.01" max="100" step="0.01"
-                            formControlName="percentualDesconto" />
-                    </mat-form-field>
-                </div>
-
-                <div *ngIf="!isPercentual">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Preço fixo de revenda</mat-label>
-                        <input matInput type="number" min="0.01" step="0.01" formControlName="precoFixo" />
-                    </mat-form-field>
-                </div>
-            </div>
-        </ng-container>
-
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

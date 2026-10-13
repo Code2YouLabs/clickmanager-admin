@@ -15,7 +15,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,11 +26,10 @@ import { debounceTime } from 'rxjs/operators';
   standalone: true,
   templateUrl: './input-telefone.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule 
-  ],
+    MatInputModule
+],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputTelefoneComponent implements OnInit, AfterViewInit {

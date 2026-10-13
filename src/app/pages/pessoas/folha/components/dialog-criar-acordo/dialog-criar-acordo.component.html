@@ -1,9 +1,11 @@
 <h2 mat-dialog-title>Novo empréstimo parcelado</h2>
 
 <mat-dialog-content [formGroup]="form" class="dialog-content">
-  <div class="blocked-card" *ngIf="acordoBloqueado">
-    {{ mensagemBloqueioAcordo }}
-  </div>
+  @if (acordoBloqueado) {
+    <div class="blocked-card">
+      {{ mensagemBloqueioAcordo }}
+    </div>
+  }
 
   <div class="hint-card">
     Configure um empréstimo parcelado para desconto automático nas próximas competências.
@@ -15,12 +17,16 @@
         [control]="valorTotalControl"
         label="Valor total"
       ></app-input-moeda>
-      <small class="text-muted" *ngIf="limiteValorAcordo !== null">
-        Limite pela política: {{ limiteValorAcordo | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-      </small>
-      <small class="field-error" *ngIf="valorTotalControl.hasError('maxPolitica') && valorTotalControl.touched">
-        Valor acima do limite percentual definido na configuração da folha.
-      </small>
+      @if (limiteValorAcordo !== null) {
+        <small class="text-muted">
+          Limite pela política: {{ limiteValorAcordo | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </small>
+      }
+      @if (valorTotalControl.hasError('maxPolitica') && valorTotalControl.touched) {
+        <small class="field-error">
+          Valor acima do limite percentual definido na configuração da folha.
+        </small>
+      }
     </div>
 
     <div class="col-12 col-md-6">
@@ -41,14 +47,14 @@
       ></app-input-options>
     </div>
 
-      <div class="col-12">
-        <app-input-textarea
-          [control]="descricaoControl"
-          label="Descrição (opcional)"
-          placeholder="Ex.: Empréstimo interno para compra de equipamento"
-          [rows]="3"
-        ></app-input-textarea>
-      </div>
+    <div class="col-12">
+      <app-input-textarea
+        [control]="descricaoControl"
+        label="Descrição (opcional)"
+        placeholder="Ex.: Empréstimo interno para compra de equipamento"
+        [rows]="3"
+      ></app-input-textarea>
+    </div>
   </div>
 </mat-dialog-content>
 

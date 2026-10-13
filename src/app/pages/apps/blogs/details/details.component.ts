@@ -3,7 +3,7 @@ import { blogService } from 'src/app/services/apps/blog/blog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     MatCardModule,
     MatChipsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,

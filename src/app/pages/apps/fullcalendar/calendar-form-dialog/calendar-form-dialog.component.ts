@@ -17,7 +17,7 @@ import { EgretCalendarEvent } from '../event.model';
 import { MaterialModule } from 'src/app/material.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 interface DialogData {
   event?: CalendarEvent;
@@ -33,7 +33,7 @@ interface DialogData {
         FormsModule,
         ReactiveFormsModule,
         MatDatepickerModule,
-        TablerIconsModule
+        DesignSystemIconsModule
     ],
     providers: [provideNativeDateAdapter()],
     changeDetection: ChangeDetectionStrategy.OnPush

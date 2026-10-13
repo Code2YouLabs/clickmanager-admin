@@ -12,7 +12,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { PedidoService } from '../pedido.service';
 import { SharedComponentsModule } from "../../../components/shared-components.module";
 import { map, Observable, take } from 'rxjs';
@@ -25,7 +25,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { InputTextareaComponent } from "../../../components/inputs/input-textarea/input-textarea.component";
 import { FormaPagamento } from 'src/app/utils/forma-pagamento.enum';
 import { InputOptionsComponent } from "../../../components/inputs/input-options/input-options.component";
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { InputDataComponent } from "../../../components/inputs/input-data/input-data.component";
 import { SectionCardComponent } from "../../../components/section-card/section-card.component";
 import {
@@ -54,7 +54,7 @@ import { ClienteService } from "../../cliente/cliente.service";
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule,
+    DesignSystemIconsModule,
     SharedComponentsModule,
     InputTextareaComponent,
     InputOptionsComponent,

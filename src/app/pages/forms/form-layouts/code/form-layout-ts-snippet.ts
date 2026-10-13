@@ -163,7 +163,7 @@ import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-form-layouts',
@@ -172,7 +172,7 @@ import { TablerIconsModule } from 'angular-tabler-icons';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    TablerIconsModule
+    DesignSystemIconsModule
   ],
   templateUrl: './form-layouts.component.html',
 })
@@ -188,7 +188,7 @@ import { MaterialModule } from '../../../material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TablerIconsModule } from 'angular-tabler-icons';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 
 @Component({
   selector: 'app-form-layouts',
@@ -197,7 +197,7 @@ import { TablerIconsModule } from 'angular-tabler-icons';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    TablerIconsModule
+    DesignSystemIconsModule
   ],
   templateUrl: './form-layouts.component.html',
 })
