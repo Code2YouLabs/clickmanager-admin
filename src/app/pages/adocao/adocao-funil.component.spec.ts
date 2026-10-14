@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { AdocaoFunilComponent } from './adocao-funil.component';
 import { AdminAdocaoFunilResponse } from './models/admin-adocao-funil.model';
 import { AdminAdocaoService } from './services/admin-adocao.service';

@@ -1,5 +1,5 @@
 import { of, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'src/app/services/toastr.service';
 import { AdminEmpresaAdocaoResponse, AdminEmpresaResumo } from './models/admin-empresa.model';
 import { EmpresasAdminComponent } from './empresas-admin.component';
 import { AdminEmpresasService } from './services/admin-empresas.service';
