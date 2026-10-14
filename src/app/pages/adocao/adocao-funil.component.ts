@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MaterialModule } from 'src/app/material.module';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -227,11 +227,14 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
     this.erro = '';
 
     this.adocaoService.consultarFunil$(filtro)
-      .pipe(finalize(() => {
+      .pipe(
+        take(1),
+        finalize(() => {
         if (currentRequest === this.requestId) {
           this.carregando = false;
         }
-      }))
+        }),
+      )
       .subscribe({
         next: (response) => {
           if (currentRequest !== this.requestId) {

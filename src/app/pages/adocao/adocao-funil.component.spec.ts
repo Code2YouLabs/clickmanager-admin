@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'src/app/services/toastr.service';
 import { AdocaoFunilComponent } from './adocao-funil.component';
 import { AdminAdocaoFunilResponse } from './models/admin-adocao-funil.model';
@@ -128,6 +128,19 @@ describe('AdocaoFunilComponent', () => {
 
     expect(service.consultarFunil$).toHaveBeenCalledTimes(2);
     expect(component.erro).toBe('');
+    expect(component.funil?.coorte.totalEmpresas).toBe(100);
+  });
+
+  it('encerra o carregamento assim que recebe a primeira resposta', () => {
+    const resposta = new Subject<AdminAdocaoFunilResponse>();
+    service.consultarFunil$.and.returnValue(resposta.asObservable());
+
+    component.ngOnInit();
+    expect(component.carregando).toBeTrue();
+
+    resposta.next(funilCompleto());
+
+    expect(component.carregando).toBeFalse();
     expect(component.funil?.coorte.totalEmpresas).toBe(100);
   });
 });
