@@ -35,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
         run: npm ci
 
       - name: Run tests (opcional)
@@ -62,4 +62,4 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
           secrets: |
-            node_auth_token=${{ secrets.NODE_AUTH_TOKEN }}
+            node_auth_token=${{ github.token }}
