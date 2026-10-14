@@ -226,3 +226,120 @@ function adocao(options: {
     ]
   };
 }
+
+import { ApplicationRef, NgZone, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+// AOT is required: JIT TestBed can mask Angular 22's implicit OnPush default.
+// ApplicationRef.tick traverses the application without forcing this component
+// dirty, unlike fixture.detectChanges(). HTTP responses run inside the real zone.
+describe('EmpresasAdminComponent HTTP DOM regression', () => {
+  let fixture: ComponentFixture<EmpresasAdminComponent>;
+  let http: HttpTestingController;
+  let zone: NgZone;
+  const endpoint = (suffix = '') => http.expectOne(req => req.url.endsWith('/api/admin/empresas' + suffix));
+  const html = () => fixture.nativeElement as HTMLElement;
+  async function respond(request: TestRequest, body: object | null, error = false) {
+    await new Promise<void>(resolve => setTimeout(() => {
+      zone.run(() => error ? request.flush(body, { status: 500, statusText: 'Error' }) : request.flush(body));
+      resolve();
+    }));
+    await fixture.whenStable();
+    TestBed.inject(ApplicationRef).tick();
+  }
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [EmpresasAdminComponent],
+      providers: [provideZoneChangeDetection(), provideHttpClient(), provideHttpClientTesting(), provideRouter([]), provideNoopAnimations(),
+        { provide: ToastrService, useValue: { error: jasmine.createSpy('error') } }]
+    }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
+    zone = TestBed.inject(NgZone);
+    fixture = TestBed.createComponent(EmpresasAdminComponent);
+    fixture.autoDetectChanges();
+    await respond(endpoint('/resumo'), { total: 2, ativas: 2 });
+  });
+  afterEach(() => { fixture.destroy(); http.verify(); });
+
+  it('renders list and details after 200 and keeps adoption loading independent', async () => {
+    expect(html().querySelector('mat-progress-spinner')).toBeTruthy();
+    await respond(endpoint(), { itens: [resumo(10), resumo(20)], totalItens: 2, tamanho: 20 });
+    expect(html().textContent).toContain('Empresa 10');
+    await respond(endpoint('/10'), detalhe(10, 'Empresa A'));
+    expect(html().textContent).toContain('Empresa A');
+    expect(html().querySelector('mat-progress-spinner')).toBeTruthy();
+    await respond(endpoint('/10/adocao'), adocao({ empresaId: 10, ativacaoConcluida: true }));
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(html().textContent).toContain('Ativada');
+    zone.run(() => fixture.componentInstance.selecionarEmpresa(resumo(20)));
+    await respond(endpoint('/20'), detalhe(20, 'Empresa B'));
+    await respond(endpoint('/20/adocao'), adocao({ empresaId: 20 }));
+    expect(html().textContent).toContain('Empresa B');
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+  });
+
+  it('renders empty and error states without a pending spinner', async () => {
+    await respond(endpoint(), null);
+    expect(html().textContent).toContain('Nenhuma empresa encontrada');
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    zone.run(() => fixture.componentInstance.aplicarFiltros());
+    await respond(endpoint(), {}, true);
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(TestBed.inject(ToastrService).error).toHaveBeenCalled();
+  });
+
+  it('renders adoption failure and retry without discarding company details', async () => {
+    await respond(endpoint(), { itens: [resumo(10)] });
+    await respond(endpoint('/10'), detalhe(10, 'Empresa A'));
+    await respond(endpoint('/10/adocao'), {}, true);
+    expect(html().textContent).toContain('Empresa A');
+    expect(html().textContent).toContain('Tentar novamente');
+    zone.run(() => fixture.componentInstance.retryAdocao());
+    await respond(endpoint('/10/adocao'), adocao({ empresaId: 10 }));
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(fixture.componentInstance.erroAdocao).toBeFalse();
+  });
+
+  it('cancels previous list and selection requests and releases them on destroy', async () => {
+    const previousList = endpoint();
+    zone.run(() => fixture.componentInstance.aplicarFiltros());
+    expect(previousList.cancelled).toBeTrue();
+    await respond(endpoint(), { itens: [resumo(10), resumo(20)] });
+    const oldDetail = endpoint('/10');
+    const oldAdoption = endpoint('/10/adocao');
+    zone.run(() => fixture.componentInstance.selecionarEmpresa(resumo(20)));
+    expect(oldDetail.cancelled).toBeTrue();
+    expect(oldAdoption.cancelled).toBeTrue();
+    await respond(endpoint('/20'), detalhe(20, 'Empresa B'));
+    const newAdoption = endpoint('/20/adocao');
+    expect(html().textContent).toContain('Empresa B');
+    fixture.destroy();
+    expect(newAdoption.cancelled).toBeTrue();
+    expect(fixture.componentInstance.carregandoAdocao).toBeFalse();
+  });
+
+  it('clears pending detail and adoption when a filtered list becomes empty', async () => {
+    await respond(endpoint(), { itens: [resumo(10)] });
+    const detail = endpoint('/10');
+    const adoption = endpoint('/10/adocao');
+    zone.run(() => fixture.componentInstance.aplicarFiltros());
+    await respond(endpoint(), { itens: [] });
+    expect(detail.cancelled).toBeTrue();
+    expect(adoption.cancelled).toBeTrue();
+    expect(html().textContent).toContain('Nenhuma empresa encontrada');
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(fixture.componentInstance.adocaoSelecionada).toBeNull();
+  });
+
+  it('handles transformation errors in the service and ends loading', async () => {
+    const mapping = spyOn(TestBed.inject(AdminEmpresasService) as any, 'mapLista').and.throwError('mapping');
+    await respond(endpoint(), { itens: [] });
+    expect(mapping).toHaveBeenCalled();
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(TestBed.inject(ToastrService).error).toHaveBeenCalled();
+  });
+});
