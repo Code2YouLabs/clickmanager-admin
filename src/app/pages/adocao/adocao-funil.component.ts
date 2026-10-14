@@ -46,6 +46,7 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
   private requestId = 0;
+  private filtroEmCarregamento: string | null = null;
 
   constructor(
     private readonly adocaoService: AdminAdocaoService,
@@ -221,8 +222,14 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
       fim: this.fim,
       segmento: this.segmento
     };
+    const filtroKey = `${filtro.inicio}|${filtro.fim}|${filtro.segmento}`;
+
+    if (this.carregando && this.filtroEmCarregamento === filtroKey) {
+      return;
+    }
 
     const currentRequest = ++this.requestId;
+    this.filtroEmCarregamento = filtroKey;
     this.carregando = true;
     this.erro = '';
 
@@ -232,6 +239,7 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
         finalize(() => {
         if (currentRequest === this.requestId) {
           this.carregando = false;
+          this.filtroEmCarregamento = null;
         }
         }),
       )
@@ -241,12 +249,14 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
             return;
           }
           this.funil = response;
+          this.carregando = false;
         },
         error: (error) => {
           if (currentRequest !== this.requestId) {
             return;
           }
           this.erro = error?.userMessage || 'Não foi possível carregar os dados de adoção.';
+          this.carregando = false;
           this.toastr.error(this.erro);
         }
       });
