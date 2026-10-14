@@ -13,3 +13,10 @@ $columns: 50;
 }
 
 @include icon_size;
+
+// Only the Tabler compatibility bridge: preserve icon-N and routeIcon sizing.
+i-tabler > tabler-icon > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
