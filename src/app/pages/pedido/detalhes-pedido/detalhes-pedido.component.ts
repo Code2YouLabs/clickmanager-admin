@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -77,6 +77,7 @@ import { mapPedidoToFlowContext } from 'src/app/core/flow/pedido-flow.context';
     ConfirmDialogComponent
 ],
     templateUrl: './detalhes-pedido.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./detalhes-pedido.component.scss']
 })
 export class DetalhesPedidoComponent implements OnInit {

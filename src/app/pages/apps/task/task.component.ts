@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TasksService } from './tasks-service.service';
 import { TaskSection } from './tasks';
 
@@ -12,6 +12,7 @@ import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.modu
     selector: 'app-task',
     templateUrl: './task.component.html',
     styleUrls: ['./task.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MaterialModule, CommonModule, FormsModule, DesignSystemIconsModule]
 })
 export class AppTaskComponent {

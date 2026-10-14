@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
@@ -17,6 +17,7 @@ import { InputPesquisaComponent } from '../inputs/input-pesquisa/input-pesquisa.
     InputPesquisaComponent
 ],
   templateUrl: './filtro-pesquisa-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./filtro-pesquisa-card.component.scss']
 })
 export class FiltroPesquisaCardComponent {

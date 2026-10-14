@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.modu
   standalone: true,
   templateUrl: './perfil-dialog.component.html',
   styleUrls: ['./perfil-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
         CommonModule,
         ReactiveFormsModule,

@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ export interface CriarCompetenciaDialogResult {
     MatSelectModule
 ],
   templateUrl: './dialog-criar-competencia.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dialog-criar-competencia.component.scss'
 })
 export class DialogCriarCompetenciaComponent {

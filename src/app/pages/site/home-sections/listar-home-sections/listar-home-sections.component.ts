@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
 import { finalize } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import { SiteHomeSectionService } from '../../services/site-home-section.service
   standalone: true,
   imports: [RouterModule, MaterialModule, TemPermissaoDirective],
   templateUrl: './listar-home-sections.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-home-sections.component.scss'
 })
 export class ListarHomeSectionsComponent implements OnInit {

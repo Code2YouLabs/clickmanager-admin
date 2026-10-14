@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe, NgIf, NgFor } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
@@ -10,6 +10,7 @@ import { PlanoPublico } from 'src/app/types/plano-publico.type';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, DesignSystemIconsModule, CurrencyPipe, NgIf, NgFor],
   templateUrl: './pricing-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pricing-card.component.scss']
 })
 export class PricingCardComponent {

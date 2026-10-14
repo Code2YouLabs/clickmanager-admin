@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,6 +29,7 @@ type CampoEmail = 'host' | 'porta' | 'usuario' | 'senha' | 'remetente';
     DsCheckboxComponent
 ],
   templateUrl: './email-servidor.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./email-servidor.component.scss']
 })
 export class EmailServidorComponent {

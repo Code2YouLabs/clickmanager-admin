@@ -92,14 +92,12 @@ export const appConfig: ApplicationConfig = {
       }),
       withComponentInputBinding()
     ),
-    provideHttpClient(withInterceptorsFromDi()),
     provideClientHydration(),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
     }),
     provideNgxMask(),
-    provideAnimationsAsync(),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     importProvidersFrom(
       FormsModule,

@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico/input-numerico.component';
@@ -8,6 +8,7 @@ import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico
     selector: 'app-preco-fixo-config',
     standalone: true,
     templateUrl: './preco-fixo-config.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
       CommonModule,
       ReactiveFormsModule,

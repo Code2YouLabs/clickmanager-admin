@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -28,6 +28,7 @@ import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico
     InputNumericoComponent
 ],
   templateUrl: './form-formato.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-formato.component.scss'
 })
 export class FormFormatoComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +19,7 @@ import { MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker
     MatNativeDateModule,
     MatIconModule
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './input-data.component.html'
 })
 export class InputDataComponent {

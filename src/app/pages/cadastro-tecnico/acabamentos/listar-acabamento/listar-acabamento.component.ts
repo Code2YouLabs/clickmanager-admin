@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -40,6 +40,7 @@ import { AcabamentoVariacaoResponse } from 'src/app/models/acabamento/acabamento
     CardHeaderComponent
 ],
   templateUrl: './listar-acabamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-acabamento.component.scss'
 })
 export class ListarAcabamentoComponent implements OnInit {

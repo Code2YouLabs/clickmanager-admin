@@ -1,5 +1,5 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   standalone: true,
   imports: [MatTabsModule],
   templateUrl: './tabs-section-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./tabs-section-card.component.scss']
 })
 export class TabsSectionCardComponent {

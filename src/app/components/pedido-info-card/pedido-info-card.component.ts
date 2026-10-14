@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
     StatusBadgeComponent
   ],
   templateUrl: './pedido-info-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pedido-info-card.component.scss']
 })
 export class PedidoInfoCardComponent {

@@ -1,6 +1,6 @@
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -42,6 +42,7 @@ const BELOWMONITOR = 'screen and (max-width: 1023px)';
   ],
   templateUrl: './full.component.html',
   styleUrls: ['./full.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class FullComponent {

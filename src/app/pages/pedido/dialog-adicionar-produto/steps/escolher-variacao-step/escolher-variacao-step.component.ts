@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
@@ -28,6 +28,7 @@ type Variacao = {
     selector: 'app-escolher-variacao-step',
     templateUrl: './escolher-variacao-step.component.html',
     styleUrls: ['./escolher-variacao-step.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     ReactiveFormsModule,
     MatRadioModule,

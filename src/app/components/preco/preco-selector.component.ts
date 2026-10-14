@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder, FormGroup, Validators, ReactiveFormsModule,
   FormArray, FormControl, AbstractControl, ValidatorFn
@@ -21,6 +21,7 @@ import { InputTextoRestritoComponent } from '../inputs/input-texto/input-texto-r
   selector: 'app-preco-selector',
   standalone: true,
   templateUrl: './preco-selector.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatSelectModule,

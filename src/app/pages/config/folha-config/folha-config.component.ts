@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -25,6 +25,7 @@ import { MaterialModule } from 'src/app/material.module';
     TemPermissaoDirective
 ],
   templateUrl: './folha-config.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './folha-config.component.scss'
 })
 export class FolhaConfigComponent implements OnInit {

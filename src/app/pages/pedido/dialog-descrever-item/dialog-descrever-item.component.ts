@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -18,6 +18,7 @@ import { InputTextoRestritoComponent } from 'src/app/components/inputs/input-tex
     InputNumericoComponent,
     InputMoedaComponent
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './dialog-descrever-item.component.html'
 })
 export class DialogDescreverItemComponent {

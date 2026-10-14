@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +14,7 @@ import { MatOptionModule } from '@angular/material/core';
     MatSelectModule,
     MatOptionModule
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './input-options.component.html'
 })
 export class InputOptionsComponent {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -14,6 +14,7 @@ import { PrecoMetroConfigComponent } from '../../preco-metro-component/preco-met
     selector: 'app-configurar-preco-step',
     templateUrl: './configurar-preco-step.component.html',
     styleUrls: ['./configurar-preco-step.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatCardModule,

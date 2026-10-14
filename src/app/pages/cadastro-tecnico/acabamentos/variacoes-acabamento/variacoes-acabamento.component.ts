@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   AbstractControl,
@@ -52,6 +53,7 @@ export interface AcabamentoVariacaoForm {
   standalone: true,
   selector: 'app-variacoes-acabamento',
   templateUrl: './variacoes-acabamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

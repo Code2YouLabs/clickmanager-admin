@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -23,6 +23,7 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
     SharedComponentsModule
 ],
   templateUrl: './form-cores.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-cores.component.scss'
 })
 export class FormCoresComponent implements OnInit{

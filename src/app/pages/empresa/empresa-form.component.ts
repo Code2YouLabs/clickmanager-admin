@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
@@ -51,6 +51,7 @@ import { InputCepComponent } from 'src/app/components/inputs/input-cep/input-cep
     InputDocumentoComponent,
     InputCepComponent
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideNgxMask()]
 })
 export class EmpresaFormComponent implements OnInit {

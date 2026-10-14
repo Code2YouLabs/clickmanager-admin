@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -21,6 +21,7 @@ type CatalogoTab = 'resumo' | 'servicos' | 'acabamentos' | 'produtos';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './onboarding-catalogo-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './onboarding-catalogo-admin.component.scss'
 })
 export class OnboardingCatalogoAdminComponent implements OnInit {

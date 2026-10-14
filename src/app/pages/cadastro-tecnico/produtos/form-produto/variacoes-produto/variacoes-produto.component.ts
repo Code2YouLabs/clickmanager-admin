@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -33,6 +33,7 @@ import { VariacaoDetalheDialogComponent } from 'src/app/components/dialog/variac
     selector: 'app-variacoes-produto',
     templateUrl: './variacoes-produto.component.html',
     styleUrls: ['./variacoes-produto.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     FormsModule,
     ReactiveFormsModule,

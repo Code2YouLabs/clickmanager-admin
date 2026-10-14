@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,6 +32,7 @@ import { FuncionariosService } from '../services/funcionarios.service';
     TemPermissaoDirective
   ],
   templateUrl: './listar-funcionarios.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-funcionarios.component.scss'
 })
 export class ListarFuncionariosComponent implements OnInit {
