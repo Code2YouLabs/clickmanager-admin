@@ -1,65 +1,50 @@
-import { Component, Input, NgModule, ChangeDetectionStrategy } from '@angular/core';
-import { getIcon, IconName } from '@code2youlabs/icons';
+import { Component, Input, NgModule, ChangeDetectionStrategy, isDevMode } from '@angular/core';
+import { TablerIconComponent, type TablerIcon } from '@tabler/icons-angular';
+import { ADMIN_TABLER_ICONS } from './admin-tabler-icons';
 
-const aliases: Record<string, IconName> = {
-  'alert-circle': 'alertCircle',
-  'bell-ringing': 'loader',
-  browser: 'circleCheck',
-  building: 'infoCircle',
-  calculator: 'loader',
-  check: 'check',
-  'chart-bar': 'search',
-  'chart-funnel': 'search',
-  'chevron-down': 'chevronDown',
-  'chevron-left': 'chevronLeft',
-  'chevron-right': 'chevronRight',
-  'circle-check': 'circleCheck',
-  'credit-card': 'eye',
-  eye: 'eye',
-  'eye-off': 'eyeOff',
-  'layout-dashboard': 'circleCheck',
-  lifebuoy: 'alertCircle',
-  mail: 'x',
-  'info-circle': 'infoCircle',
-  loader: 'loader',
-  point: 'chevronRight',
-  'receipt-2': 'eyeOff',
-  search: 'search',
-  sparkles: 'check',
-  ticket: 'check',
-  timeline: 'chevronRight',
-  'world-www': 'chevronDown',
-  x: 'x',
-};
-
+// Compatibility bridge for existing standalone imports and <i-tabler name="…">.
+// Tabler owns the SVG rendering; this adapter only resolves validated names.
 @Component({
   selector: 'i-tabler',
   standalone: true,
+  imports: [TablerIconComponent],
   changeDetection: ChangeDetectionStrategy.Eager,
+  styles: [`
+    :host {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+  `],
   template: `
-    <svg
-      [attr.aria-hidden]="'true'"
-      [attr.width]="24"
-      [attr.height]="24"
-      [attr.viewBox]="definition.viewBox"
-      [attr.fill]="'none'"
-      [attr.stroke]="'currentColor'"
-      [attr.stroke-width]="2"
-      [attr.stroke-linecap]="'round'"
-      [attr.stroke-linejoin]="'round'"
-      role="img"
-    >
-      @for (path of definition.paths; track path) {
-        <path [attr.d]="path"></path>
-      }
-    </svg>
+    @if (definition) {
+      <tabler-icon
+        [icon]="definition"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.display]="'block'"
+        [svgAttributes]="{ 'aria-hidden': 'true' }"
+      />
+    }
   `,
 })
 export class DesignSystemIconComponent {
-  @Input() name = '';
+  definition: TablerIcon | undefined;
+  private iconName = '';
 
-  get definition() {
-    return getIcon(aliases[this.name] ?? 'infoCircle');
+  @Input()
+  set name(value: string) {
+    this.iconName = value;
+    this.definition = ADMIN_TABLER_ICONS.get(value);
+    if (!this.definition && isDevMode()) {
+      console.warn(`[ClickManager icons] Unknown Tabler icon "${value}". Run npm run check:icons and npm run icons:sync.`);
+    }
+  }
+
+  get name(): string {
+    return this.iconName;
   }
 }
 
