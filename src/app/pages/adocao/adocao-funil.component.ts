@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil, timeout } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MaterialModule } from 'src/app/material.module';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -236,6 +236,7 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
     this.adocaoService.consultarFunil$(filtro)
       .pipe(
         take(1),
+        timeout({ first: 15000 }),
         finalize(() => {
         if (currentRequest === this.requestId) {
           this.carregando = false;
@@ -255,7 +256,9 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
           if (currentRequest !== this.requestId) {
             return;
           }
-          this.erro = error?.userMessage || 'Não foi possível carregar os dados de adoção.';
+          this.erro = error?.name === 'TimeoutError'
+            ? 'A consulta demorou mais que o esperado. Tente recarregar os dados.'
+            : error?.userMessage || 'Não foi possível carregar os dados de adoção.';
           this.carregando = false;
           this.toastr.error(this.erro);
         }
