@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -32,6 +32,7 @@ import { SuporteService } from './services/suporte.service';
     StatusBadgeComponent
   ],
   templateUrl: './suporte.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './suporte.component.scss'
 })
 export class SuporteComponent implements OnInit {

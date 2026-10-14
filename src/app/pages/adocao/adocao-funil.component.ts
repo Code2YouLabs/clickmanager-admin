@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { Subject, take, takeUntil, timeout } from 'rxjs';
+import { Subject, Subscription, take, takeUntil, timeout } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MaterialModule } from 'src/app/material.module';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -29,6 +29,7 @@ interface ResumoCard {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './adocao-funil.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './adocao-funil.component.scss'
 })
 export class AdocaoFunilComponent implements OnInit, OnDestroy {
@@ -46,6 +47,7 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
   private requestId = 0;
+  private funilRequest?: Subscription;
   private filtroEmCarregamento: string | null = null;
 
   constructor(
@@ -214,6 +216,7 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
 
   private carregarFunil(): void {
     if (!this.periodoValido()) {
+      this.funilRequest?.unsubscribe();
       return;
     }
 
@@ -228,20 +231,22 @@ export class AdocaoFunilComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.funilRequest?.unsubscribe();
     const currentRequest = ++this.requestId;
     this.filtroEmCarregamento = filtroKey;
     this.carregando = true;
     this.erro = '';
 
-    this.adocaoService.consultarFunil$(filtro)
+    this.funilRequest = this.adocaoService.consultarFunil$(filtro)
       .pipe(
         take(1),
+        takeUntil(this.destroy$),
         timeout({ first: 15000 }),
         finalize(() => {
-        if (currentRequest === this.requestId) {
-          this.carregando = false;
-          this.filtroEmCarregamento = null;
-        }
+          if (currentRequest === this.requestId) {
+            this.carregando = false;
+            this.filtroEmCarregamento = null;
+          }
         }),
       )
       .subscribe({

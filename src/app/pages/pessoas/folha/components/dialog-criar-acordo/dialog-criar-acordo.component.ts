@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +35,7 @@ export interface CriarAcordoDialogResult {
     InputTextareaComponent
   ],
   templateUrl: './dialog-criar-acordo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dialog-criar-acordo.component.scss'
 })
 export class DialogCriarAcordoComponent {

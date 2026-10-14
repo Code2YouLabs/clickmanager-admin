@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'src/app/services/toastr.service';
 
@@ -27,6 +27,7 @@ import { PerfilRequest } from 'src/app/models/perfil/perfil-request.model';
   selector: 'app-gerenciar-perfil',
   templateUrl: './gerenciar-perfil.component.html',
   styleUrls: ['./gerenciar-perfil.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatCardModule,

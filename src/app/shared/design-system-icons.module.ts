@@ -1,4 +1,4 @@
-import { Component, Input, NgModule } from '@angular/core';
+import { Component, Input, NgModule, ChangeDetectionStrategy } from '@angular/core';
 import { getIcon, IconName } from '@code2youlabs/icons';
 
 const aliases: Record<string, IconName> = {
@@ -35,6 +35,7 @@ const aliases: Record<string, IconName> = {
 @Component({
   selector: 'i-tabler',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <svg
       [attr.aria-hidden]="'true'"

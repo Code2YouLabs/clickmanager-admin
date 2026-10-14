@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable, finalize, timeout } from 'rxjs';
+import { Observable, defer, finalize, timeout } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 
 @Injectable()
@@ -13,10 +13,12 @@ export class LoadingInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    this.loadingService.show();
-    return next.handle(req).pipe(
-      timeout({ first: 30000 }),
-      finalize(() => this.loadingService.hide())
-    );
+    return defer(() => {
+      this.loadingService.show();
+      return defer(() => next.handle(req)).pipe(
+        timeout({ first: 30000 }),
+        finalize(() => this.loadingService.hide())
+      );
+    });
   }
 }

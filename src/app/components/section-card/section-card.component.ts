@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,6 +24,7 @@ import { MatDividerModule } from '@angular/material/divider';
   standalone: true,
   imports: [MatCardModule, MatDividerModule],
   templateUrl: './section-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./section-card.component.scss'],
 })
 export class SectionCardComponent {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
@@ -21,6 +21,7 @@ import { AdminPagamentosService } from './services/admin-pagamentos.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './pagamentos-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './pagamentos-admin.component.scss'
 })
 export class PagamentosAdminComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,6 +25,7 @@ import { SharedComponentsModule } from '../shared-components.module';
     SharedComponentsModule
   ],
   templateUrl: './pagamentos-section.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pagamentos-section.component.scss']
 })
 export class PagamentosSectionComponent implements OnChanges, OnDestroy {

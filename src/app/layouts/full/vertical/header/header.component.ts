@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
   ViewEncapsulation,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -18,6 +19,7 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent implements OnInit, OnDestroy {

@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextoRestritoComponent } from '../inputs/input-texto/input-texto-restrito.component';
 import { SectionCardComponent } from '../section-card/section-card.component';
@@ -10,6 +10,7 @@ import { EnderecoViaCep } from 'src/app/models/endereco/endereco.viacep.model';
   selector: 'app-endereco-form',
   standalone: true,
   templateUrl: './endereco-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     InputTextoRestritoComponent,

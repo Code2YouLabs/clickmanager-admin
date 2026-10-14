@@ -128,7 +128,7 @@ export class CalculadoraConfigComponent implements OnInit {
         this.salvando.set(true);
 
         this.calculadoraService.salvar(req)
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.salvando.set(false)))
             .subscribe({
                 next: (res) => {
                     this.configAtual = res ?? undefined;
@@ -137,8 +137,7 @@ export class CalculadoraConfigComponent implements OnInit {
                 error: (err) => {
                     const msg = extrairMensagemErro(err, 'Não foi possível salvar as configurações.');
                     this.toastr.error(msg, 'SmartCalc');
-                },
-                complete: () => this.salvando.set(false)
+                }
             });
     }
 

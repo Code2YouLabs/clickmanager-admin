@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cor } from 'src/app/models/cor.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -35,6 +35,7 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
     CardHeaderComponent
 ],
   templateUrl: './listar-cores.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-cores.component.scss'
 })
 export class ListarCoresComponent implements OnInit{

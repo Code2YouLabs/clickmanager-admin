@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -37,6 +37,7 @@ interface BeneficioFormModel {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './cobranca-beneficios-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cobranca-beneficios-admin.component.scss'
 })
 export class CobrancaBeneficiosAdminComponent implements OnInit {

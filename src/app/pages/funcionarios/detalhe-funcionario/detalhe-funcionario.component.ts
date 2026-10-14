@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,6 +38,7 @@ type TipoMovimentacaoStatus =
     TemPermissaoDirective
   ],
   templateUrl: './detalhe-funcionario.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalhe-funcionario.component.scss'
 })
 export class DetalheFuncionarioComponent implements OnInit {

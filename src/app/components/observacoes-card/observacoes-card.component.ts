@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { InputTextareaComponent } from '../inputs/input-textarea/input-textarea.
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, SectionCardComponent, InputTextareaComponent],
   templateUrl: './observacoes-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./observacoes-card.component.scss']
 })
 export class ObservacoesCardComponent implements OnChanges {

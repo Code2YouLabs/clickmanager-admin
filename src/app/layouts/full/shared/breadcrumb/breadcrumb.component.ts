@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { Router, NavigationEnd, ActivatedRoute, Data } from '@angular/router';
@@ -9,6 +9,7 @@ import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.modu
   selector: 'app-breadcrumb',
   imports: [RouterModule, DesignSystemIconsModule],
   templateUrl: './breadcrumb.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './breadcrumb.component.scss',
 })
 export class AppBreadcrumbComponent {

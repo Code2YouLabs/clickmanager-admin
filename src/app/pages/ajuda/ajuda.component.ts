@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -23,6 +23,7 @@ type AjudaSecao = {
   standalone: true,
   imports: [MatCardModule, MatExpansionModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule],
   templateUrl: './ajuda.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./ajuda.component.scss'],
 })
 export class AjudaComponent implements OnInit, OnDestroy {

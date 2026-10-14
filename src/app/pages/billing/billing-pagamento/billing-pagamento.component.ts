@@ -1,5 +1,7 @@
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -22,9 +24,11 @@ import { CheckoutResponse } from 'src/app/models/billing-access.model';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule, MatCardModule, CardHeaderComponent, DesignSystemIconsModule, PricingCardComponent],
   templateUrl: './billing-pagamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./billing-pagamento.component.scss']
 })
 export class BillingPagamentoComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   billing: BillingAccessResponse | null = null;
   loading = false;
   ownerDenied = false;
@@ -189,7 +193,7 @@ export class BillingPagamentoComponent implements OnInit {
       ? this.billingService.checkoutAssinatura(this.planoSelecionado.id)
       : this.billingService.checkoutUrl(checkoutEndpoint, body);
 
-    obs.subscribe({
+    obs.pipe(takeUntilDestroyed(this.destroyRef), finalize(() => (this.loading = false))).subscribe({
       next: (resp: CheckoutResponse) => {
         const invoiceUrl = resp?.initPoint || (resp as any)?.invoiceUrl;
         if (invoiceUrl) {
@@ -211,9 +215,6 @@ export class BillingPagamentoComponent implements OnInit {
         } else {
           this.toastr.error('Não foi possível iniciar o checkout.');
         }
-      },
-      complete: () => {
-        this.loading = false;
       }
     });
   }

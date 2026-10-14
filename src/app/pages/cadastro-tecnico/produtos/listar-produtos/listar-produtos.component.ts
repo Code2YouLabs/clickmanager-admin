@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -33,6 +33,7 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
     CardHeaderComponent
 ],
   templateUrl: './listar-produtos.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-produtos.component.scss'
 })
 export class ListarProdutosComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +20,7 @@ import { TelefonePipe } from 'src/app/pipe/telefone.pipe';
     TelefonePipe
   ],
   templateUrl: './cliente-selector-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./cliente-selector-card.component.scss']
 })
 export class ClienteSelectorCardComponent {
