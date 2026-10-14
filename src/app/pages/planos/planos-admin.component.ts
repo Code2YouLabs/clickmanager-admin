@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -34,6 +34,7 @@ interface PlanoFormModel {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './planos-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './planos-admin.component.scss'
 })
 export class PlanosAdminComponent implements OnInit {

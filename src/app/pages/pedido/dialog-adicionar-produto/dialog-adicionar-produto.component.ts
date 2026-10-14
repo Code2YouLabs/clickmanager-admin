@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -42,6 +42,7 @@ type Variacao = {
     selector: 'app-dialog-adicionar-produto',
     templateUrl: './dialog-adicionar-produto.component.html',
     styleUrls: ['./dialog-adicionar-produto.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     ReactiveFormsModule,
     MatDialogModule,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { StatusLabelPipe } from 'src/app/pipes/status-label.pipe';
 
@@ -10,6 +10,7 @@ type StatusConfig = { icon: string; label: string; className: string };
   standalone: true,
   imports: [CommonModule, MatIconModule, StatusLabelPipe],
   templateUrl: './status-badge.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./status-badge.component.scss']
 })
 export class StatusBadgeComponent {

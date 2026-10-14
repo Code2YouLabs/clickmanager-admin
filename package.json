@@ -7,7 +7,11 @@
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "check:icons": "node scripts/check-icons.mjs && node --test scripts/check-icons.test.mjs",
+    "icons:sync": "node scripts/check-icons.mjs --write",
+    "prebuild:prod": "npm run check:icons",
+    "pretest": "npm run check:icons"
   },
   "private": true,
   "engines": {
@@ -27,7 +31,6 @@
     "@angular/platform-browser-dynamic": "^22.1.1",
     "@angular/router": "^22.1.1",
     "@angular/service-worker": "^22.1.1",
-    "@code2youlabs/icons": "^0.3.0",
     "@kolkov/angular-editor": "^2.1.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
@@ -55,7 +58,9 @@
     "@code2youlabs/tokens": "^0.3.0",
     "@spartan-ng/brain": "^1.3.0",
     "clsx": "^2.1.1",
-    "tw-animate-css": "^1.0.0"
+    "tw-animate-css": "^1.0.0",
+    "@tabler/icons-angular": "3.49.0",
+    "@tabler/icons": "3.49.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.1.3",

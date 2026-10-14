@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
 import { forkJoin } from 'rxjs';
@@ -88,6 +88,7 @@ type DashboardLandingFunnelRead = {
   standalone: true,
   imports: [CommonModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './dashboard1.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard1.component.scss'
 })
 export class AppDashboard1Component implements OnInit {

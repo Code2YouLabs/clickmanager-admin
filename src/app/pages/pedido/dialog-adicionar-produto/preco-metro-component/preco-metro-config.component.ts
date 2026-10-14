@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
@@ -31,6 +31,7 @@ interface PrecoMetroLike {
     InputNumericoComponent,
   ],
   templateUrl: './preco-metro-config.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./preco-metro-config.component.scss'],
 })
 export class PrecoMetroConfigComponent implements OnChanges {

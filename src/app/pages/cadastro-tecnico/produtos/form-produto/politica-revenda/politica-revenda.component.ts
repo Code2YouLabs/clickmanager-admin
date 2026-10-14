@@ -1,6 +1,7 @@
 
 import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators
@@ -33,6 +34,7 @@ export interface PoliticaRevenda {
     MatFormFieldModule,
     MatInputModule
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './politica-revenda.component.html'
 })
 export class PoliticaRevendaComponent implements OnInit, OnChanges, OnDestroy {

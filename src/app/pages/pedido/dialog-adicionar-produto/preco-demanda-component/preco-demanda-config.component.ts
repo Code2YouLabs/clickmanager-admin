@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { InputNumericoComponent } from 'src/app/components/inputs/input-numerico/input-numerico.component';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-preco-demanda-config',
   standalone: true,
   templateUrl: './preco-demanda-config.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [InputNumericoComponent, CurrencyPipe, ReactiveFormsModule, MatButtonModule]
 })
 export class PrecoDemandaConfigComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Formato } from 'src/app/models/formato.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -34,6 +34,7 @@ import { InputPesquisaComponent } from 'src/app/components/inputs/input-pesquisa
     InputPesquisaComponent
 ],
   templateUrl: './listar-formato.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-formato.component.scss'
 })
 export class ListarFormatoComponent implements OnInit {

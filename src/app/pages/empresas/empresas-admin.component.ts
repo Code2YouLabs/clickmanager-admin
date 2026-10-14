@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
-import { finalize } from 'rxjs/operators';
+import { Subject, Subscription, takeUntil, tap, finalize } from 'rxjs';
 import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import { MaterialModule } from 'src/app/material.module';
 import {
@@ -22,9 +22,14 @@ import { AdminEmpresasService } from './services/admin-empresas.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './empresas-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './empresas-admin.component.scss'
 })
-export class EmpresasAdminComponent implements OnInit {
+export class EmpresasAdminComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+  private listaRequest?: Subscription;
+  private detalheRequest?: Subscription;
+  private adocaoRequest?: Subscription;
   readonly statusOptions: Array<AdminEmpresaStatus | 'TODAS'> = ['TODAS', 'ATIVA', 'ONBOARDING', 'BAIXA_ATIVIDADE'];
   readonly detailTabs: Array<'visao' | 'dados' | 'adocao'> = ['visao', 'dados', 'adocao'];
 
@@ -61,6 +66,11 @@ export class EmpresasAdminComponent implements OnInit {
   ngOnInit(): void {
     this.carregarResumo();
     this.carregarLista(true);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   aplicarFiltros(): void {
@@ -337,7 +347,7 @@ export class EmpresasAdminComponent implements OnInit {
   private carregarResumo(): void {
     this.carregandoResumo = true;
     this.empresasService.buscarResumo$()
-      .pipe(finalize(() => (this.carregandoResumo = false)))
+      .pipe(takeUntil(this.destroy$), finalize(() => (this.carregandoResumo = false)))
       .subscribe({
         next: (resumo) => {
           this.resumo = resumo;
@@ -349,17 +359,18 @@ export class EmpresasAdminComponent implements OnInit {
   }
 
   private carregarLista(resolverSelecao = false, empresaId: number | null = null): void {
+    this.listaRequest?.unsubscribe();
     this.carregandoLista = true;
 
-    this.empresasService.listar$({
+    this.listaRequest = this.empresasService.listar$({
       busca: this.busca || null,
       status: this.statusFiltro === 'TODAS' ? null : this.statusFiltro,
       pagina: this.pagina,
       tamanho: this.tamanho
     })
-      .pipe(finalize(() => (this.carregandoLista = false)))
-      .subscribe({
-        next: (res) => {
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((res) => {
           this.empresas = res.itens || [];
           this.pagina = res.pagina;
           this.tamanho = res.tamanho;
@@ -369,7 +380,10 @@ export class EmpresasAdminComponent implements OnInit {
           if (resolverSelecao) {
             this.resolverSelecao(empresaId);
           }
-        },
+        }),
+        finalize(() => (this.carregandoLista = false))
+      )
+      .subscribe({
         error: (err) => {
           this.toastr.error(err?.userMessage || 'Não foi possível carregar a lista de empresas.');
         }
@@ -384,18 +398,24 @@ export class EmpresasAdminComponent implements OnInit {
     if (idSelecionado) {
       this.carregarDetalhe(idSelecionado);
     } else {
+      this.detalheRequest?.unsubscribe();
+      this.adocaoRequest?.unsubscribe();
       this.empresaSelecionada = null;
+      this.adocaoSelecionada = null;
+      this.erroAdocao = false;
     }
   }
 
   private carregarDetalhe(id: number): void {
+    this.detalheRequest?.unsubscribe();
+    this.empresaSelecionada = null;
     this.carregandoDetalhe = true;
     this.adocaoSelecionada = null;
     this.erroAdocao = false;
     this.carregarAdocao(id);
 
-    this.empresasService.buscarPorId$(id)
-      .pipe(finalize(() => (this.carregandoDetalhe = false)))
+    this.detalheRequest = this.empresasService.buscarPorId$(id)
+      .pipe(takeUntil(this.destroy$), finalize(() => (this.carregandoDetalhe = false)))
       .subscribe({
         next: (empresa) => {
           this.empresaSelecionada = empresa;
@@ -408,11 +428,12 @@ export class EmpresasAdminComponent implements OnInit {
   }
 
   private carregarAdocao(id: number): void {
+    this.adocaoRequest?.unsubscribe();
     this.carregandoAdocao = true;
     this.erroAdocao = false;
 
-    this.empresasService.buscarAdocao$(id)
-      .pipe(finalize(() => (this.carregandoAdocao = false)))
+    this.adocaoRequest = this.empresasService.buscarAdocao$(id)
+      .pipe(takeUntil(this.destroy$), finalize(() => (this.carregandoAdocao = false)))
       .subscribe({
         next: (adocao) => {
           this.adocaoSelecionada = adocao;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario/usuario.model';
 import { UsuarioService } from '../services/usuario.service';
 import { MatCardModule } from '@angular/material/card';
@@ -26,6 +26,7 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
   standalone: true,
   templateUrl: './listar-usuarios.component.html',
   styleUrls: ['./listar-usuarios.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     MatCardModule,

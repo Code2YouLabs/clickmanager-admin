@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
@@ -34,6 +34,7 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
     InputDocumentoComponent,
     CardHeaderComponent
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './form-cliente.component.html'
 })
 export class FormClienteComponent implements OnInit {

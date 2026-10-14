@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { SectionCardComponent } from '../section-card/section-card.component';
 
 @Component({
@@ -7,6 +7,7 @@ import { SectionCardComponent } from '../section-card/section-card.component';
   standalone: true,
   imports: [CommonModule, SectionCardComponent],
   templateUrl: './resumo-financeiro-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./resumo-financeiro-card.component.scss']
 })
 export class ResumoFinanceiroCardComponent {

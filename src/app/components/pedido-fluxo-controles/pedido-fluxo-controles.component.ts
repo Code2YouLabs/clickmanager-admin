@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,6 +61,7 @@ const STATUS_UI: Record<string, { icon: string; tone: 'blue' | 'orange' | 'green
     StatusBadgeComponent
   ],
   templateUrl: './pedido-fluxo-controles.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pedido-fluxo-controles.component.scss']
 })
 export class PedidoFluxoControlesComponent implements OnChanges {

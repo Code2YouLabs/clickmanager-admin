@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -22,6 +22,7 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
     SharedComponentsModule
 ],
   templateUrl: './form-material.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-material.component.scss'
 })
 export class FormMaterialComponent implements OnInit {

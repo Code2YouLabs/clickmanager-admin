@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -23,6 +23,7 @@ import { SiteHomeSectionService } from '../../services/site-home-section.service
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule, MaterialModule, TemPermissaoDirective],
   templateUrl: './form-home-section.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-home-section.component.scss'
 })
 export class FormHomeSectionComponent implements OnInit {

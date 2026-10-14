@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { CardHeaderComponent } from '../card-header/card-header.component';
@@ -8,6 +8,7 @@ import { CardHeaderComponent } from '../card-header/card-header.component';
   standalone: true,
   imports: [CommonModule, MatCardModule, CardHeaderComponent],
   templateUrl: './page-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./page-card.component.scss'],
 })
 export class PageCardComponent {

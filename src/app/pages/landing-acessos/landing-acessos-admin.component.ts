@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
@@ -41,6 +41,7 @@ type LandingFunilStep = {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './landing-acessos-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './landing-acessos-admin.component.scss'
 })
 export class LandingAcessosAdminComponent implements OnInit {

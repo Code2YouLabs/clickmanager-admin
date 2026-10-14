@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
-import { switchMap, takeWhile } from 'rxjs/operators';
+import { finalize, switchMap, takeWhile } from 'rxjs/operators';
 import { BillingService } from '../services/billing.service';
 import { BillingStateService } from '../services/billing-state.service';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -15,6 +15,7 @@ import { ToastrService } from 'src/app/services/toastr.service';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './billing-return.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./billing-return.component.scss']
 })
 export class BillingReturnComponent implements OnInit, OnDestroy {
@@ -39,9 +40,9 @@ export class BillingReturnComponent implements OnInit, OnDestroy {
   }
 
   iniciarValidacao(): void {
+    this.sub?.unsubscribe();
     this.loading = true;
     this.attempts = 0;
-    this.sub?.unsubscribe();
 
     this.sub = timer(0, 5000)
       .pipe(
@@ -49,7 +50,8 @@ export class BillingReturnComponent implements OnInit, OnDestroy {
         switchMap(() => {
           this.attempts++;
           return this.billingService.obterStatus();
-        })
+        }),
+        finalize(() => (this.loading = false))
       )
       .subscribe({
         next: (resp) => {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,7 @@ import { MatDivider } from "@angular/material/divider";
     MatDivider
 ],
   templateUrl: './card-header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./card-header.component.scss'],
 })
 export class CardHeaderComponent {

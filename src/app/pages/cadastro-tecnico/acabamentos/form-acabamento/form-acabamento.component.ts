@@ -1,7 +1,8 @@
 
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormBuilder,
@@ -45,6 +46,7 @@ import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
     VariacoesAcabamentoComponent
 ],
   templateUrl: './form-acabamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-acabamento.component.scss'
 })
 export class FormAcabamentoComponent implements OnInit {

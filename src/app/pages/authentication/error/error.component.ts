@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 
@@ -6,6 +6,7 @@ import { MaterialModule } from '../../../material.module';
   selector: 'app-error',
   standalone: true,
   imports: [RouterModule, MaterialModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './error.component.html',
 })
 export class AppErrorComponent {}

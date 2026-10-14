@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'src/app/services/toastr.service';
 import { AdocaoFunilComponent } from './adocao-funil.component';
 import { AdminAdocaoFunilResponse } from './models/admin-adocao-funil.model';
@@ -130,6 +130,19 @@ describe('AdocaoFunilComponent', () => {
     expect(component.erro).toBe('');
     expect(component.funil?.coorte.totalEmpresas).toBe(100);
   });
+
+  it('encerra o carregamento assim que recebe a primeira resposta', () => {
+    const resposta = new Subject<AdminAdocaoFunilResponse>();
+    service.consultarFunil$.and.returnValue(resposta.asObservable());
+
+    component.ngOnInit();
+    expect(component.carregando).toBeTrue();
+
+    resposta.next(funilCompleto());
+
+    expect(component.carregando).toBeFalse();
+    expect(component.funil?.coorte.totalEmpresas).toBe(100);
+  });
 });
 
 function funilCompleto(): AdminAdocaoFunilResponse {
@@ -169,3 +182,88 @@ function funilVazio(): AdminAdocaoFunilResponse {
     }
   };
 }
+
+import { ApplicationRef, NgZone, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+describe('AdocaoFunilComponent HTTP DOM regression (AOT)', () => {
+  let fixture: ComponentFixture<AdocaoFunilComponent>;
+  let http: HttpTestingController;
+  let params: BehaviorSubject<Record<string, string>>;
+  let zone: NgZone;
+  const request = () => http.expectOne(req => req.url.endsWith('/api/admin/adocao/funil'));
+  const html = () => fixture.nativeElement as HTMLElement;
+  async function respond(req: TestRequest, body: object | null, error = false) {
+    await new Promise<void>(resolve => setTimeout(() => {
+      zone.run(() => error ? req.flush(body, { status: 500, statusText: 'Error' }) : req.flush(body));
+      resolve();
+    }));
+    await fixture.whenStable();
+    TestBed.inject(ApplicationRef).tick();
+  }
+  beforeEach(async () => {
+    params = new BehaviorSubject<Record<string, string>>({ inicio: '2026-10-01', fim: '2026-10-31', segmento: 'GRAFICA' });
+    await TestBed.configureTestingModule({ imports: [AdocaoFunilComponent], providers: [
+      provideZoneChangeDetection(), provideHttpClient(), provideHttpClientTesting(), provideNoopAnimations(),
+      { provide: ActivatedRoute, useValue: { queryParams: params.asObservable() } },
+      { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },
+      { provide: ToastrService, useValue: { error: jasmine.createSpy('error') } }
+    ] }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
+    zone = TestBed.inject(NgZone);
+    fixture = TestBed.createComponent(AdocaoFunilComponent);
+    fixture.autoDetectChanges();
+  });
+  afterEach(() => { fixture.destroy(); http.verify(); });
+
+  it('renders indicators and funnel after HTTP without a click or forced fixture detection', async () => {
+    expect(html().querySelector('mat-progress-spinner')).toBeTruthy();
+    await respond(request(), funilCompleto());
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(html().querySelector('.summary-grid')?.textContent).toContain('100');
+    expect(html().querySelector('.funnel-card')?.textContent).toContain('Configuração concluída');
+  });
+
+  it('updates filters, cancels the obsolete query and ends loading on the latest response', async () => {
+    const old = request();
+    zone.run(() => params.next({ inicio: '2026-09-01', fim: '2026-09-30', segmento: 'GRAFICA' }));
+    expect(old.cancelled).toBeTrue();
+    const latest = request();
+    expect(latest.request.params.get('inicio')).toBe('2026-09-01');
+    await respond(latest, funilVazio());
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(html().textContent).toContain('Nenhuma empresa');
+  });
+
+  it('renders error and recovers on retry', async () => {
+    await respond(request(), {}, true);
+    expect(html().querySelector('.feedback-card.error')).toBeTruthy();
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    zone.run(() => fixture.componentInstance.tentarNovamente());
+    await respond(request(), funilCompleto());
+    expect(html().querySelector('.summary-grid')).toBeTruthy();
+    expect(html().querySelector('.feedback-card.error')).toBeNull();
+  });
+
+  it('cancels a pending query when filters become invalid', async () => {
+    const pending = request();
+    zone.run(() => params.next({ inicio: '2026-11-01', fim: '2026-10-01', segmento: 'GRAFICA' }));
+    await fixture.whenStable();
+    TestBed.inject(ApplicationRef).tick();
+    expect(pending.cancelled).toBeTrue();
+    expect(fixture.componentInstance.carregando).toBeFalse();
+    expect(html().querySelector('mat-progress-spinner')).toBeNull();
+    expect(html().querySelector('[role=alert]')?.textContent).toContain('data inicial');
+    http.expectNone(req => req.url.endsWith('/api/admin/adocao/funil'));
+  });
+
+  it('cancels pending HTTP on destruction and finalizes loading', () => {
+    const pending = request();
+    fixture.destroy();
+    expect(pending.cancelled).toBeTrue();
+    expect(fixture.componentInstance.carregando).toBeFalse();
+  });
+});

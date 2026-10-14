@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Subject, Subscription, finalize, takeUntil, tap } from 'rxjs';
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -35,9 +36,12 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
     TelefonePipe,
     CardHeaderComponent
 ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './listar-cliente.component.html'
 })
-export class ListarClienteComponent implements OnInit {
+export class ListarClienteComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+  private listaRequest?: Subscription;
 
   clientes: ClienteListagem[] = [];
   totalClientes = 0;
@@ -60,16 +64,23 @@ export class ListarClienteComponent implements OnInit {
     this.carregarClientes();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   carregarClientes(): void {
+    this.listaRequest?.unsubscribe();
     this.carregando = true;
-    this.clienteService.listar(this.pagina, this.tamanhoPagina, this.termoPesquisa).subscribe({
-      next: (res) => {
-        this.clientes = res.content || [];
-        this.totalClientes = res.totalElements;
-        this.carregando = false;
-      },
+    this.listaRequest = this.clienteService.listar(this.pagina, this.tamanhoPagina, this.termoPesquisa).pipe(
+      takeUntil(this.destroy$),
+      tap((res) => {
+        this.clientes = res?.content || [];
+        this.totalClientes = res?.totalElements ?? 0;
+      }),
+      finalize(() => (this.carregando = false))
+    ).subscribe({
       error: () => {
-        this.carregando = false;
         this.toastr.error('Erro ao carregar clientes.');
       }
     });

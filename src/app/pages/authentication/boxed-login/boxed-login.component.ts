@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CoreService } from 'src/app/services/core.service';
 import {
   FormGroup,
@@ -24,6 +24,8 @@ import { ToastrService } from 'src/app/services/toastr.service';
     BrandingComponent,
   ],
   templateUrl: './boxed-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './boxed-login.component.scss',
 })
 export class AppBoxedLoginComponent {
   options = this.settings.getOptions();

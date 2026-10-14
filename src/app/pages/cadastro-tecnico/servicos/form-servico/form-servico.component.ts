@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ServicoService } from '../../services/servico.service';
@@ -19,6 +19,7 @@ import { CardHeaderComponent } from "src/app/components/card-header/card-header.
   selector: 'app-form-servico',
   standalone: true,
   templateUrl: './form-servico.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterModule,
     ReactiveFormsModule,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,6 +22,7 @@ import { AdminNotificacoesService } from './services/admin-notificacoes.service'
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './notificacoes-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './notificacoes-admin.component.scss'
 })
 export class NotificacoesAdminComponent {

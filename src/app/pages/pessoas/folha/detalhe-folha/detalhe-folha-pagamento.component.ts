@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -47,6 +47,7 @@ import {
     TemPermissaoDirective
   ],
   templateUrl: './detalhe-folha-pagamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalhe-folha-pagamento.component.scss'
 })
 export class DetalheFolhaPagamentoComponent implements OnInit {

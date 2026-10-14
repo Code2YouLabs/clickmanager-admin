@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,6 +41,7 @@ export interface RenegociarAcordosDialogResult {
     InputTextareaComponent
   ],
   templateUrl: './dialog-renegociar-acordos.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dialog-renegociar-acordos.component.scss'
 })
 export class DialogRenegociarAcordosComponent {

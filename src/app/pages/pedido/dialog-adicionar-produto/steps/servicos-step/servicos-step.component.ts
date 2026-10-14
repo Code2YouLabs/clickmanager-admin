@@ -1,5 +1,5 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -13,6 +13,7 @@ import { Preco } from 'src/app/models/preco/preco-response.model';
     selector: 'app-servicos-step',
     templateUrl: './servicos-step.component.html',
     styleUrls: ['./servicos-step.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
     MatCheckboxModule,
     MatTooltipModule,

@@ -1,5 +1,5 @@
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,7 @@ export interface DialogFolhaWhatsappData {
   standalone: true,
   imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule, InputTelefoneComponent],
   templateUrl: './dialog-folha-whatsapp.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dialog-folha-whatsapp.component.scss'
 })
 export class DialogFolhaWhatsappComponent {

@@ -1,4 +1,4 @@
-import { Component, signal, computed, OnInit } from '@angular/core';
+import { Component, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   Validators,
   FormsModule,
@@ -70,6 +70,7 @@ import { ClienteService } from "../../cliente/cliente.service";
   ],
   templateUrl: './form-pedido.component.html',
   styleUrls: ['./form-pedido.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('expandCollapse', [
       transition(':enter', [

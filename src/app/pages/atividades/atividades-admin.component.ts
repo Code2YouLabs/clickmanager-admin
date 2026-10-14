@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -19,6 +19,7 @@ import { AdminAtividadesService } from './services/admin-atividades.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './atividades-admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './atividades-admin.component.scss'
 })
 export class AtividadesAdminComponent implements OnInit {

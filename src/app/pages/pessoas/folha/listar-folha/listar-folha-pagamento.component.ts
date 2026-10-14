@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
@@ -40,6 +40,7 @@ import {
     TemPermissaoDirective
   ],
   templateUrl: './listar-folha-pagamento.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './listar-folha-pagamento.component.scss'
 })
 export class ListarFolhaPagamentoComponent implements OnInit {

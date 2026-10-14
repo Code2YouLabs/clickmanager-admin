@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'src/app/services/toastr.service';
@@ -31,6 +31,7 @@ interface ItemFormModel {
   standalone: true,
   imports: [FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './onboarding-catalogo-item-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './onboarding-catalogo-item-form.component.scss'
 })
 export class OnboardingCatalogoItemFormComponent implements OnInit {

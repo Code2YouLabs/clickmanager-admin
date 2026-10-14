@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-preco-quantidade-config',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatRadioModule, CurrencyPipe, MatCardModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './preco-quantidade-config.component.html'
 })
 export class PrecoQuantidadeConfigComponent implements OnInit {

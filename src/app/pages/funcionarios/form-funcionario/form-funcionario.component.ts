@@ -1,9 +1,10 @@
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, defer, of } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'src/app/services/toastr.service';
 import { extrairMensagemErro } from 'src/app/utils/mensagem.util';
@@ -44,9 +45,11 @@ import { UsuarioService } from 'src/app/pages/usuarios/services/usuario.service'
     AutoCompleteComponent
 ],
   templateUrl: './form-funcionario.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './form-funcionario.component.scss'
 })
 export class FormFuncionarioComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   funcionarioId: number | null = null;
   carregando = false;
   carregandoUsuarios = false;
@@ -94,40 +97,45 @@ export class FormFuncionarioComponent implements OnInit {
     if (id) {
       this.funcionarioId = id;
       this.carregando = true;
-      this.service.obterPorId$(id).subscribe((f) => {
-        if (!f) {
-          this.toastr.error('Funcionário não encontrado.');
-          this.voltar();
-          return;
-        }
-        if (f.status === 'DESLIGADO') {
-          this.toastr.warning('Funcionário desligado não pode ser editado. Use a tela de detalhe para readmitir.');
-          this.router.navigate(['/page/funcionarios/detalhe', id]);
-          return;
-        }
-        this.form.patchValue({
-          usuarioId: f.usuarioId ?? null,
-          nome: f.nome,
-          cpf: f.cpf,
-          email: f.email,
-          telefone: f.telefone,
-          cargo: f.cargo,
-          setor: f.setor,
-          dataAdmissao: f.dataAdmissao,
-          tipoContrato: f.tipoContrato,
-          status: f.status,
-          salario: f.salario ?? null,
-          valorPassagem: f.valorPassagem ?? null
-        });
-        this.enderecoPendente = this.parseEndereco(f.endereco);
-        const enderecoGroup = this.form.get('endereco') as FormGroup;
-        if (enderecoGroup && this.enderecoPendente) {
-          enderecoGroup.patchValue(this.enderecoPendente);
-        }
-        if (f.usuarioId) {
-          this.carregarUsuarioVinculado(f.usuarioId);
-        }
-        this.carregando = false;
+      this.service.obterPorId$(id).pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap((f) => {
+          if (!f) {
+            this.toastr.error('Funcionário não encontrado.');
+            this.voltar();
+            return;
+          }
+          if (f.status === 'DESLIGADO') {
+            this.toastr.warning('Funcionário desligado não pode ser editado. Use a tela de detalhe para readmitir.');
+            this.router.navigate(['/page/funcionarios/detalhe', id]);
+            return;
+          }
+          this.form.patchValue({
+            usuarioId: f.usuarioId ?? null,
+            nome: f.nome,
+            cpf: f.cpf,
+            email: f.email,
+            telefone: f.telefone,
+            cargo: f.cargo,
+            setor: f.setor,
+            dataAdmissao: f.dataAdmissao,
+            tipoContrato: f.tipoContrato,
+            status: f.status,
+            salario: f.salario ?? null,
+            valorPassagem: f.valorPassagem ?? null
+          });
+          this.enderecoPendente = this.parseEndereco(f.endereco);
+          const enderecoGroup = this.form.get('endereco') as FormGroup;
+          if (enderecoGroup && this.enderecoPendente) {
+            enderecoGroup.patchValue(this.enderecoPendente);
+          }
+          if (f.usuarioId) {
+            this.carregarUsuarioVinculado(f.usuarioId);
+          }
+        }),
+        finalize(() => (this.carregando = false))
+      ).subscribe({
+        error: (err) => this.toastr.error(extrairMensagemErro(err, 'Não foi possível carregar o funcionário.'))
       });
     }
   }
@@ -304,20 +312,23 @@ export class FormFuncionarioComponent implements OnInit {
     const t = (termo || '').trim().toLowerCase();
     if (t.length < 2) return of([]);
 
-    this.carregandoUsuarios = true;
-    return this.usuarioService.listarVinculaveis(t, 30).pipe(
-      // endpoint novo
-      catchError(() => this.usuarioService.listar(0, 200, true)),
-      // fallback antigo + filtro local
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      map((res: any) => this.normalizarListaUsuarios(res, t)),
-      // evita travar autocomplete em erro transitório
-      catchError(() => {
-        this.carregandoUsuarios = false;
-        return of([]);
-      }),
-      tap(() => (this.carregandoUsuarios = false))
-    );
+    return defer(() => {
+      this.carregandoUsuarios = true;
+      return this.usuarioService.listarVinculaveis(t, 30).pipe(
+        // endpoint novo
+        catchError(() => this.usuarioService.listar(0, 200, true)),
+        // fallback antigo + filtro local
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        map((res: any) => this.normalizarListaUsuarios(res, t)),
+        // evita travar autocomplete em erro transitório
+        catchError(() => {
+          this.carregandoUsuarios = false;
+          return of([]);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => (this.carregandoUsuarios = false))
+      );
+    });
   }
 
   private filtrarUsuarios(lista: Usuario[], termo: string): Usuario[] {
