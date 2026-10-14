@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
+import { ToastrService } from 'src/app/services/toastr.service';
+import { DesignSystemIconsModule } from 'src/app/shared/design-system-icons.module';
 import {
   AdminAdocaoFunilEtapa,
   AdminAdocaoFunilEtapaCodigo,
@@ -27,7 +27,7 @@ interface ResumoCard {
 @Component({
   selector: 'app-adocao-funil',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, TablerIconsModule, MaterialModule],
+  imports: [CommonModule, FormsModule, RouterModule, DesignSystemIconsModule, MaterialModule],
   templateUrl: './adocao-funil.component.html',
   styleUrl: './adocao-funil.component.scss'
 })
