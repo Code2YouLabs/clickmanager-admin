@@ -24,6 +24,7 @@ import { ToastrService } from 'src/app/services/toastr.service';
     BrandingComponent,
   ],
   templateUrl: './boxed-login.component.html',
+  styleUrl: './boxed-login.component.scss',
 })
 export class AppBoxedLoginComponent {
   options = this.settings.getOptions();

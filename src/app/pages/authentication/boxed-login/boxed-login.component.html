@@ -1,52 +1,49 @@
-<div class="blank-layout-container justify-content-center align-items-center">
-  <div class="position-relative row w-100 h-100vh bg-gredient justify-content-center">
-    <div class="col-lg-4 d-flex align-items-center">
-      <mat-card class="cardWithShadow boxed-auth">
-        <mat-card-content>
-          <div class="text-center">
-            <app-branding></app-branding>
-          </div>
+<main class="login-page">
+  <div class="login-background" aria-hidden="true"></div>
+  <mat-card class="login-card cardWithShadow">
+    <mat-card-content class="login-card-content">
+      <div class="text-center">
+        <app-branding></app-branding>
+      </div>
 
-          <div class="text-center m-t-24">
-            <h3 class="m-b-8">ClickManager Admin</h3>
-            <p class="text-muted m-0">Acesso restrito ao painel administrativo de chamados.</p>
-          </div>
+      <div class="text-center login-heading">
+        <h1>ClickManager Admin</h1>
+        <p>Acesso restrito ao painel administrativo de chamados.</p>
+      </div>
 
-          <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Usuário</mat-label>
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput formControlName="uname" />
-              @if(f['uname'].touched && f['uname'].invalid) {
-              <mat-hint class="m-b-16 error-msg">
-                @if(f['uname'].errors && f['uname'].errors['required']) {
-                <div class="text-error">Usuário é obrigatório.</div>
-                }
-              </mat-hint>
-              }
-            </mat-form-field>
+      <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Usuário</mat-label>
+        <mat-form-field appearance="outline" class="login-field" color="primary">
+          <input matInput formControlName="uname" />
+          @if(f['uname'].touched && f['uname'].invalid) {
+          <mat-hint class="m-b-16 error-msg">
+            @if(f['uname'].errors && f['uname'].errors['required']) {
+            <div class="text-error">Usuário é obrigatório.</div>
+            }
+          </mat-hint>
+          }
+        </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Senha</mat-label>
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput type="password" formControlName="password" />
-              @if(f['password'].touched && f['password'].invalid) {
-              <mat-hint class="m-b-16 error-msg">
-                @if(f['password'].errors && f['password'].errors['required']) {
-                <div class="text-error">Senha é obrigatória.</div>
-                }
-              </mat-hint>
-              }
-            </mat-form-field>
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Senha</mat-label>
+        <mat-form-field appearance="outline" class="login-field" color="primary">
+          <input matInput type="password" formControlName="password" />
+          @if(f['password'].touched && f['password'].invalid) {
+          <mat-hint class="m-b-16 error-msg">
+            @if(f['password'].errors && f['password'].errors['required']) {
+            <div class="text-error">Senha é obrigatória.</div>
+            }
+          </mat-hint>
+          }
+        </mat-form-field>
 
-            <div class="d-flex align-items-center m-b-12">
-              <mat-checkbox color="primary" formControlName="lembrar">Lembrar deste dispositivo</mat-checkbox>
-            </div>
+        <div class="login-options">
+          <mat-checkbox color="primary" formControlName="lembrar">Lembrar deste dispositivo</mat-checkbox>
+        </div>
 
-            <button mat-flat-button color="primary" class="w-100" [disabled]="carregando || !form.valid">
-              {{ carregando ? 'Entrando...' : 'Entrar no admin' }}
-            </button>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-</div>
+        <button mat-flat-button color="primary" class="login-submit" [disabled]="carregando || !form.valid">
+          {{ carregando ? 'Entrando...' : 'Entrar no admin' }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</main>
